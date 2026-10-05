@@ -23,11 +23,11 @@
         </div>
 
 
-        <div class="gallery-grid fade-up">
+        <!-- Masonry-style Gallery Grid -->
+        <div class="gallery-masonry fade-up">
 
-
-            <!-- Gallery 1 -->
-            <div class="gallery-item">
+            <!-- Large Item 1 -->
+            <div class="gallery-item gallery-item-tall">
 
                 <img
                     src="{{ asset('assets/images/1.jpeg') }}"
@@ -36,14 +36,10 @@
                 />
 
                 <div class="gallery-overlay">
-
                     <div class="gallery-overlay-content">
-                        <span>
-                            <i class="bi bi-mountain me-1"></i>
-                            Mountain Trip
-                        </span>
+                        <span class="gallery-tag"><i class="bi bi-mountain me-1"></i>Mountain Trip</span>
+                        <p class="gallery-caption">Menikmati puncak bersama-sama</p>
                     </div>
-
                 </div>
 
                 <div class="gallery-zoom-icon">
@@ -53,24 +49,20 @@
             </div>
 
 
-            <!-- Gallery 2 -->
+            <!-- Normal Item 2 -->
             <div class="gallery-item">
 
                 <img
                     src="{{ asset('assets/images/2.jpeg') }}"
-                    alt="Camping bersama Maro Adventure"
+                    alt="Rafting bersama Maro Adventure"
                     loading="lazy"
                 />
 
                 <div class="gallery-overlay">
-
                     <div class="gallery-overlay-content">
-                        <span>
-                            <i class="bi bi-moon-stars me-1"></i>
-                            Rafting
-                        </span>
+                        <span class="gallery-tag"><i class="bi bi-water me-1"></i>Rafting</span>
+                        <p class="gallery-caption">Petualangan di arus sungai</p>
                     </div>
-
                 </div>
 
                 <div class="gallery-zoom-icon">
@@ -80,7 +72,7 @@
             </div>
 
 
-            <!-- Gallery 3 -->
+            <!-- Normal Item 3 -->
             <div class="gallery-item">
 
                 <img
@@ -90,14 +82,10 @@
                 />
 
                 <div class="gallery-overlay">
-
                     <div class="gallery-overlay-content">
-                        <span>
-                            <i class="bi bi-compass me-1"></i>
-                            Adventure
-                        </span>
+                        <span class="gallery-tag"><i class="bi bi-compass me-1"></i>Adventure</span>
+                        <p class="gallery-caption">Bersama alam yang terbuka</p>
                     </div>
-
                 </div>
 
                 <div class="gallery-zoom-icon">
@@ -107,8 +95,8 @@
             </div>
 
 
-            <!-- Gallery 4 -->
-            <div class="gallery-item">
+            <!-- Large Item 4 -->
+            <div class="gallery-item gallery-item-tall">
 
                 <img
                     src="{{ asset('assets/images/4.jpeg') }}"
@@ -117,14 +105,10 @@
                 />
 
                 <div class="gallery-overlay">
-
                     <div class="gallery-overlay-content">
-                        <span>
-                            <i class="bi bi-tree me-1"></i>
-                            Nature
-                        </span>
+                        <span class="gallery-tag"><i class="bi bi-tree me-1"></i>Nature</span>
+                        <p class="gallery-caption">Keindahan alam yang tak terlupakan</p>
                     </div>
-
                 </div>
 
                 <div class="gallery-zoom-icon">
@@ -134,7 +118,7 @@
             </div>
 
 
-            <!-- Gallery 5 -->
+            <!-- Normal Item 5 -->
             <div class="gallery-item">
 
                 <img
@@ -144,14 +128,10 @@
                 />
 
                 <div class="gallery-overlay">
-
                     <div class="gallery-overlay-content">
-                        <span>
-                            <i class="bi bi-people me-1"></i>
-                            Sunrise
-                        </span>
+                        <span class="gallery-tag"><i class="bi bi-sun me-1"></i>Sunrise</span>
+                        <p class="gallery-caption">Golden hour di puncak gunung</p>
                     </div>
-
                 </div>
 
                 <div class="gallery-zoom-icon">
@@ -161,7 +141,7 @@
             </div>
 
 
-            <!-- Gallery 6 -->
+            <!-- Normal Item 6 -->
             <div class="gallery-item">
 
                 <img
@@ -171,14 +151,10 @@
                 />
 
                 <div class="gallery-overlay">
-
                     <div class="gallery-overlay-content">
-                        <span>
-                            <i class="bi bi-sun me-1"></i>
-                            Community
-                        </span>
+                        <span class="gallery-tag"><i class="bi bi-people me-1"></i>Community</span>
+                        <p class="gallery-caption">Kebersamaan yang tak ternilai</p>
                     </div>
-
                 </div>
 
                 <div class="gallery-zoom-icon">
@@ -192,10 +168,7 @@
 
         <div class="text-center mt-5 fade-up">
 
-            <p
-                class="text-muted mb-3"
-                style="font-size: 0.9rem;"
-            >
+            <p class="text-muted mb-3" style="font-size: 0.9rem;">
                 Lebih banyak cerita ada di Instagram Maro.
             </p>
 

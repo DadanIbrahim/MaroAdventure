@@ -10,6 +10,8 @@
     @include('layouts.partials.sections.paket')
     @include('layouts.partials.sections.kenapa')
     @include('layouts.partials.sections.galeri')
+    @include('layouts.partials.sections.artikel-preview')
+    @include('layouts.partials.sections.testimoni')
     @include('layouts.partials.sections.cta')
     @include('layouts.partials.sections.kontak')
 

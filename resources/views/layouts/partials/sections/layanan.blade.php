@@ -28,7 +28,6 @@
 
 
             <!-- OPEN TRIP -->
-
             <div class="col-12 col-md-6 col-lg-3 fade-up">
 
                 <div class="service-card">
@@ -44,6 +43,8 @@
                             <i class="bi bi-signpost-2-fill"></i>
                         </div>
 
+                        <div class="service-card-category">Open Trip</div>
+
                     </div>
 
                     <div class="service-card-body">
@@ -55,6 +56,11 @@
                             menjelajahi destinasi alam dan menciptakan
                             cerita baru sepanjang perjalanan.
                         </p>
+
+                        <div class="service-card-tags">
+                            <span class="service-tag"><i class="bi bi-check2"></i> Terjadwal</span>
+                            <span class="service-tag"><i class="bi bi-check2"></i> Terpandu</span>
+                        </div>
 
                         <a
                             href="#paket"
@@ -88,17 +94,24 @@
                             <i class="bi bi-map-fill"></i>
                         </div>
 
+                        <div class="service-card-category">Private</div>
+
                     </div>
 
                     <div class="service-card-body">
 
-                        <h5>Private & Custom Trip</h5>
+                        <h5>Private &amp; Custom Trip</h5>
 
                         <p>
                             Tentukan destinasi, waktu, dan gaya perjalananmu.
                             Kami membantu menyusun perjalanan sesuai kebutuhan
                             kelompok.
                         </p>
+
+                        <div class="service-card-tags">
+                            <span class="service-tag"><i class="bi bi-check2"></i> Fleksibel</span>
+                            <span class="service-tag"><i class="bi bi-check2"></i> Custom</span>
+                        </div>
 
                         <a
                             href="#kontak"
@@ -132,17 +145,24 @@
                             <i class="bi bi-person-walking"></i>
                         </div>
 
+                        <div class="service-card-category">Guiding</div>
+
                     </div>
 
                     <div class="service-card-body">
 
-                        <h5>Guiding & Portering</h5>
+                        <h5>Guiding &amp; Portering</h5>
 
                         <p>
                             Pendampingan perjalanan gunung dan aktivitas
                             outdoor bersama tim yang memahami medan dan
                             kebutuhan perjalanan.
                         </p>
+
+                        <div class="service-card-tags">
+                            <span class="service-tag"><i class="bi bi-check2"></i> Profesional</span>
+                            <span class="service-tag"><i class="bi bi-check2"></i> Berpengalaman</span>
+                        </div>
 
                         <a
                             href="#kontak"
@@ -176,17 +196,24 @@
                             <i class="bi bi-people-fill"></i>
                         </div>
 
+                        <div class="service-card-category">Corporate</div>
+
                     </div>
 
                     <div class="service-card-body">
 
-                        <h5>Team Building & Company Outing</h5>
+                        <h5>Team Building &amp; Company Outing</h5>
 
                         <p>
                             Kegiatan outdoor untuk komunitas, organisasi,
                             kampus, maupun perusahaan yang ingin membangun
                             kebersamaan melalui pengalaman bersama.
                         </p>
+
+                        <div class="service-card-tags">
+                            <span class="service-tag"><i class="bi bi-check2"></i> Terprogram</span>
+                            <span class="service-tag"><i class="bi bi-check2"></i> Kelompok</span>
+                        </div>
 
                         <a
                             href="#kontak"

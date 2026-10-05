@@ -27,13 +27,16 @@
 </head>
 <body>
 
-    @include('layouts.partials.navbar')
+    @unless(request()->routeIs('login') || request()->routeIs('register'))
+        @include('layouts.partials.navbar')
+    @endunless
 
     @yield('content')
 
-    @include('layouts.partials.footer')
-
-    @include('layouts.partials.back-to-top')
+    @unless(request()->routeIs('login') || request()->routeIs('register'))
+        @include('layouts.partials.footer')
+        @include('layouts.partials.back-to-top')
+    @endunless
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

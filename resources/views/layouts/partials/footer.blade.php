@@ -106,37 +106,43 @@
                 <ul class="footer-links">
 
                     <li>
-                        <a href="#hero">
+                        <a href="{{ url('/') }}#hero">
                             Home
                         </a>
                     </li>
 
                     <li>
-                        <a href="#tentang">
+                        <a href="{{ url('/') }}#tentang">
                             Tentang Maro
                         </a>
                     </li>
 
                     <li>
-                        <a href="#layanan">
+                        <a href="{{ url('/') }}#layanan">
                             Layanan
                         </a>
                     </li>
 
                     <li>
-                        <a href="#paket">
+                        <a href="{{ url('/') }}#paket">
                             Perjalanan
                         </a>
                     </li>
 
                     <li>
-                        <a href="#galeri">
+                        <a href="{{ route('artikel.index') }}">
+                            Artikel & Berita
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="{{ url('/') }}#galeri">
                             Galeri
                         </a>
                     </li>
 
                     <li>
-                        <a href="#kontak">
+                        <a href="{{ url('/') }}#kontak">
                             Kontak
                         </a>
                     </li>

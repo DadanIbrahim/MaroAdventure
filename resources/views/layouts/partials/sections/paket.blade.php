@@ -46,22 +46,22 @@
 
                         <li>
                             <i class="bi bi-check-circle-fill"></i>
-                            Pilihan destinasi alam
+                            Pilihan destinasi alam terbaik
                         </li>
 
                         <li>
                             <i class="bi bi-check-circle-fill"></i>
-                            Bertemu peserta baru
+                            Bertemu & berteman dengan peserta baru
                         </li>
 
                         <li>
                             <i class="bi bi-check-circle-fill"></i>
-                            Itinerary terencana
+                            Itinerary terencana & transparan
                         </li>
 
                         <li>
                             <i class="bi bi-check-circle-fill"></i>
-                            Pendampingan perjalanan
+                            Pendampingan tim Maro sepanjang perjalanan
                         </li>
 
                     </ul>
@@ -71,7 +71,8 @@
                         class="btn-booking-package"
                         id="pkg-open-trip-btn"
                     >
-                        Lihat Jadwal
+                        <i class="bi bi-calendar-check"></i>
+                        Lihat Jadwal Trip
                     </a>
 
                 </div>
@@ -79,14 +80,13 @@
             </div>
 
 
-            <!-- PRIVATE -->
-             
+            <!-- PRIVATE TRIP -->
             <div class="col-12 col-md-6 col-lg-6 fade-up">
 
                 <div class="package-card featured">
 
                     <div class="featured-badge">
-                        Custom Experience
+                        ✦ Custom Experience
                     </div>
 
                     <div class="package-icon">
@@ -97,55 +97,51 @@
 
                     <div class="package-duration">
                         <i class="bi bi-person-hearts"></i>
-                        Sesuai Kebutuhan
+                        Sesuai Kebutuhanmu
                     </div>
 
                     <ul class="package-list">
 
                         <li>
                             <i class="bi bi-check-circle-fill"></i>
-                            Destinasi pilihanmu
+                            Destinasi & rute pilihanmu sendiri
                         </li>
 
                         <li>
                             <i class="bi bi-check-circle-fill"></i>
-                            Jadwal fleksibel
+                            Jadwal yang fleksibel
                         </li>
 
                         <li>
                             <i class="bi bi-check-circle-fill"></i>
-                            Cocok untuk keluarga & teman
+                            Cocok untuk keluarga, teman, & pasangan
                         </li>
 
                         <li>
                             <i class="bi bi-check-circle-fill"></i>
-                            Itinerary dapat disesuaikan
+                            Itinerary dapat disesuaikan sepenuhnya
                         </li>
 
                     </ul>
 
                     <a
-                       
+                        href="https://wa.me/6285894535172"
                         class="btn-booking-package"
                         id="pkg-private-btn"
-                        
-                         href="https://wa.me/6285894535172"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                id="contact-wa"
-                            
-                              
-
+                        target="_blank"
+                        rel="noopener noreferrer"
                     >
-                        Buat Perjalanan
+                        <i class="bi bi-whatsapp"></i>
+                        Buat Perjalananmu
                     </a>
 
                 </div>
 
             </div>
 
-            <!-- Guiding & Portering -->
-                         <div class="col-12 col-md-6 col-lg-6 fade-up">
+
+            <!-- GUIDING & PORTERING -->
+            <div class="col-12 col-md-6 col-lg-6 fade-up">
 
                 <div class="package-card">
 
@@ -153,7 +149,7 @@
                         <i class="bi bi-person-walking"></i>
                     </div>
 
-                    <h3>Guiding & Portering</h3>
+                    <h3>Guiding &amp; Portering</h3>
 
                     <div class="package-duration">
                         <i class="bi bi-person-walking"></i>
@@ -164,22 +160,22 @@
 
                         <li>
                             <i class="bi bi-check-circle-fill"></i>
-                            Pendampingan di medan outdoor
+                            Pendampingan di medan outdoor & gunung
                         </li>
 
                         <li>
                             <i class="bi bi-check-circle-fill"></i>
-                            Tim memahami rute perjalanan
+                            Tim yang memahami rute perjalanan
                         </li>
 
                         <li>
                             <i class="bi bi-check-circle-fill"></i>
-                            Dukungan selama perjalanan
+                            Dukungan logistik selama perjalanan
                         </li>
 
                         <li>
                             <i class="bi bi-check-circle-fill"></i>
-                            Cocok untuk hiking dan pendakian
+                            Cocok untuk hiking dan pendakian mandiri
                         </li>
 
                     </ul>
@@ -189,6 +185,7 @@
                         class="btn-booking-package"
                         id="pkg-guiding-btn"
                     >
+                        <i class="bi bi-chat-dots"></i>
                         Tanya Layanan
                     </a>
 
@@ -197,7 +194,7 @@
             </div>
 
 
-            <!-- TEAM -->
+            <!-- TEAM EXPERIENCE -->
             <div class="col-12 col-md-6 col-lg-6 fade-up">
 
                 <div class="package-card featured">
@@ -210,24 +207,24 @@
 
                     <div class="package-duration">
                         <i class="bi bi-diagram-3"></i>
-                        Community & Corporate
+                        Community &amp; Corporate
                     </div>
 
                     <ul class="package-list">
 
                         <li>
                             <i class="bi bi-check-circle-fill"></i>
-                            Team building
+                            Team building yang berkesan & bermakna
                         </li>
 
                         <li>
                             <i class="bi bi-check-circle-fill"></i>
-                            Outdoor activity
+                            Outdoor activity yang terstruktur
                         </li>
 
                         <li>
                             <i class="bi bi-check-circle-fill"></i>
-                            Program sesuai kebutuhan
+                            Program sesuai kebutuhan organisasi
                         </li>
 
                         <li>
@@ -242,6 +239,7 @@
                         class="btn-booking-package"
                         id="pkg-team-btn"
                     >
+                        <i class="bi bi-people"></i>
                         Diskusikan Program
                     </a>
 
@@ -255,18 +253,14 @@
         <div class="text-center mt-5 fade-up">
 
             <p class="text-muted" style="font-size: 0.9rem;">
-
                 Belum menemukan perjalanan yang kamu cari?
-
                 <a
                     href="#kontak"
                     style="color: var(--color-primary); font-weight: 600;"
                 >
                     Ceritakan ke kami.
                 </a>
-
                 Kita bisa membicarakan konsep perjalanan yang sesuai.
-
             </p>
 
         </div>
