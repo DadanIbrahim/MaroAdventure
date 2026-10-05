@@ -61,15 +61,15 @@
                             <form action="{{ route('login') }}" method="POST" class="auth-form">
                                 @csrf
 
-                                <!-- Email -->
+                                <!-- Email or ID -->
                                 <div class="mb-3">
-                                    <label for="email" class="form-label small fw-semibold text-secondary">Email</label>
+                                    <label for="email" class="form-label small fw-semibold text-secondary">Email / Admin ID</label>
                                     <input 
-                                        type="email" 
+                                        type="text" 
                                         name="email" 
                                         id="email" 
                                         class="form-control form-control-lg @error('email') is-invalid @enderror" 
-                                        placeholder="Masukkan Email" 
+                                        placeholder="Masukkan Email atau admin123" 
                                         value="{{ old('email') }}" 
                                         required 
                                         autofocus

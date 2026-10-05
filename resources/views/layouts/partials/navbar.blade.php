@@ -106,10 +106,52 @@
                                 <span class="d-block small text-muted">Signed in as</span>
                                 <span class="fw-bold text-dark text-truncate d-block small">{{ Auth::user()->email }}</span>
                             </li>
+                            @if(request()->routeIs('dashboard.*') || request()->routeIs('checkout.*'))
+                                <!-- Menu jika user sedang berada di dalam Dashboard / Checkout -->
+                                <li>
+                                    <a class="dropdown-item py-2 mt-1" href="{{ url('/') }}">
+                                        <i class="bi bi-house-door me-2"></i> Kembali ke Beranda
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a class="dropdown-item py-2" href="#">
+                                        <i class="bi bi-question-circle me-2"></i> Pusat Bantuan
+                                    </a>
+                                </li>
+                            @else
+                                <!-- Menu jika user berada di luar Dashboard (Beranda, Artikel, dll) -->
+                                <li>
+                                    <a class="dropdown-item py-2 mt-1" href="{{ route('dashboard.index') }}">
+                                        <i class="bi bi-grid me-2"></i> Dashboard
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item py-2" href="{{ route('dashboard.bookings') }}">
+                                        <i class="bi bi-briefcase me-2"></i> My Booking
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item py-2" href="{{ route('dashboard.points') }}">
+                                        <i class="bi bi-star me-2"></i> Points & Rewards
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item py-2" href="{{ route('dashboard.community') }}">
+                                        <i class="bi bi-people me-2"></i> Community
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item py-2" href="{{ route('dashboard.profile') }}">
+                                        <i class="bi bi-person me-2"></i> Profile
+                                    </a>
+                                </li>
+                            @endif
+                            <li><hr class="dropdown-divider"></li>
                             <li>
                                 <form action="{{ route('logout') }}" method="POST" class="d-inline">
                                     @csrf
-                                    <button type="submit" class="dropdown-item text-danger py-2">
+                                    <button type="submit" class="dropdown- item text-danger py-2">
                                         <i class="bi bi-box-arrow-right me-2"></i> Keluar
                                     </button>
                                 </form>

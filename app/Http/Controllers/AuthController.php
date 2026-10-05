@@ -71,19 +71,47 @@ class AuthController extends Controller
      */
     public function login(Request $request): RedirectResponse
     {
-        $credentials = $request->validate([
-            'email' => ['required', 'email'],
+        // Allow 'admin123' as an ID without strictly requiring email format initially
+        $request->validate([
+            'email' => ['required', 'string'],
             'password' => ['required', 'string'],
         ], [
-            'email.required' => 'Email wajib diisi.',
-            'email.email' => 'Format email tidak valid.',
+            'email.required' => 'Email atau ID wajib diisi.',
             'password.required' => 'Kata sandi wajib diisi.',
         ]);
+
+        $loginField = $request->email;
+        if ($loginField === 'admin123') {
+            $loginField = 'admin123@maroadventure.com'; // Map ID to email internally
+            // Auto-create admin if it doesn't exist
+            User::firstOrCreate(
+                ['email' => $loginField],
+                ['name' => 'Administrator', 'password' => Hash::make('12345678')]
+            );
+        } elseif ($loginField === 'superadmin123') {
+            $loginField = 'superadmin123@maroadventure.com';
+            User::firstOrCreate(
+                ['email' => $loginField],
+                ['name' => 'Super Administrator', 'password' => Hash::make('12345678')]
+            );
+        }
+
+        $credentials = [
+            'email' => $loginField,
+            'password' => $request->password,
+        ];
 
         $remember = $request->boolean('remember');
 
         if (Auth::attempt($credentials, $remember)) {
             $request->session()->regenerate();
+
+            if (Auth::user()->email === 'admin123@maroadventure.com') {
+                return redirect()->route('admin.dashboard')->with('success', 'Selamat datang di Admin Panel!');
+            }
+            if (Auth::user()->email === 'superadmin123@maroadventure.com') {
+                return redirect()->route('superadmin.dashboard')->with('success', 'Selamat datang di Superadmin Panel!');
+            }
 
             return redirect()->intended(url('/'))->with('success', 'Selamat datang kembali, '.Auth::user()->name.'!');
         }
