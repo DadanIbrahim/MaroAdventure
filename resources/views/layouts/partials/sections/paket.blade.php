@@ -66,14 +66,25 @@
 
                     </ul>
 
-                    <a
-                        href="#kontak"
-                        class="btn-booking-package"
-                        id="pkg-open-trip-btn"
-                    >
-                        <i class="bi bi-calendar-check"></i>
-                        Lihat Jadwal Trip
-                    </a>
+                    @guest
+                        <a
+                            href="{{ route('login', ['notice' => 'trip']) }}"
+                            class="btn-booking-package"
+                            id="pkg-open-trip-btn"
+                        >
+                            <i class="bi bi-calendar-check"></i>
+                            Lihat Jadwal Trip
+                        </a>
+                    @else
+                        <a
+                            href="#kontak"
+                            class="btn-booking-package"
+                            id="pkg-open-trip-btn"
+                        >
+                            <i class="bi bi-calendar-check"></i>
+                            Lihat Jadwal Trip
+                        </a>
+                    @endguest
 
                 </div>
 
@@ -124,16 +135,27 @@
 
                     </ul>
 
-                    <a
-                        href="https://wa.me/6285894535172"
-                        class="btn-booking-package"
-                        id="pkg-private-btn"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                    >
-                        <i class="bi bi-whatsapp"></i>
-                        Buat Perjalananmu
-                    </a>
+                    @guest
+                        <a
+                            href="{{ route('login', ['notice' => 'trip']) }}"
+                            class="btn-booking-package"
+                            id="pkg-private-btn"
+                        >
+                            <i class="bi bi-whatsapp"></i>
+                            Buat Perjalananmu
+                        </a>
+                    @else
+                        <a
+                            href="https://wa.me/6285894535172?text=Halo%20Maro%20Adventure%2C%20saya%20ingin%20membuat%20Private%20Trip."
+                            class="btn-booking-package"
+                            id="pkg-private-btn"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            <i class="bi bi-whatsapp"></i>
+                            Buat Perjalananmu
+                        </a>
+                    @endguest
 
                 </div>
 
@@ -180,14 +202,25 @@
 
                     </ul>
 
-                    <a
-                        href="#kontak"
-                        class="btn-booking-package"
-                        id="pkg-guiding-btn"
-                    >
-                        <i class="bi bi-chat-dots"></i>
-                        Tanya Layanan
-                    </a>
+                    @guest
+                        <a
+                            href="{{ route('login', ['notice' => 'trip']) }}"
+                            class="btn-booking-package"
+                            id="pkg-guiding-btn"
+                        >
+                            <i class="bi bi-chat-dots"></i>
+                            Tanya Layanan
+                        </a>
+                    @else
+                        <a
+                            href="#kontak"
+                            class="btn-booking-package"
+                            id="pkg-guiding-btn"
+                        >
+                            <i class="bi bi-chat-dots"></i>
+                            Tanya Layanan
+                        </a>
+                    @endguest
 
                 </div>
 
@@ -234,14 +267,25 @@
 
                     </ul>
 
-                    <a
-                        href="#kontak"
-                        class="btn-booking-package"
-                        id="pkg-team-btn"
-                    >
-                        <i class="bi bi-people"></i>
-                        Diskusikan Program
-                    </a>
+                    @guest
+                        <a
+                            href="{{ route('login', ['notice' => 'trip']) }}"
+                            class="btn-booking-package"
+                            id="pkg-team-btn"
+                        >
+                            <i class="bi bi-people"></i>
+                            Diskusikan Program
+                        </a>
+                    @else
+                        <a
+                            href="#kontak"
+                            class="btn-booking-package"
+                            id="pkg-team-btn"
+                        >
+                            <i class="bi bi-people"></i>
+                            Diskusikan Program
+                        </a>
+                    @endguest
 
                 </div>
 

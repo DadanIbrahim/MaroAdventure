@@ -44,6 +44,14 @@
                                 <p class="text-muted small">Login untuk melanjutkan petualanganmu.</p>
                             </div>
 
+                            @if(request('notice') === 'trip')
+                                <div class="alert alert-warning alert-dismissible fade show border-0 shadow-sm mb-4" role="alert">
+                                    <i class="bi bi-exclamation-circle-fill me-2"></i>
+                                    Silakan <strong>masuk</strong> atau <strong>daftar akun</strong> terlebih dahulu sebelum membuat atau mengikuti trip di Maro Adventure.
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            @endif
+
                             @if(session('success'))
                                 <div class="alert alert-success alert-dismissible fade show border-0 shadow-sm mb-4" role="alert">
                                     <i class="bi bi-check-circle me-2"></i>{{ session('success') }}
@@ -128,7 +136,7 @@
                                 <!-- Register Link -->
                                 <div class="text-center">
                                     <span class="small text-muted">Don't have an account? </span>
-                                    <a href="{{ route('register') }}" class="small text-primary fw-bold text-decoration-none ms-1">Register</a>
+                                    <a href="{{ route('register', request('notice') ? ['notice' => request('notice')] : []) }}" class="small text-primary fw-bold text-decoration-none ms-1">Register</a>
                                 </div>
                             </form>
 

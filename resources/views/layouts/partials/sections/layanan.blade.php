@@ -62,14 +62,25 @@
                             <span class="service-tag"><i class="bi bi-check2"></i> Terpandu</span>
                         </div>
 
-                        <a
-                            href="#paket"
-                            class="btn-service"
-                            id="service-open-trip-btn"
-                        >
-                            Lihat Perjalanan
-                            <i class="bi bi-arrow-right"></i>
-                        </a>
+                        @guest
+                            <a
+                                href="{{ route('login', ['notice' => 'trip']) }}"
+                                class="btn-service"
+                                id="service-open-trip-btn"
+                            >
+                                Lihat Perjalanan
+                                <i class="bi bi-arrow-right"></i>
+                            </a>
+                        @else
+                            <a
+                                href="#paket"
+                                class="btn-service"
+                                id="service-open-trip-btn"
+                            >
+                                Lihat Perjalanan
+                                <i class="bi bi-arrow-right"></i>
+                            </a>
+                        @endguest
 
                     </div>
 
@@ -113,14 +124,27 @@
                             <span class="service-tag"><i class="bi bi-check2"></i> Custom</span>
                         </div>
 
-                        <a
-                            href="#kontak"
-                            class="btn-service"
-                            id="service-private-trip-btn"
-                        >
-                            Konsultasikan
-                            <i class="bi bi-arrow-right"></i>
-                        </a>
+                        @guest
+                            <a
+                                href="{{ route('login', ['notice' => 'trip']) }}"
+                                class="btn-service"
+                                id="service-private-trip-btn"
+                            >
+                                Konsultasikan
+                                <i class="bi bi-arrow-right"></i>
+                            </a>
+                        @else
+                            <a
+                                href="https://wa.me/6285894535172?text=Halo%20Maro%20Adventure%2C%20saya%20ingin%20konsultasi%20Private%20%26%20Custom%20Trip."
+                                class="btn-service"
+                                id="service-private-trip-btn"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                Konsultasikan
+                                <i class="bi bi-arrow-right"></i>
+                            </a>
+                        @endguest
 
                     </div>
 
@@ -164,14 +188,25 @@
                             <span class="service-tag"><i class="bi bi-check2"></i> Berpengalaman</span>
                         </div>
 
-                        <a
-                            href="#kontak"
-                            class="btn-service"
-                            id="service-guiding-btn"
-                        >
-                            Tanya Layanan
-                            <i class="bi bi-arrow-right"></i>
-                        </a>
+                        @guest
+                            <a
+                                href="{{ route('login', ['notice' => 'trip']) }}"
+                                class="btn-service"
+                                id="service-guiding-btn"
+                            >
+                                Tanya Layanan
+                                <i class="bi bi-arrow-right"></i>
+                            </a>
+                        @else
+                            <a
+                                href="#kontak"
+                                class="btn-service"
+                                id="service-guiding-btn"
+                            >
+                                Tanya Layanan
+                                <i class="bi bi-arrow-right"></i>
+                            </a>
+                        @endguest
 
                     </div>
 
@@ -215,14 +250,25 @@
                             <span class="service-tag"><i class="bi bi-check2"></i> Kelompok</span>
                         </div>
 
-                        <a
-                            href="#kontak"
-                            class="btn-service"
-                            id="service-team-btn"
-                        >
-                            Diskusikan
-                            <i class="bi bi-arrow-right"></i>
-                        </a>
+                        @guest
+                            <a
+                                href="{{ route('login', ['notice' => 'trip']) }}"
+                                class="btn-service"
+                                id="service-team-btn"
+                            >
+                                Diskusikan
+                                <i class="bi bi-arrow-right"></i>
+                            </a>
+                        @else
+                            <a
+                                href="#kontak"
+                                class="btn-service"
+                                id="service-team-btn"
+                            >
+                                Diskusikan
+                                <i class="bi bi-arrow-right"></i>
+                            </a>
+                        @endguest
 
                     </div>
 
