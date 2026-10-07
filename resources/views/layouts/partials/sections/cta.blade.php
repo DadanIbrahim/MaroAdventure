@@ -25,17 +25,27 @@
 
             <div class="cta-buttons">
 
-                <!-- GANTI NOMOR WHATSAPP -->
-                <a
-                    href="https://wa.me/6285894535172?text=Halo%20Maro%20Adventure%2C%20saya%20ingin%20konsultasi%20tentang%20perjalanan."
-                    class="btn-white btn-wa"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    id="cta-whatsapp-btn"
-                >
-                    <i class="bi bi-whatsapp"></i>
-                    Ceritakan Rencanamu
-                </a>
+                @guest
+                    <a
+                        href="{{ route('login', ['notice' => 'trip']) }}"
+                        class="btn-white btn-wa"
+                        id="cta-whatsapp-btn"
+                    >
+                        <i class="bi bi-whatsapp"></i>
+                        Ceritakan Rencanamu
+                    </a>
+                @else
+                    <a
+                        href="https://wa.me/6285894535172?text=Halo%20Maro%20Adventure%2C%20saya%20ingin%20konsultasi%20tentang%20perjalanan."
+                        class="btn-white btn-wa"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        id="cta-whatsapp-btn"
+                    >
+                        <i class="bi bi-whatsapp"></i>
+                        Ceritakan Rencanamu
+                    </a>
+                @endguest
 
                 <a
                     href="#paket"
