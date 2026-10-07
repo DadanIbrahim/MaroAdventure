@@ -148,11 +148,11 @@
                                 </li>
                             @endif
                             <li><hr class="dropdown-divider"></li>
-                            <li>
-                                <form action="{{ route('logout') }}" method="POST" class="d-inline">
+                            <li class="px-3 pb-2 pt-1">
+                                <form action="{{ route('logout') }}" method="POST" class="w-100 m-0">
                                     @csrf
-                                    <button type="submit" class="dropdown- item text-danger py-2">
-                                        <i class="bi bi-box-arrow-right me-2"></i> Keluar
+                                    <button type="submit" class="btn btn-outline-danger w-100 btn-sm">
+                                        <i class="bi bi-box-arrow-right me-1"></i> Logout
                                     </button>
                                 </form>
                             </li>

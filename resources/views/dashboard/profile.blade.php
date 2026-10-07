@@ -27,8 +27,8 @@
                         
                         <!-- Left Column: Avatar -->
                         <div class="col-md-4 col-lg-3 mb-4 mb-md-0 text-center">
-                            <div class="bg-secondary bg-opacity-10 rounded-circle mx-auto d-flex align-items-center justify-content-center mb-4" style="width: 150px; height: 150px;">
-                                <i class="bi bi-person text-secondary" style="font-size: 4rem;"></i>
+                            <div class="bg-primary bg-opacity-10 rounded-circle mx-auto d-flex align-items-center justify-content-center mb-4 text-primary" style="width: 150px; height: 150px; font-size: 4rem; font-weight: bold;">
+                                {{ auth()->check() ? strtoupper(substr(auth()->user()->name, 0, 1)) : 'U' }}
                             </div>
                             <button class="btn btn-outline-dark fw-medium px-4 py-2 rounded-1 mb-2">Upload Photo</button>
                             <p class="text-muted small">JPEG, PNG, maks 2MB</p>
@@ -36,29 +36,31 @@
 
                         <!-- Right Column: Form -->
                         <div class="col-md-8 col-lg-9">
-                            <form>
+                            <form action="#" method="POST">
+                                @csrf
+                                <!-- We will add method spoofing PUT when the route is ready -->
                                 <div class="mb-4">
                                     <label class="form-label small fw-bold text-dark">Name</label>
-                                    <input type="text" class="form-control px-3 py-2" value="Raka Pratama">
+                                    <input type="text" name="name" class="form-control px-3 py-2" value="{{ auth()->user()->name ?? 'User Name' }}">
                                 </div>
                                 
                                 <div class="mb-4">
                                     <label class="form-label small fw-bold text-dark">Email</label>
-                                    <input type="email" class="form-control px-3 py-2" value="raka@email.com">
+                                    <input type="email" name="email" class="form-control px-3 py-2" value="{{ auth()->user()->email ?? 'user@example.com' }}">
                                 </div>
                                 
                                 <div class="mb-4">
                                     <label class="form-label small fw-bold text-dark">Phone</label>
-                                    <input type="text" class="form-control px-3 py-2" value="+62 812 3456 7890">
+                                    <input type="text" name="phone" class="form-control px-3 py-2" value="{{ auth()->user()->phone ?? '' }}" placeholder="Enter phone number">
                                 </div>
                                 
                                 <div class="mb-4">
                                     <label class="form-label small fw-bold text-dark">Location</label>
-                                    <input type="text" class="form-control px-3 py-2" value="Jakarta, Indonesia">
+                                    <input type="text" name="location" class="form-control px-3 py-2" value="{{ auth()->user()->location ?? '' }}" placeholder="Enter your location">
                                 </div>
 
                                 <div class="mt-4 pt-2">
-                                    <button type="button" class="btn btn-dark fw-bold px-4 py-2 rounded-1">Save Changes</button>
+                                    <button type="submit" class="btn btn-dark fw-bold px-4 py-2 rounded-1" onclick="alert('Fitur Update Profil akan segera diaktifkan!'); return false;">Save Changes</button>
                                 </div>
                             </form>
                         </div>

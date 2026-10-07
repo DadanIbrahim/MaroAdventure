@@ -26,12 +26,13 @@
                     <div class="d-flex flex-column flex-md-row gap-3 mb-4">
                         <div class="flex-grow-1 position-relative">
                             <i class="bi bi-search position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i>
-                            <input type="text" class="form-control rounded-pill ps-5 py-2 border-0 shadow-sm" placeholder="Search booking">
+                            <input type="text" id="searchBooking" class="form-control rounded-pill ps-5 py-2 border-0 shadow-sm" placeholder="Search booking">
                         </div>
                         <div class="d-flex gap-2 overflow-auto pb-2 pb-md-0 hide-scroll">
-                            <button class="btn btn-outline-secondary rounded-pill px-4 text-nowrap">Upcoming</button>
-                            <button class="btn btn-outline-secondary rounded-pill px-4 text-nowrap">Completed</button>
-                            <button class="btn btn-outline-secondary rounded-pill px-4 text-nowrap">Canceled</button>
+                            <button class="btn btn-secondary rounded-pill px-4 text-nowrap filter-btn" data-filter="all">All</button>
+                            <button class="btn btn-outline-secondary rounded-pill px-4 text-nowrap filter-btn" data-filter="upcoming">Upcoming</button>
+                            <button class="btn btn-outline-secondary rounded-pill px-4 text-nowrap filter-btn" data-filter="completed">Completed</button>
+                            <button class="btn btn-outline-secondary rounded-pill px-4 text-nowrap filter-btn" data-filter="canceled">Canceled</button>
                         </div>
                     </div>
 
@@ -39,7 +40,7 @@
                     <div class="d-flex flex-column gap-3">
                         
                         <!-- Booking 1 -->
-                        <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+                        <div class="card border-0 shadow-sm rounded-4 overflow-hidden booking-card" data-status="upcoming">
                             <div class="card-body p-0 d-flex flex-column flex-md-row">
                                 <div class="bg-light d-flex align-items-center justify-content-center p-4 text-center" style="min-width: 140px; border-right: 1px solid #f3f4f6;">
                                     <div>
@@ -60,7 +61,7 @@
                         </div>
 
                         <!-- Booking 2 -->
-                        <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+                        <div class="card border-0 shadow-sm rounded-4 overflow-hidden booking-card" data-status="completed">
                             <div class="card-body p-0 d-flex flex-column flex-md-row">
                                 <div class="bg-light d-flex align-items-center justify-content-center p-4 text-center" style="min-width: 140px; border-right: 1px solid #f3f4f6;">
                                     <div>
@@ -81,7 +82,7 @@
                         </div>
 
                         <!-- Booking 3 -->
-                        <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+                        <div class="card border-0 shadow-sm rounded-4 overflow-hidden booking-card" data-status="canceled">
                             <div class="card-body p-0 d-flex flex-column flex-md-row">
                                 <div class="bg-light d-flex align-items-center justify-content-center p-4 text-center" style="min-width: 140px; border-right: 1px solid #f3f4f6;">
                                     <div>
@@ -126,4 +127,58 @@
         }
     }
 </style>
+
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const cards = document.querySelectorAll('.booking-card');
+    const searchInput = document.getElementById('searchBooking');
+
+    function filterBookings(filterValue, searchTerm) {
+        cards.forEach(card => {
+            const status = card.getAttribute('data-status');
+            const title = card.querySelector('h5').innerText.toLowerCase();
+            
+            const matchFilter = (filterValue === 'all' || status === filterValue);
+            const matchSearch = title.includes(searchTerm.toLowerCase());
+
+            if (matchFilter && matchSearch) {
+                card.classList.remove('d-none');
+                card.classList.add('d-flex'); // Assuming it needs to display flex, but bootstrap card is block. Actually just d-none is safer.
+                card.style.display = 'block';
+            } else {
+                card.style.display = 'none';
+                card.classList.remove('d-flex');
+            }
+        });
+    }
+
+    filterBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            // Remove active classes
+            filterBtns.forEach(b => {
+                b.classList.remove('btn-secondary');
+                b.classList.add('btn-outline-secondary');
+            });
+            // Add active class
+            this.classList.remove('btn-outline-secondary');
+            this.classList.add('btn-secondary');
+            
+            const filterValue = this.getAttribute('data-filter');
+            const searchTerm = searchInput ? searchInput.value : '';
+            filterBookings(filterValue, searchTerm);
+        });
+    });
+
+    if (searchInput) {
+        searchInput.addEventListener('input', function() {
+            const activeBtn = document.querySelector('.filter-btn.btn-secondary');
+            const filterValue = activeBtn ? activeBtn.getAttribute('data-filter') : 'all';
+            filterBookings(filterValue, this.value);
+        });
+    }
+});
+</script>
+@endpush
 @endsection

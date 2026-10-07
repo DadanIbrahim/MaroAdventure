@@ -1,6 +1,6 @@
-@extends('layouts.superadmin')
-@section('title', 'Superadmin Dashboard - Maro')
-@section('page_title', 'Superadmin Overview')
+@extends(request()->routeIs('superadmin.*') ? 'layouts.superadmin' : 'layouts.admin')
+@section('title', request()->routeIs('superadmin.*') ? 'Superadmin Dashboard - Maro' : 'Admin Dashboard - Maro')
+@section('page_title', request()->routeIs('superadmin.*') ? 'SuperAdmin123' : 'admin123')
 
 @section('content')
 <div class="row g-4 mb-4">

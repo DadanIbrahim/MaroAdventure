@@ -3,39 +3,46 @@
 @section('title', 'Masuk - Maro Adventure Indonesia')
 
 @section('content')
-<div class="auth-page-wrapper min-vh-100 d-flex align-items-center justify-content-center py-4 py-md-5 bg-light">
-    <div class="container">
+<div class="auth-page-wrapper min-vh-100 py-4 py-md-5 d-flex align-items-center justify-content-center position-relative bg-dark overflow-auto">
+    <!-- Nature Background with HD -->
+    <div class="position-fixed top-0 start-0 w-100 h-100" style="background-image: url('{{ asset('assets/images/hero_mountain.jpg') }}'); background-size: cover; background-position: center; pointer-events: none; z-index: 0;"></div>
+    
+    <div class="container position-relative" style="z-index: 1;">
         <div class="row justify-content-center">
             <div class="col-12 col-lg-10 col-xl-9">
-                <div class="card border-0 shadow-lg overflow-hidden rounded-4 auth-card">
+                <div class="card border-0 shadow-lg overflow-hidden rounded-4 auth-card bg-transparent">
                     <div class="row g-0">
                         
-                        <!-- Left Sidebar (Desktop Only: Full Image Background) -->
-                        <div class="col-lg-5 auth-sidebar d-none d-lg-flex flex-column justify-content-between p-4 p-md-5 text-white position-relative overflow-hidden" style="background-image: url('{{ asset('assets/images/hero_mountain.jpg') }}'); background-size: cover; background-position: center; min-height: 480px;">
-                            <!-- Dark Overlay for readability -->
-                            <div class="position-absolute inset-0" style="background: rgba(0, 0, 0, 0.45); top:0; bottom:0; left:0; right:0;"></div>
+                        <!-- Left Sidebar -->
+                        <div class="col-lg-5 auth-sidebar d-none d-lg-flex flex-column justify-content-between p-4 p-md-5 text-white position-relative overflow-hidden" style="background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(8px); border-right: 1px solid rgba(255,255,255,0.1); min-height: 480px;">
                             
                             <!-- Top Brand -->
                             <div class="position-relative z-1 mb-4">
-                                <a href="{{ url('/') }}" class="text-white text-decoration-none fw-bold fs-3 tracking-wider font-heading d-inline-block">
-                                    MARO
+                                <a class="d-flex align-items-center text-white text-decoration-none" href="{{ url('/') }}">
+                                    <div class="brand-icon me-3 bg-white rounded-circle d-flex align-items-center justify-content-center shadow-sm" style="width: 48px; height: 48px;">
+                                        <img src="{{ asset('assets/images/brand_maro.png') }}" alt="Logo Maro Adventure" class="img-fluid" style="max-height: 28px; object-fit: contain;">
+                                    </div>
+                                    <span class="fw-bold fs-3 tracking-wider font-heading mb-0" style="line-height: 1;">Maro Adventure</span>
                                 </a>
                             </div>
 
                             <!-- Bottom Tagline -->
                             <div class="position-relative z-1 mt-auto">
-                                <p class="small text-white-50 mb-0 leading-relaxed font-body">
+                                <p class="small text-white-75 mb-0 leading-relaxed font-body">
                                     Temukan cerita, gunung, dan perjalanan berikutnya bersama MARO Adventure.
                                 </p>
                             </div>
                         </div>
 
                         <!-- Right Form Container (Mobile & Desktop) -->
-                        <div class="col-12 col-lg-7 p-4 p-md-5 bg-white d-flex flex-column justify-content-center">
+                        <div class="col-12 col-lg-7 p-4 p-md-5 d-flex flex-column justify-content-center" style="background: rgba(255, 255, 255, 0.3); backdrop-filter: blur(15px);">
                             <!-- Mobile Brand Header -->
-                            <div class="d-lg-none text-center mb-4">
-                                <a href="{{ url('/') }}" class="text-dark text-decoration-none fw-bold fs-2 tracking-wider font-heading d-inline-block">
-                                    MARO
+                            <div class="d-lg-none text-center mb-4 d-flex justify-content-center">
+                                <a class="d-flex align-items-center text-dark text-decoration-none" href="{{ url('/') }}">
+                                    <div class="brand-icon me-3 bg-white rounded-circle d-flex align-items-center justify-content-center shadow-sm border border-light" style="width: 48px; height: 48px;">
+                                        <img src="{{ asset('assets/images/brand_maro.png') }}" alt="Logo Maro Adventure" class="img-fluid" style="max-height: 28px; object-fit: contain;">
+                                    </div>
+                                    <span class="fw-bold fs-2 tracking-wider font-heading mb-0" style="line-height: 1;">Maro Adventure</span>
                                 </a>
                             </div>
 
@@ -69,7 +76,7 @@
                                         name="email" 
                                         id="email" 
                                         class="form-control form-control-lg @error('email') is-invalid @enderror" 
-                                        placeholder="Masukkan Email atau admin123" 
+                                        placeholder="Masukan Email / ID" 
                                         value="{{ old('email') }}" 
                                         required 
                                         autofocus
@@ -79,14 +86,19 @@
                                 <!-- Password -->
                                 <div class="mb-3">
                                     <label for="password" class="form-label small fw-semibold text-secondary">Password</label>
-                                    <input 
-                                        type="password" 
-                                        name="password" 
-                                        id="password" 
-                                        class="form-control form-control-lg @error('password') is-invalid @enderror" 
-                                        placeholder="Masukkan kata sandi" 
-                                        required
-                                    >
+                                    <div class="position-relative">
+                                        <input 
+                                            type="password" 
+                                            name="password" 
+                                            id="password" 
+                                            class="form-control form-control-lg pe-5 @error('password') is-invalid @enderror" 
+                                            placeholder="Masukkan kata sandi" 
+                                            required
+                                        >
+                                        <button type="button" id="togglePassword" class="btn border-0 bg-transparent text-muted position-absolute top-50 end-0 translate-middle-y px-3" tabindex="-1">
+                                            <i class="bi bi-eye" id="toggleIcon"></i>
+                                        </button>
+                                    </div>
                                 </div>
 
                                 <!-- Remember & Forgot -->
@@ -103,7 +115,7 @@
                                 </div>
 
                                 <!-- Submit Button -->
-                                <button type="submit" class="btn btn-dark btn-lg w-100 fw-bold rounded-3 py-3 text-uppercase tracking-wider shadow-sm mb-3 btn-auth-submit">
+                                <button type="submit" class="btn btn-dark w-100 fw-bold rounded-3 py-2 text-uppercase tracking-wider shadow-sm mb-3 btn-auth-submit">
                                     LOGIN
                                 </button>
 
@@ -140,4 +152,30 @@
         </div>
     </div>
 </div>
+
+@push('scripts')
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const togglePassword = document.getElementById('togglePassword');
+        const passwordInput = document.getElementById('password');
+        const toggleIcon = document.getElementById('toggleIcon');
+        
+        if (togglePassword && passwordInput) {
+            togglePassword.addEventListener('click', function() {
+                const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                passwordInput.setAttribute('type', type);
+                
+                if (type === 'text') {
+                    toggleIcon.classList.remove('bi-eye');
+                    toggleIcon.classList.add('bi-eye-slash');
+                } else {
+                    toggleIcon.classList.remove('bi-eye-slash');
+                    toggleIcon.classList.add('bi-eye');
+                }
+            });
+        }
+    });
+</script>
+@endpush
+
 @endsection

@@ -181,24 +181,50 @@
                         <i class="bi bi-grid"></i> Dashboard
                     </a>
                 </li>
-                <li class="{{ request()->routeIs('admin.trips') ? 'active' : '' }}">
-                    <a href="{{ route('admin.trips') }}">
-                        <i class="bi bi-map"></i> Trips
+                <li class="{{ request()->routeIs('admin.content') ? 'active' : '' }}">
+                    <a href="{{ route('admin.content') }}">
+                        <i class="bi bi-file-earmark-richtext"></i> Content
                     </a>
                 </li>
-                <li class="{{ request()->routeIs('admin.schedule') ? 'active' : '' }}">
-                    <a href="{{ route('admin.schedule') }}">
-                        <i class="bi bi-calendar-event"></i> Schedule
+
+                <li class="{{ request()->routeIs('admin.articles.*') || request()->routeIs('admin.articles') ? 'active' : '' }}">
+                    <a href="{{ route('admin.articles.index') }}">
+                        <i class="bi bi-journal-text"></i> Articles & News
                     </a>
                 </li>
-                <li class="{{ request()->routeIs('admin.participants') ? 'active' : '' }}">
-                    <a href="{{ route('admin.participants') }}">
-                        <i class="bi bi-people"></i> Participants
+                <li class="{{ request()->routeIs('admin.mountains.*') || request()->routeIs('admin.mountains') ? 'active' : '' }}">
+                    <a href="{{ route('admin.mountains.index') }}">
+                        <i class="bi bi-geo-alt"></i> Mountains
                     </a>
                 </li>
-                <li class="{{ request()->routeIs('admin.booking') ? 'active' : '' }}">
-                    <a href="{{ route('admin.booking') }}">
+                <li class="{{ request()->routeIs('admin.trips.*') || request()->routeIs('admin.trips') ? 'active' : '' }}">
+                    <a href="{{ route('admin.trips.index') }}">
+                        <i class="bi bi-map"></i> Trip
+                    </a>
+                </li>
+                <li class="{{ request()->routeIs('admin.bookings.*') || request()->routeIs('admin.bookings') ? 'active' : '' }}">
+                    <a href="{{ route('admin.bookings.index') }}">
                         <i class="bi bi-ticket-detailed"></i> Booking
+                    </a>
+                </li>
+                <li class="{{ request()->routeIs('admin.payments.*') || request()->routeIs('admin.payments') ? 'active' : '' }}">
+                    <a href="{{ route('admin.payments.index') }}">
+                        <i class="bi bi-credit-card"></i> Payment
+                    </a>
+                </li>
+                <li class="{{ request()->routeIs('admin.community.*') || request()->routeIs('admin.community') ? 'active' : '' }}">
+                    <a href="{{ route('admin.community.index') }}">
+                        <i class="bi bi-people"></i> Community
+                    </a>
+                </li>
+                <li class="{{ request()->routeIs('admin.points.*') || request()->routeIs('admin.points') ? 'active' : '' }}">
+                    <a href="{{ route('admin.points.index') }}">
+                        <i class="bi bi-coin"></i> Points
+                    </a>
+                </li>
+                <li class="{{ request()->routeIs('admin.rewards.*') || request()->routeIs('admin.rewards') ? 'active' : '' }}">
+                    <a href="{{ route('admin.rewards.index') }}">
+                        <i class="bi bi-gift"></i> Rewards
                     </a>
                 </li>
                 <li class="{{ request()->routeIs('admin.reports') ? 'active' : '' }}">
@@ -214,8 +240,8 @@
                         {{ substr(Auth::user()->name ?? 'A', 0, 1) }}
                     </div>
                     <div>
-                        <div class="fw-bold fs-6">{{ Auth::user()->name ?? 'Admin' }}</div>
-                        <div class="text-muted small">Administrator</div>
+                        <div class="fw-bold fs-6">admin123</div>
+                        <div class="text-muted small">Admin</div>
                     </div>
                 </div>
                 <form method="POST" action="{{ route('logout') }}">

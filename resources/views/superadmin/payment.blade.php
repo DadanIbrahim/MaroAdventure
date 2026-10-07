@@ -1,4 +1,4 @@
-@extends('layouts.superadmin')
+@extends(request()->routeIs('superadmin.*') ? 'layouts.superadmin' : 'layouts.admin')
 @section('title', 'Payment - Superadmin')
 @section('page_title', 'Payment Gateway & Transactions')
 

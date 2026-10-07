@@ -39,6 +39,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard/bookings/{id}', [DashboardController::class, 'showBooking'])->name('dashboard.bookings.show');
     Route::get('/dashboard/points', [DashboardController::class, 'points'])->name('dashboard.points');
     Route::get('/dashboard/community', [DashboardController::class, 'community'])->name('dashboard.community');
+    Route::post('/dashboard/community', [DashboardController::class, 'storeCommunity'])->name('dashboard.community.store');
     Route::get('/dashboard/profile', [DashboardController::class, 'profile'])->name('dashboard.profile');
 
     // Checkout Flow
@@ -63,26 +64,31 @@ Route::get('/setup-admin', function () {
 // Admin Dashboard Routes
 Route::middleware(['auth', \App\Http\Middleware\CheckAdmin::class])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
-    Route::get('/trips', [AdminController::class, 'trips'])->name('trips');
-    Route::get('/schedule', [AdminController::class, 'schedule'])->name('schedule');
-    Route::get('/participants', [AdminController::class, 'participants'])->name('participants');
-    Route::get('/booking', [AdminController::class, 'booking'])->name('booking');
-    Route::get('/reports', [AdminController::class, 'reports'])->name('reports');
+    Route::get('/content', [AdminController::class, 'content'])->name('content');
+    Route::resource('articles', \App\Http\Controllers\BackendArticleController::class);
+    Route::resource('mountains', \App\Http\Controllers\MountainController::class);
+    Route::resource('trips', \App\Http\Controllers\TripController::class);
+    Route::resource('booking', \App\Http\Controllers\BookingController::class)->names('bookings');
+    Route::resource('payment', \App\Http\Controllers\PaymentController::class)->names('payments');
+    Route::resource('community', \App\Http\Controllers\BackendCommunityController::class)->only(['index', 'destroy']);
+    Route::resource('points', \App\Http\Controllers\PointController::class)->only(['index', 'edit', 'update']);
+    Route::resource('rewards', \App\Http\Controllers\RewardController::class);
+    Route::get('/reports', [\App\Http\Controllers\ReportController::class, 'index'])->name('reports');
 });
 
 
 // Superadmin Dashboard Routes
 Route::middleware(['auth', \App\Http\Middleware\CheckSuperadmin::class])->prefix('superadmin')->name('superadmin.')->group(function () {
     Route::get('/dashboard', [\App\Http\Controllers\SuperadminController::class, 'dashboard'])->name('dashboard');
+    Route::get('/users', [\App\Http\Controllers\SuperadminController::class, 'users'])->name('users'); // User Management
     Route::get('/content', [\App\Http\Controllers\SuperadminController::class, 'content'])->name('content');
-    Route::get('/news', [\App\Http\Controllers\SuperadminController::class, 'news'])->name('news');
-    Route::get('/articles', [\App\Http\Controllers\SuperadminController::class, 'articles'])->name('articles');
-    Route::get('/mountains', [\App\Http\Controllers\SuperadminController::class, 'mountains'])->name('mountains');
-    Route::get('/trip', [\App\Http\Controllers\SuperadminController::class, 'trip'])->name('trip');
-    Route::get('/booking', [\App\Http\Controllers\SuperadminController::class, 'booking'])->name('booking');
-    Route::get('/payment', [\App\Http\Controllers\SuperadminController::class, 'payment'])->name('payment');
-    Route::get('/community', [\App\Http\Controllers\SuperadminController::class, 'community'])->name('community');
-    Route::get('/points', [\App\Http\Controllers\SuperadminController::class, 'points'])->name('points');
-    Route::get('/rewards', [\App\Http\Controllers\SuperadminController::class, 'rewards'])->name('rewards');
-    Route::get('/reports', [\App\Http\Controllers\SuperadminController::class, 'reports'])->name('reports');
+    Route::resource('articles', \App\Http\Controllers\BackendArticleController::class);
+    Route::resource('mountains', \App\Http\Controllers\MountainController::class);
+    Route::resource('trips', \App\Http\Controllers\TripController::class);
+    Route::resource('booking', \App\Http\Controllers\BookingController::class)->names('bookings');
+    Route::resource('payment', \App\Http\Controllers\PaymentController::class)->names('payments');
+    Route::resource('community', \App\Http\Controllers\BackendCommunityController::class)->only(['index', 'destroy']);
+    Route::resource('points', \App\Http\Controllers\PointController::class)->only(['index', 'edit', 'update']);
+    Route::resource('rewards', \App\Http\Controllers\RewardController::class);
+    Route::get('/reports', [\App\Http\Controllers\ReportController::class, 'index'])->name('reports');
 });

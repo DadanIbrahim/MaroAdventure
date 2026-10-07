@@ -184,53 +184,54 @@
                         <i class="bi bi-grid"></i> Dashboard
                     </a>
                 </li>
+                <li class="{{ request()->routeIs('superadmin.users') ? 'active' : '' }}">
+                    <a href="{{ route('superadmin.users') }}">
+                        <i class="bi bi-people-fill"></i> User Management
+                    </a>
+                </li>
                 <li class="{{ request()->routeIs('superadmin.content') ? 'active' : '' }}">
                     <a href="{{ route('superadmin.content') }}">
                         <i class="bi bi-file-earmark-richtext"></i> Content
                     </a>
                 </li>
-                <li class="{{ request()->routeIs('superadmin.news') ? 'active' : '' }}">
-                    <a href="{{ route('superadmin.news') }}">
-                        <i class="bi bi-newspaper"></i> News
+
+                <li class="{{ request()->routeIs('superadmin.articles.*') || request()->routeIs('superadmin.articles') ? 'active' : '' }}">
+                    <a href="{{ route('superadmin.articles.index') }}">
+                        <i class="bi bi-journal-text"></i> Articles & News
                     </a>
                 </li>
-                <li class="{{ request()->routeIs('superadmin.articles') ? 'active' : '' }}">
-                    <a href="{{ route('superadmin.articles') }}">
-                        <i class="bi bi-journal-text"></i> Articles
-                    </a>
-                </li>
-                <li class="{{ request()->routeIs('superadmin.mountains') ? 'active' : '' }}">
-                    <a href="{{ route('superadmin.mountains') }}">
+                <li class="{{ request()->routeIs('superadmin.mountains.*') || request()->routeIs('superadmin.mountains') ? 'active' : '' }}">
+                    <a href="{{ route('superadmin.mountains.index') }}">
                         <i class="bi bi-geo-alt"></i> Mountains
                     </a>
                 </li>
-                <li class="{{ request()->routeIs('superadmin.trip') ? 'active' : '' }}">
-                    <a href="{{ route('superadmin.trip') }}">
+                <li class="{{ request()->routeIs('superadmin.trips.*') || request()->routeIs('superadmin.trips') ? 'active' : '' }}">
+                    <a href="{{ route('superadmin.trips.index') }}">
                         <i class="bi bi-map"></i> Trip
                     </a>
                 </li>
-                <li class="{{ request()->routeIs('superadmin.booking') ? 'active' : '' }}">
-                    <a href="{{ route('superadmin.booking') }}">
+                <li class="{{ request()->routeIs('superadmin.bookings.*') || request()->routeIs('superadmin.bookings') ? 'active' : '' }}">
+                    <a href="{{ route('superadmin.bookings.index') }}">
                         <i class="bi bi-ticket-detailed"></i> Booking
                     </a>
                 </li>
-                <li class="{{ request()->routeIs('superadmin.payment') ? 'active' : '' }}">
-                    <a href="{{ route('superadmin.payment') }}">
+                <li class="{{ request()->routeIs('superadmin.payments.*') || request()->routeIs('superadmin.payments') ? 'active' : '' }}">
+                    <a href="{{ route('superadmin.payments.index') }}">
                         <i class="bi bi-credit-card"></i> Payment
                     </a>
                 </li>
-                <li class="{{ request()->routeIs('superadmin.community') ? 'active' : '' }}">
-                    <a href="{{ route('superadmin.community') }}">
+                <li class="{{ request()->routeIs('superadmin.community.*') || request()->routeIs('superadmin.community') ? 'active' : '' }}">
+                    <a href="{{ route('superadmin.community.index') }}">
                         <i class="bi bi-people"></i> Community
                     </a>
                 </li>
-                <li class="{{ request()->routeIs('superadmin.points') ? 'active' : '' }}">
-                    <a href="{{ route('superadmin.points') }}">
+                <li class="{{ request()->routeIs('superadmin.points.*') || request()->routeIs('superadmin.points') ? 'active' : '' }}">
+                    <a href="{{ route('superadmin.points.index') }}">
                         <i class="bi bi-coin"></i> Points
                     </a>
                 </li>
-                <li class="{{ request()->routeIs('superadmin.rewards') ? 'active' : '' }}">
-                    <a href="{{ route('superadmin.rewards') }}">
+                <li class="{{ request()->routeIs('superadmin.rewards.*') || request()->routeIs('superadmin.rewards') ? 'active' : '' }}">
+                    <a href="{{ route('superadmin.rewards.index') }}">
                         <i class="bi bi-gift"></i> Rewards
                     </a>
                 </li>
@@ -247,8 +248,8 @@
                         SA
                     </div>
                     <div>
-                        <div class="fw-bold fs-6">Super Admin</div>
-                        <div class="text-muted small">All Access</div>
+                        <div class="fw-bold fs-6">SuperAdmin123</div>
+                        <div class="text-muted small">SuperAdmin</div>
                     </div>
                 </div>
                 <form method="POST" action="{{ route('logout') }}">

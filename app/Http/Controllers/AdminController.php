@@ -8,31 +8,12 @@ class AdminController extends Controller
 {
     public function dashboard()
     {
-        return view('admin.dashboard');
+        return view('superadmin.dashboard');
     }
 
-    public function trips()
+    public function content()
     {
-        return view('admin.trips');
+        return view('superadmin.content');
     }
 
-    public function schedule()
-    {
-        return view('admin.schedule');
-    }
-
-    public function participants()
-    {
-        return view('admin.participants');
-    }
-
-    public function booking()
-    {
-        return view('admin.booking');
-    }
-
-    public function reports()
-    {
-        return view('admin.reports');
-    }
 }
