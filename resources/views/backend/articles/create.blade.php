@@ -38,7 +38,10 @@
 
                     <div class="mb-3">
                         <label class="form-label">Isi Tulisan (Content) <span class="text-danger">*</span></label>
-                        <textarea name="content" class="form-control" rows="15" required>{{ old('content') }}</textarea>
+                        <textarea name="content" class="form-control" rows="15" placeholder="Tulis isi artikel di sini... Beri jarak baris antar-paragraf." required>{{ old('content') }}</textarea>
+                        <div class="form-text mt-2">
+                            <i class="bi bi-info-circle me-1"></i> <strong>Tips Format:</strong> Pisahkan antar-paragraf dengan memberi jarak baris (Enter 2x). Gunakan <code>## Judul Bagian</code> untuk sub-judul, dan tanda bintang <code>* Poin 1</code> untuk daftar poin.
+                        </div>
                     </div>
                 </div>
 
@@ -70,6 +73,12 @@
                         <label class="form-label">Thumbnail (Gambar Utama)</label>
                         <input type="file" name="thumbnail" class="form-control" accept="image/*">
                         <div class="form-text">Format: JPG/PNG, Max 2MB. Disarankan rasio landscape.</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Galeri Foto Tambahan (Slider)</label>
+                        <input type="file" name="gallery[]" class="form-control" accept="image/*" multiple>
+                        <div class="form-text">Bisa pilih beberapa foto sekaligus untuk slider berganti otomatis.</div>
                     </div>
 
                 </div>

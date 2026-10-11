@@ -11,6 +11,7 @@ class MountainController extends Controller
     public function index()
     {
         $mountains = Mountain::latest()->get();
+
         return view('backend.mountains.index', compact('mountains'));
     }
 
@@ -21,6 +22,13 @@ class MountainController extends Controller
 
     public function store(Request $request)
     {
+        if ($request->filled('elevation')) {
+            $cleanedElevation = preg_replace('/[^0-9]/', '', (string) $request->elevation);
+            $request->merge([
+                'elevation' => $cleanedElevation === '' ? null : (int) $cleanedElevation,
+            ]);
+        }
+
         $request->validate([
             'name' => 'required|string|max:255',
             'location' => 'required|string|max:255',
@@ -49,6 +57,13 @@ class MountainController extends Controller
 
     public function update(Request $request, Mountain $mountain)
     {
+        if ($request->filled('elevation')) {
+            $cleanedElevation = preg_replace('/[^0-9]/', '', (string) $request->elevation);
+            $request->merge([
+                'elevation' => $cleanedElevation === '' ? null : (int) $cleanedElevation,
+            ]);
+        }
+
         $request->validate([
             'name' => 'required|string|max:255',
             'location' => 'required|string|max:255',
@@ -84,4 +99,3 @@ class MountainController extends Controller
             ->with('success', 'Data gunung berhasil dihapus.');
     }
 }
-

@@ -26,7 +26,7 @@
                     <div class="d-flex flex-column flex-md-row gap-3 mb-4">
                         <div class="flex-grow-1 position-relative">
                             <i class="bi bi-search position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i>
-                            <input type="text" id="searchBooking" class="form-control rounded-pill ps-5 py-2 border-0 shadow-sm" placeholder="Search booking">
+                            <input type="text" id="searchBooking" class="form-control rounded-pill ps-5 py-2 border-0 shadow-sm" placeholder="Search booking (nama trip, kode)...">
                         </div>
                         <div class="d-flex gap-2 overflow-auto pb-2 pb-md-0 hide-scroll">
                             <button class="btn btn-secondary rounded-pill px-4 text-nowrap filter-btn" data-filter="all">All</button>
@@ -37,70 +37,129 @@
                     </div>
 
                     <!-- Bookings List -->
-                    <div class="d-flex flex-column gap-3">
+                    <div class="d-flex flex-column gap-3" id="bookingListContainer">
                         
-                        <!-- Booking 1 -->
-                        <div class="card border-0 shadow-sm rounded-4 overflow-hidden booking-card" data-status="upcoming">
-                            <div class="card-body p-0 d-flex flex-column flex-md-row">
-                                <div class="bg-light d-flex align-items-center justify-content-center p-4 text-center" style="min-width: 140px; border-right: 1px solid #f3f4f6;">
-                                    <div>
-                                        <i class="bi bi-image text-muted fs-3"></i>
-                                        <div class="small text-muted mt-2 fw-medium text-uppercase tracking-wide">TRIP</div>
-                                    </div>
-                                </div>
-                                <div class="p-4 flex-grow-1 d-flex flex-column justify-content-center">
-                                    <h5 class="fw-bold mb-1">Gunung Prau</h5>
-                                    <p class="text-muted small mb-2"><i class="bi bi-calendar3 me-1"></i> 12-13 Oct 2026 &bull; <i class="bi bi-people me-1"></i> 2 participant</p>
-                                    <p class="fw-bold mb-0">Rp 1.300.000</p>
-                                </div>
-                                <div class="p-4 d-flex flex-column align-items-end justify-content-center border-start-md border-light">
-                                    <span class="badge bg-success bg-opacity-10 text-success rounded-pill px-3 py-2 mb-3">Confirmed</span>
-                                    <a href="{{ route('dashboard.bookings.show', 'MARO-2026-10-123') }}" class="text-dark fw-bold text-decoration-none small">View details <i class="bi bi-arrow-right ms-1"></i></a>
-                                </div>
-                            </div>
-                        </div>
+                        @forelse($bookings as $booking)
+                            @php
+                                $cardStatus = 'upcoming';
+                                if ($booking->status === 'cancelled') {
+                                    $cardStatus = 'canceled';
+                                } elseif ($booking->status === 'completed') {
+                                    $cardStatus = 'completed';
+                                }
+                            @endphp
 
-                        <!-- Booking 2 -->
-                        <div class="card border-0 shadow-sm rounded-4 overflow-hidden booking-card" data-status="completed">
-                            <div class="card-body p-0 d-flex flex-column flex-md-row">
-                                <div class="bg-light d-flex align-items-center justify-content-center p-4 text-center" style="min-width: 140px; border-right: 1px solid #f3f4f6;">
-                                    <div>
-                                        <i class="bi bi-image text-muted fs-3"></i>
-                                        <div class="small text-muted mt-2 fw-medium text-uppercase tracking-wide">TRIP</div>
+                            <div class="card border-0 shadow-sm rounded-4 overflow-hidden booking-card" data-status="{{ $cardStatus }}">
+                                <div class="card-body p-0 d-flex flex-column flex-md-row">
+                                    
+                                    <!-- Trip Thumbnail -->
+                                    <div class="bg-light d-flex align-items-center justify-content-center text-center overflow-hidden position-relative" style="min-width: 150px; max-width: 150px; border-right: 1px solid #f3f4f6;">
+                                        @if($booking->trip && $booking->trip->image)
+                                            <img 
+                                                src="{{ asset('storage/' . $booking->trip->image) }}" 
+                                                alt="{{ $booking->trip->name }}" 
+                                                class="w-100 h-100 object-fit-cover"
+                                                style="min-height: 120px;"
+                                            >
+                                        @else
+                                            <div class="p-4">
+                                                <i class="bi bi-image text-muted fs-3"></i>
+                                                <div class="small text-muted mt-2 fw-medium text-uppercase tracking-wide">TRIP</div>
+                                            </div>
+                                        @endif
                                     </div>
-                                </div>
-                                <div class="p-4 flex-grow-1 d-flex flex-column justify-content-center">
-                                    <h5 class="fw-bold mb-1">Gunung Gede</h5>
-                                    <p class="text-muted small mb-2"><i class="bi bi-calendar3 me-1"></i> 20-21 Jul 2026 &bull; <i class="bi bi-people me-1"></i> 3 participant</p>
-                                    <p class="fw-bold mb-0">Rp 725.000</p>
-                                </div>
-                                <div class="p-4 d-flex flex-column align-items-end justify-content-center border-start-md border-light">
-                                    <span class="badge bg-secondary bg-opacity-10 text-secondary rounded-pill px-3 py-2 mb-3">Completed</span>
-                                    <a href="{{ route('dashboard.bookings.show', 'MARO-2026-10-123') }}" class="text-dark fw-bold text-decoration-none small">View details <i class="bi bi-arrow-right ms-1"></i></a>
-                                </div>
-                            </div>
-                        </div>
 
-                        <!-- Booking 3 -->
-                        <div class="card border-0 shadow-sm rounded-4 overflow-hidden booking-card" data-status="canceled">
-                            <div class="card-body p-0 d-flex flex-column flex-md-row">
-                                <div class="bg-light d-flex align-items-center justify-content-center p-4 text-center" style="min-width: 140px; border-right: 1px solid #f3f4f6;">
-                                    <div>
-                                        <i class="bi bi-image text-muted fs-3"></i>
-                                        <div class="small text-muted mt-2 fw-medium text-uppercase tracking-wide">TRIP</div>
+                                    <!-- Trip Info -->
+                                    <div class="p-4 flex-grow-1 d-flex flex-column justify-content-center">
+                                        <div class="d-flex align-items-center gap-2 mb-1 flex-wrap">
+                                            <span class="badge bg-light text-muted border font-monospace px-2 py-1" style="font-size: 0.75rem;">
+                                                {{ $booking->booking_code }}
+                                            </span>
+                                            @if($booking->trip && $booking->trip->mountain)
+                                                <span class="badge bg-primary-subtle text-primary fw-medium" style="font-size: 0.75rem;">
+                                                    <i class="bi bi-geo-alt-fill me-1"></i> {{ $booking->trip->mountain->name }}
+                                                </span>
+                                            @endif
+                                        </div>
+
+                                        <h5 class="fw-bold mb-1 text-dark">
+                                            {{ $booking->trip->name ?? 'Trip Petualangan' }}
+                                        </h5>
+
+                                        <p class="text-muted small mb-2">
+                                            <i class="bi bi-calendar3 me-1"></i> {{ date('d M Y', strtotime($booking->booking_date)) }} 
+                                            &bull; <i class="bi bi-people me-1"></i> {{ $booking->participants }} participant
+                                        </p>
+
+                                        <p class="fw-bold mb-0 text-primary">
+                                            {{ $booking->formatted_price }}
+                                        </p>
                                     </div>
-                                </div>
-                                <div class="p-4 flex-grow-1 d-flex flex-column justify-content-center">
-                                    <h5 class="fw-bold mb-1">Papandayan</h5>
-                                    <p class="text-muted small mb-2"><i class="bi bi-calendar3 me-1"></i> 18 May 2026 &bull; <i class="bi bi-people me-1"></i> 2 participant</p>
-                                    <p class="fw-bold mb-0">Rp 450.000</p>
-                                </div>
-                                <div class="p-4 d-flex flex-column align-items-end justify-content-center border-start-md border-light">
-                                    <span class="badge bg-danger bg-opacity-10 text-danger rounded-pill px-3 py-2 mb-3">Canceled</span>
-                                    <a href="{{ route('dashboard.bookings.show', 'MARO-2026-10-123') }}" class="text-dark fw-bold text-decoration-none small">View details <i class="bi bi-arrow-right ms-1"></i></a>
+
+                                    <!-- Status & Action Buttons -->
+                                    <div class="p-4 d-flex flex-column align-items-end justify-content-center border-start-md border-light" style="min-width: 200px;">
+                                        
+                                        <!-- Payment Badge -->
+                                        @if($booking->payment_status === 'paid')
+                                            <span class="badge bg-success bg-opacity-10 text-success rounded-pill px-3 py-2 mb-1">
+                                                <i class="bi bi-check-circle-fill me-1"></i> Lunas
+                                            </span>
+                                        @else
+                                            <span class="badge bg-warning bg-opacity-10 text-warning rounded-pill px-3 py-2 mb-1">
+                                                <i class="bi bi-clock-history me-1"></i> Menunggu Bayar
+                                            </span>
+                                        @endif
+
+                                        <!-- Booking Status Badge -->
+                                        @if($booking->status === 'confirmed')
+                                            <span class="badge bg-primary bg-opacity-10 text-primary rounded-pill px-3 py-2 mb-3">
+                                                Confirmed
+                                            </span>
+                                        @elseif($booking->status === 'completed')
+                                            <span class="badge bg-secondary bg-opacity-10 text-secondary rounded-pill px-3 py-2 mb-3">
+                                                Completed
+                                            </span>
+                                        @elseif($booking->status === 'cancelled')
+                                            <span class="badge bg-danger bg-opacity-10 text-danger rounded-pill px-3 py-2 mb-3">
+                                                Canceled
+                                            </span>
+                                        @else
+                                            <span class="badge bg-secondary bg-opacity-10 text-secondary rounded-pill px-3 py-2 mb-3">
+                                                Pending
+                                            </span>
+                                        @endif
+
+                                        <div class="d-flex flex-column align-items-end gap-2">
+                                            <a href="{{ route('dashboard.bookings.show', $booking->id) }}" class="text-dark fw-bold text-decoration-none small">
+                                                View details <i class="bi bi-arrow-right ms-1"></i>
+                                            </a>
+
+                                            @if($booking->payment_status !== 'paid' && $booking->status !== 'cancelled')
+                                                <a href="{{ route('checkout.payment', ['booking_code' => $booking->booking_code]) }}" class="btn btn-sm btn-primary rounded-pill px-3 text-nowrap shadow-sm">
+                                                    <i class="bi bi-credit-card me-1"></i> Bayar Sekarang
+                                                </a>
+                                            @endif
+                                        </div>
+
+                                    </div>
+
                                 </div>
                             </div>
-                        </div>
+
+                        @empty
+                            <div class="card border-0 shadow-sm rounded-4 p-5 text-center bg-white">
+                                <div class="d-inline-flex align-items-center justify-content-center rounded-circle bg-primary bg-opacity-10 text-primary mx-auto mb-3" style="width: 70px; height: 70px;">
+                                    <i class="bi bi-compass fs-2"></i>
+                                </div>
+                                <h5 class="fw-bold mb-1">Belum Ada Pesanan Perjalanan</h5>
+                                <p class="text-muted small mb-4">Kamu belum memiliki riwayat atau rencana pendakian bersama Maro Adventure.</p>
+                                <div>
+                                    <a href="{{ route('checkout.index') }}" class="btn btn-primary px-4 py-2 rounded-pill fw-semibold">
+                                        <i class="bi bi-plus-circle me-1"></i> Mulai Pesan Trip
+                                    </a>
+                                </div>
+                            </div>
+                        @endforelse
 
                     </div>
 
@@ -138,30 +197,25 @@ document.addEventListener('DOMContentLoaded', function() {
     function filterBookings(filterValue, searchTerm) {
         cards.forEach(card => {
             const status = card.getAttribute('data-status');
-            const title = card.querySelector('h5').innerText.toLowerCase();
+            const cardText = card.innerText.toLowerCase();
             
             const matchFilter = (filterValue === 'all' || status === filterValue);
-            const matchSearch = title.includes(searchTerm.toLowerCase());
+            const matchSearch = searchTerm ? cardText.includes(searchTerm.toLowerCase()) : true;
 
             if (matchFilter && matchSearch) {
-                card.classList.remove('d-none');
-                card.classList.add('d-flex'); // Assuming it needs to display flex, but bootstrap card is block. Actually just d-none is safer.
                 card.style.display = 'block';
             } else {
                 card.style.display = 'none';
-                card.classList.remove('d-flex');
             }
         });
     }
 
     filterBtns.forEach(btn => {
         btn.addEventListener('click', function() {
-            // Remove active classes
             filterBtns.forEach(b => {
                 b.classList.remove('btn-secondary');
                 b.classList.add('btn-outline-secondary');
             });
-            // Add active class
             this.classList.remove('btn-outline-secondary');
             this.classList.add('btn-secondary');
             

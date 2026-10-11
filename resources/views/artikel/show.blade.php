@@ -7,27 +7,33 @@
 /* ── Article Hero ── */
 .article-hero {
     position: relative;
-    height: 480px;
+    height: 520px;
     overflow: hidden;
-    background: var(--color-navy);
+    background: #0f172a;
+}
+
+.article-hero-slider {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+}
+
+.article-hero-slider .carousel-item {
+    height: 100%;
+    transition: opacity 1s ease-in-out;
 }
 
 .article-hero-img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    opacity: 0.55;
+    opacity: 1;
+    filter: none;
+    -webkit-filter: none;
 }
 
 .article-hero-overlay {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-        to top,
-        rgba(12, 74, 110, 0.95) 0%,
-        rgba(12, 74, 110, 0.3) 60%,
-        transparent 100%
-    );
+    display: none;
 }
 
 .article-hero-content {
@@ -35,7 +41,42 @@
     bottom: 0;
     left: 0;
     right: 0;
-    padding: 40px 0;
+    padding: 60px 0 35px;
+    z-index: 3;
+}
+
+.hero-slide-nav-btn {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.45);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.25s ease;
+    z-index: 4;
+}
+
+.hero-slide-nav-btn:hover {
+    background: rgba(0, 0, 0, 0.75);
+    color: white;
+    transform: scale(1.08);
+}
+
+.carousel-indicators [data-bs-target] {
+    width: 28px;
+    height: 4px;
+    border-radius: 4px;
+    border: none;
+    background-color: rgba(255, 255, 255, 0.5);
+    transition: all 0.3s ease;
+}
+
+.carousel-indicators .active {
+    width: 42px;
+    background-color: var(--color-bright, #38bdf8);
 }
 
 /* ── Breadcrumb ── */
@@ -402,31 +443,59 @@
 
 @section('content')
 
-{{-- Article Hero --}}
+{{-- Article Hero (Auto Slider / Carousel) --}}
+@php
+    $heroImages = $article->all_images;
+@endphp
+
 <div class="article-hero">
-    <img
-        src="{{ $article->thumbnail_url }}"
-        alt="{{ $article->title }}"
-        class="article-hero-img"
-    >
-    <div class="article-hero-overlay"></div>
+    <div id="articleHeroCarousel" class="carousel slide carousel-fade article-hero-slider" data-bs-ride="carousel" data-bs-interval="4500">
+        @if(count($heroImages) > 1)
+            <div class="carousel-indicators mb-3" style="z-index: 4;">
+                @foreach($heroImages as $idx => $img)
+                    <button type="button" data-bs-target="#articleHeroCarousel" data-bs-slide-to="{{ $idx }}" class="{{ $idx === 0 ? 'active' : '' }}" aria-label="Slide {{ $idx + 1 }}"></button>
+                @endforeach
+            </div>
+        @endif
+
+        <div class="carousel-inner h-100">
+            @foreach($heroImages as $idx => $img)
+                <div class="carousel-item h-100 {{ $idx === 0 ? 'active' : '' }}" data-bs-interval="4500">
+                    <img
+                        src="{{ $img }}"
+                        alt="{{ $article->title }}"
+                        class="article-hero-img"
+                    >
+                </div>
+            @endforeach
+        </div>
+
+        @if(count($heroImages) > 1)
+            <button class="carousel-control-prev" type="button" data-bs-target="#articleHeroCarousel" data-bs-slide="prev" style="width: 6%; z-index: 4;">
+                <span class="hero-slide-nav-btn"><i class="bi bi-chevron-left"></i></span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#articleHeroCarousel" data-bs-slide="next" style="width: 6%; z-index: 4;">
+                <span class="hero-slide-nav-btn"><i class="bi bi-chevron-right"></i></span>
+            </button>
+        @endif
+    </div>
 
     <div class="article-hero-content">
         <div class="container">
 
             {{-- Breadcrumb --}}
-            <div class="article-breadcrumb">
+            <div class="article-breadcrumb" style="text-shadow: 0 1px 8px rgba(0,0,0,0.9);">
                 <a href="{{ url('/') }}"><i class="bi bi-house-fill"></i> Home</a>
                 <i class="bi bi-chevron-right"></i>
                 <a href="{{ route('artikel.index') }}">Artikel</a>
                 <i class="bi bi-chevron-right"></i>
                 <a href="{{ route('artikel.index', ['kategori' => $article->category]) }}">{{ $article->category }}</a>
                 <i class="bi bi-chevron-right"></i>
-                <span style="color: rgba(255,255,255,0.9);">{{ Str::limit($article->title, 50) }}</span>
+                <span style="color: rgba(255,255,255,0.95); font-weight: 500;">{{ Str::limit($article->title, 50) }}</span>
             </div>
 
             {{-- Category Badge --}}
-            <span class="article-cat-badge {{ \App\Models\Article::categoryColor($article->category) }} mb-3 d-inline-flex">
+            <span class="article-cat-badge {{ \App\Models\Article::categoryColor($article->category) }} mb-3 d-inline-flex" style="box-shadow: 0 2px 10px rgba(0,0,0,0.35);">
                 {{ $article->category }}
             </span>
 
@@ -438,7 +507,7 @@
                 color: white;
                 line-height: 1.25;
                 max-width: 760px;
-                text-shadow: 0 2px 20px rgba(0,0,0,0.3);
+                text-shadow: 0 2px 12px rgba(0,0,0,0.95), 0 4px 25px rgba(0,0,0,0.85);
             ">
                 {{ $article->title }}
             </h1>
@@ -518,7 +587,7 @@
 
                     {{-- Article Content --}}
                     <div class="article-content">
-                        {!! $article->content !!}
+                        {!! $article->formatted_content !!}
                     </div>
 
                     {{-- Tags --}}

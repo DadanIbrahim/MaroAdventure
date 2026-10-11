@@ -35,7 +35,7 @@
                 </div>
                 <div class="col-md-6">
                     <label class="form-label">Ketinggian (mdpl) <span class="text-danger">*</span></label>
-                    <input type="number" name="elevation" class="form-control" value="{{ old('elevation', $mountain->elevation) }}" required min="0">
+                    <input type="number" name="elevation" class="form-control" value="{{ old('elevation', $mountain->elevation) }}" placeholder="Contoh: 2050" required min="0">
                 </div>
                 <div class="col-md-6">
                     <label class="form-label">Status <span class="text-danger">*</span></label>

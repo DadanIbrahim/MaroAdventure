@@ -27,11 +27,7 @@
                     @forelse($articles as $article)
                     <tr>
                         <td>
-                            @if($article->thumbnail && file_exists(public_path($article->thumbnail)))
-                                <img src="{{ asset($article->thumbnail) }}" alt="Thumbnail" class="img-thumbnail" style="width: 60px; height: 60px; object-fit: cover;">
-                            @else
-                                <img src="{{ $article->thumbnail_url }}" alt="Thumbnail" class="img-thumbnail" style="width: 60px; height: 60px; object-fit: cover;">
-                            @endif
+                            <img src="{{ $article->thumbnail_url }}" alt="Thumbnail" class="img-thumbnail" style="width: 60px; height: 60px; object-fit: cover;">
                         </td>
                         <td>
                             <strong class="d-block mb-1">{{ $article->title }}</strong>

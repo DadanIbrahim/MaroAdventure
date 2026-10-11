@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class Article extends Model
@@ -15,6 +16,7 @@ class Article extends Model
         'content',
         'category',
         'thumbnail',
+        'gallery',
         'author_name',
         'author_avatar',
         'views',
@@ -26,6 +28,7 @@ class Article extends Model
         'is_published' => 'boolean',
         'published_at' => 'datetime',
         'views' => 'integer',
+        'gallery' => 'array',
     ];
 
     // ── Scopes ──────────────────────────────────────────────────────
@@ -49,11 +52,23 @@ class Article extends Model
     /** URL thumbnail dengan fallback ke placeholder */
     public function getThumbnailUrlAttribute(): string
     {
-        if ($this->thumbnail && file_exists(public_path($this->thumbnail))) {
-            return asset($this->thumbnail);
+        if ($this->thumbnail) {
+            if (Str::startsWith($this->thumbnail, ['http://', 'https://'])) {
+                return $this->thumbnail;
+            }
+
+            if (file_exists(public_path($this->thumbnail))) {
+                return asset($this->thumbnail);
+            }
+
+            if (file_exists(public_path('storage/'.$this->thumbnail)) || Storage::disk('public')->exists($this->thumbnail)) {
+                return asset('storage/'.$this->thumbnail);
+            }
+
+            return asset('storage/'.$this->thumbnail);
         }
 
-        // Warna berbeda per kategori sebagai placeholder
+        // Warna berbeda per kategori sebagai placeholder jika tidak ada thumbnail
         $colors = [
             'Gunung' => '0369A1/E0F2FE',
             'Tips' => '059669/D1FAE5',
@@ -66,6 +81,74 @@ class Article extends Model
         $label = urlencode($this->category);
 
         return "https://placehold.co/800x480/{$color}?text={$label}";
+    }
+
+    /** Format konten agar paragraf, judul, dan bullet points tersusun rapi */
+    public function getFormattedContentAttribute(): string
+    {
+        if (empty($this->content)) {
+            return '';
+        }
+
+        // Jika sudah mengandung format tag HTML terstruktur
+        if (preg_match('/<(?:p|h[1-6]|ul|ol|div|blockquote|table)[\s>]/i', $this->content)) {
+            return $this->content;
+        }
+
+        // Konversi markdown / baris baru ke HTML yang rapi
+        return Str::markdown($this->content, [
+            'renderer' => [
+                'soft_break' => "<br>\n",
+            ],
+        ]);
+    }
+
+    /** Kumpulan semua foto artikel (thumbnail + galeri foto tambahan) untuk slideshow */
+    public function getAllImagesAttribute(): array
+    {
+        $images = [];
+
+        // 1. Gambar utama
+        if ($this->thumbnail_url) {
+            $images[] = $this->thumbnail_url;
+        }
+
+        // 2. Gambar tambahan dari galeri (jika diupload)
+        $gallery = $this->gallery;
+        if (is_string($gallery)) {
+            $gallery = json_decode($gallery, true) ?: [];
+        }
+        if (! empty($gallery) && is_array($gallery)) {
+            foreach ($gallery as $img) {
+                if ($img) {
+                    $images[] = Str::startsWith($img, ['http://', 'https://']) ? $img : asset('storage/'.$img);
+                }
+            }
+        }
+
+        // 3. Jika hanya ada 1 gambar, coba cari foto pendukung dari gunung terkait
+        if (count($images) <= 1) {
+            $mountain = Mountain::where('name', 'like', '%Burangrang%')
+                ->orWhere(function ($q) {
+                    $words = explode(' ', (string) $this->title);
+                    foreach ($words as $w) {
+                        if (strlen($w) >= 4) {
+                            $q->orWhere('name', 'like', "%{$w}%");
+                        }
+                    }
+                })
+                ->whereNotNull('image')
+                ->first();
+
+            if ($mountain && $mountain->image) {
+                $mountainImg = asset('storage/'.$mountain->image);
+                if (! in_array($mountainImg, $images)) {
+                    $images[] = $mountainImg;
+                }
+            }
+        }
+
+        return array_values(array_unique(array_filter($images)));
     }
 
     /** Estimasi waktu baca berdasarkan panjang konten */

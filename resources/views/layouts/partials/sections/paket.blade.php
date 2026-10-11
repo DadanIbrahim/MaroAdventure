@@ -73,16 +73,16 @@
                             id="pkg-open-trip-btn"
                         >
                             <i class="bi bi-calendar-check"></i>
-                            Lihat Jadwal Trip
+                            Booking &amp; Jadwal Trip
                         </a>
                     @else
                         <a
-                            href="#kontak"
+                            href="{{ route('checkout.index') }}"
                             class="btn-booking-package"
                             id="pkg-open-trip-btn"
                         >
                             <i class="bi bi-calendar-check"></i>
-                            Lihat Jadwal Trip
+                            Booking &amp; Jadwal Trip
                         </a>
                     @endguest
 
@@ -294,7 +294,13 @@
         </div>
 
 
-        <div class="text-center mt-5 fade-up">
+        <div class="text-center mt-5 mb-3 fade-up">
+            <a href="{{ route('trips.index') }}" class="btn btn-primary btn-lg rounded-pill px-5 py-3 fw-bold shadow-sm d-inline-flex align-items-center gap-2">
+                <i class="bi bi-compass-fill"></i> Jelajahi Semua Destinasi &amp; Paket Trip &rarr;
+            </a>
+        </div>
+
+        <div class="text-center mt-3 fade-up">
 
             <p class="text-muted" style="font-size: 0.9rem;">
                 Belum menemukan perjalanan yang kamu cari?

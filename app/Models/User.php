@@ -46,4 +46,16 @@ class User extends Authenticatable
     {
         return $this->hasMany(Booking::class);
     }
+
+    /**
+     * URL Avatar user atau fallback inisial UI Avatars.
+     */
+    public function getAvatarUrlAttribute(): string
+    {
+        if ($this->avatar) {
+            return asset('storage/'.$this->avatar);
+        }
+
+        return 'https://ui-avatars.com/api/?name='.urlencode($this->name).'&background=0EA5E9&color=fff&size=200&bold=true';
+    }
 }

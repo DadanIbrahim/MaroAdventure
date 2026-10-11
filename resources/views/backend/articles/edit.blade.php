@@ -39,6 +39,9 @@
                     <div class="mb-3">
                         <label class="form-label">Isi Tulisan (Content) <span class="text-danger">*</span></label>
                         <textarea name="content" class="form-control" rows="15" required>{{ old('content', $article->content) }}</textarea>
+                        <div class="form-text mt-2">
+                            <i class="bi bi-info-circle me-1"></i> <strong>Tips Format:</strong> Pisahkan antar-paragraf dengan memberi jarak baris (Enter 2x). Gunakan <code>## Judul Bagian</code> untuk sub-judul, dan tanda bintang <code>* Poin 1</code> untuk daftar poin.
+                        </div>
                     </div>
                 </div>
 
@@ -79,6 +82,23 @@
                         <label class="form-label mt-2">Ganti Thumbnail Baru</label>
                         <input type="file" name="thumbnail" class="form-control" accept="image/*">
                         <div class="form-text">Kosongkan jika tidak ingin mengganti.</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Galeri Foto Tambahan Saat Ini</label>
+                        @if(!empty($article->gallery) && is_array($article->gallery) && count($article->gallery) > 0)
+                            <div class="d-flex flex-wrap gap-2 mb-2">
+                                @foreach($article->gallery as $gImg)
+                                    <img src="{{ asset('storage/' . $gImg) }}" alt="Galeri" class="img-thumbnail" style="width: 70px; height: 70px; object-fit: cover;">
+                                @endforeach
+                            </div>
+                        @else
+                            <div class="text-muted small mb-2">Belum ada foto galeri tambahan</div>
+                        @endif
+
+                        <label class="form-label mt-2">Tambah Foto Galeri Baru (Slider)</label>
+                        <input type="file" name="gallery[]" class="form-control" accept="image/*" multiple>
+                        <div class="form-text">Bisa pilih beberapa foto sekaligus untuk slider bergeser.</div>
                     </div>
                 </div>
 

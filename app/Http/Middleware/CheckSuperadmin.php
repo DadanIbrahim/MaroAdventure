@@ -10,7 +10,7 @@ class CheckSuperadmin
 {
     public function handle(Request $request, Closure $next)
     {
-        if (Auth::check() && Auth::user()->email !== 'superadmin123@maroadventure.com') {
+        if (Auth::check() && Auth::user()->email !== 'superadmin123@maroadventure.com' && Auth::user()->role !== 'superadmin') {
             return redirect('/dashboard')->with('error', 'Unauthorized access.');
         }
 

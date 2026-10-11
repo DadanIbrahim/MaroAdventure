@@ -16,21 +16,56 @@
             <div class="col-lg-9">
                 <div class="ps-lg-4">
                     
+                    <!-- Flash Messages -->
+                    @if(session('success'))
+                        <div class="alert alert-success alert-dismissible fade show rounded-3 mb-4 border-0 shadow-sm" role="alert">
+                            <i class="bi bi-check-circle-fill me-2"></i> {{ session('success') }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    @endif
+
+                    @if(session('error'))
+                        <div class="alert alert-danger alert-dismissible fade show rounded-3 mb-4 border-0 shadow-sm" role="alert">
+                            <i class="bi bi-exclamation-circle-fill me-2"></i> {{ session('error') }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    @endif
+
                     <!-- Top Card (Points Info) -->
-                    <div class="card border-0 shadow-sm rounded-4 mb-4" style="background-color: var(--color-dark, #0C4A6E);">
-                        <div class="card-body p-4 p-lg-5 text-white">
-                            <div class="row align-items-center">
-                                <div class="col-md-6 mb-4 mb-md-0">
-                                    <p class="small text-uppercase tracking-wide opacity-75 mb-1">MARO POINTS</p>
-                                    <h1 class="fw-bold mb-0 display-5">2.450</h1>
+                    @php
+                        $levelName = 'Explorer Bronze';
+                        $maxLevelPoints = 500;
+                        $progressPercent = min(100, round(($userPoints / $maxLevelPoints) * 100));
+
+                        if ($userPoints > 1500) {
+                            $levelName = 'Summit Master Gold';
+                            $maxLevelPoints = 3000;
+                            $progressPercent = min(100, round(($userPoints / $maxLevelPoints) * 100));
+                        } elseif ($userPoints > 500) {
+                            $levelName = 'Mountain Silver';
+                            $maxLevelPoints = 1500;
+                            $progressPercent = min(100, round((($userPoints - 500) / 1000) * 100));
+                        }
+                    @endphp
+
+                    <div class="card border-0 shadow-sm rounded-4 mb-4 text-white overflow-hidden position-relative" style="background: linear-gradient(135deg, var(--color-navy, #0C4A6E) 0%, var(--color-primary-dark, #0369A1) 100%);">
+                        <div class="card-body p-4 p-lg-5 position-relative" style="z-index: 2;">
+                            <div class="row align-items-center g-4">
+                                <div class="col-md-6">
+                                    <p class="small text-uppercase tracking-wide text-white-50 mb-1 fw-semibold" style="letter-spacing: 1.5px;">SALDO MARO POINTS</p>
+                                    <h1 class="fw-bold mb-0 display-4 text-white">{{ number_format($userPoints, 0, ',', '.') }}</h1>
+                                    <p class="small text-white-50 mb-0 mt-2">Dapatkan +500 poin setiap menyelesaikan pendakian resmi Maro.</p>
                                 </div>
                                 <div class="col-md-6 text-md-end">
                                     <div class="d-flex justify-content-between mb-2">
-                                        <span class="fw-bold">Silver Level</span>
-                                        <span class="small opacity-75">550 points to next level</span>
+                                        <span class="fw-bold text-white">{{ $levelName }}</span>
+                                        <span class="small text-white-50">Tingkat Keanggotaan</span>
                                     </div>
-                                    <div class="progress" style="height: 8px; background-color: rgba(255,255,255,0.2);">
-                                        <div class="progress-bar bg-white" role="progressbar" style="width: 75%;" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+                                    <div class="progress rounded-pill" style="height: 10px; background-color: rgba(255,255,255,0.2);">
+                                        <div class="progress-bar bg-white rounded-pill" role="progressbar" style="width: {{ $progressPercent }}%;" aria-valuenow="{{ $progressPercent }}" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                    <div class="small text-white-50 mt-2">
+                                        Status Poin: Aktif &amp; Siap Ditukarkan
                                     </div>
                                 </div>
                             </div>
@@ -40,190 +75,240 @@
                     <!-- Navigation Tabs -->
                     <ul class="nav nav-pills mb-4 gap-2" id="pointsTabs" role="tablist">
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link active rounded-pill px-4 py-2" id="catalog-tab" data-bs-toggle="pill" data-bs-target="#catalog" type="button" role="tab">Katalog Tukar Poin</button>
+                            <button class="nav-link active rounded-pill px-4 py-2 fw-semibold" id="catalog-tab" data-bs-toggle="pill" data-bs-target="#catalog" type="button" role="tab">
+                                <i class="bi bi-gift me-1"></i> Katalog Tukar Poin
+                            </button>
                         </li>
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link rounded-pill px-4 py-2 text-dark bg-white border" id="vouchers-tab" data-bs-toggle="pill" data-bs-target="#vouchers" type="button" role="tab">Voucher Saya</button>
+                            <button class="nav-link rounded-pill px-4 py-2 text-dark bg-white border fw-semibold" id="vouchers-tab" data-bs-toggle="pill" data-bs-target="#vouchers" type="button" role="tab">
+                                <i class="bi bi-ticket-perforated me-1"></i> Voucher Saya
+                                @if(count($myVouchers) > 0)
+                                    <span class="badge bg-primary text-white rounded-pill ms-1">{{ count($myVouchers) }}</span>
+                                @endif
+                            </button>
                         </li>
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link rounded-pill px-4 py-2 text-dark bg-white border" id="history-tab" data-bs-toggle="pill" data-bs-target="#history" type="button" role="tab">Riwayat Poin & Hadiah</button>
+                            <button class="nav-link rounded-pill px-4 py-2 text-dark bg-white border fw-semibold" id="history-tab" data-bs-toggle="pill" data-bs-target="#history" type="button" role="tab">
+                                <i class="bi bi-clock-history me-1"></i> Riwayat Poin
+                            </button>
                         </li>
                     </ul>
 
                     <!-- Tabs Content -->
                     <div class="tab-content" id="pointsTabsContent">
                         
-                        <!-- TAB 1: KATALOG (REWARDS) -->
+                        <!-- ══════════════════════════════════════════════════════ -->
+                        <!-- TAB 1: KATALOG (REWARDS)                               -->
+                        <!-- ══════════════════════════════════════════════════════ -->
                         <div class="tab-pane fade show active" id="catalog" role="tabpanel" tabindex="0">
-                            <h5 class="fw-bold mb-3 mt-2">Katalog Hadiah</h5>
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h5 class="fw-bold mb-0 text-dark">Katalog Hadiah Petualangan</h5>
+                                <span class="text-muted small">Tersedia {{ $rewards->count() }} pilihan hadiah</span>
+                            </div>
+
                             <div class="row g-4">
-                                <!-- Reward 1 -->
-                                <div class="col-md-6">
-                                    <div class="card border-0 shadow-sm rounded-4 h-100">
-                                        <div class="card-body p-4 d-flex flex-column">
-                                            <div class="d-flex align-items-center mb-3">
-                                                <div class="bg-primary bg-opacity-10 text-primary rounded-3 d-flex align-items-center justify-content-center me-3" style="width: 50px; height: 50px;">
-                                                    <i class="bi bi-ticket-perforated fs-4"></i>
-                                                </div>
+                                @forelse($rewards as $reward)
+                                    <div class="col-md-6">
+                                        <div class="card border-0 shadow-sm rounded-4 h-100 transition-hover">
+                                            <div class="card-body p-4 d-flex flex-column justify-content-between">
+                                                
                                                 <div>
-                                                    <h6 class="fw-bold mb-1">Diskon Trip 50K</h6>
-                                                    <div class="fw-bold text-primary mb-1">1.200 pts</div>
+                                                    <div class="d-flex align-items-center justify-content-between mb-3">
+                                                        <div class="d-flex align-items-center">
+                                                            <div class="bg-primary bg-opacity-10 text-primary rounded-3 d-flex align-items-center justify-content-center me-3" style="width: 52px; height: 52px;">
+                                                                @if(str_contains(strtolower($reward->name), 'diskon'))
+                                                                    <i class="bi bi-ticket-perforated fs-4"></i>
+                                                                @elseif(str_contains(strtolower($reward->name), 'tenda'))
+                                                                    <i class="bi bi-house-door fs-4"></i>
+                                                                @elseif(str_contains(strtolower($reward->name), 'kaos'))
+                                                                    <i class="bi bi-bag-heart fs-4"></i>
+                                                                @else
+                                                                    <i class="bi bi-cup-hot fs-4"></i>
+                                                                @endif
+                                                            </div>
+                                                            <div>
+                                                                <h6 class="fw-bold mb-1 text-dark">{{ $reward->name }}</h6>
+                                                                <div class="fw-bold text-primary mb-0">
+                                                                    <i class="bi bi-star-fill text-warning me-1"></i>
+                                                                    {{ number_format($reward->points_required, 0, ',', '.') }} pts
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div>
+                                                            @if($reward->stock > 0)
+                                                                <span class="badge bg-light text-muted border small">
+                                                                    Sisa: {{ $reward->stock }}
+                                                                </span>
+                                                            @else
+                                                                <span class="badge bg-danger-subtle text-danger small">
+                                                                    Habis
+                                                                </span>
+                                                            @endif
+                                                        </div>
+                                                    </div>
+
+                                                    <p class="text-muted small mb-4">
+                                                        {{ $reward->description ?? 'Tukarkan poin Anda dengan hadiah menarik ini.' }}
+                                                    </p>
                                                 </div>
+
+                                                <div>
+                                                    @if($reward->stock <= 0)
+                                                        <button class="btn btn-outline-secondary rounded-2 w-100 py-2 fw-medium" disabled>
+                                                            Stok Habis
+                                                        </button>
+                                                    @elseif($userPoints >= $reward->points_required)
+                                                        <button 
+                                                            type="button" 
+                                                            class="btn btn-primary rounded-2 w-100 py-2 fw-bold btn-tukar-reward shadow-sm" 
+                                                            data-bs-toggle="modal" 
+                                                            data-bs-target="#modalTukarPoin" 
+                                                            data-id="{{ $reward->id }}"
+                                                            data-title="{{ $reward->name }}" 
+                                                            data-points="{{ number_format($reward->points_required, 0, ',', '.') }}"
+                                                        >
+                                                            <i class="bi bi-gift me-1"></i> Tukar Poin
+                                                        </button>
+                                                    @else
+                                                        <button class="btn btn-outline-secondary rounded-2 w-100 py-2 fw-medium small" disabled>
+                                                            Poin Tidak Cukup (Kurang {{ number_format($reward->points_required - $userPoints, 0, ',', '.') }} pts)
+                                                        </button>
+                                                    @endif
+                                                </div>
+
                                             </div>
-                                            <p class="text-muted small mb-4 flex-grow-1">Potongan langsung Rp 50.000 untuk pendaftaran trip selanjutnya.</p>
-                                            <button type="button" class="btn btn-dark rounded-1 w-100 py-2 fw-medium" data-bs-toggle="modal" data-bs-target="#modalTukarPoin" data-title="Diskon Trip 50K" data-points="1.200">Tukar Poin</button>
                                         </div>
                                     </div>
-                                </div>
-                                <!-- Reward 2 -->
-                                <div class="col-md-6">
-                                    <div class="card border-0 shadow-sm rounded-4 h-100">
-                                        <div class="card-body p-4 d-flex flex-column">
-                                            <div class="d-flex align-items-center mb-3">
-                                                <div class="bg-success bg-opacity-10 text-success rounded-3 d-flex align-items-center justify-content-center me-3" style="width: 50px; height: 50px;">
-                                                    <i class="bi bi-house-door fs-4"></i>
-                                                </div>
-                                                <div>
-                                                    <h6 class="fw-bold mb-1">Sewa Tenda (1 Malam)</h6>
-                                                    <div class="fw-bold text-success mb-1">1.500 pts</div>
-                                                </div>
-                                            </div>
-                                            <p class="text-muted small mb-4 flex-grow-1">Gratis sewa tenda kapasitas 2 orang untuk 1 malam.</p>
-                                            <button type="button" class="btn btn-dark rounded-1 w-100 py-2 fw-medium" data-bs-toggle="modal" data-bs-target="#modalTukarPoin" data-title="Sewa Tenda (1 Malam)" data-points="1.500">Tukar Poin</button>
+                                @empty
+                                    <div class="col-12">
+                                        <div class="card border-0 shadow-sm rounded-4 p-5 text-center bg-white">
+                                            <p class="text-muted mb-0">Belum ada reward yang tersedia saat ini.</p>
                                         </div>
                                     </div>
-                                </div>
-                                <!-- Reward 3 -->
-                                <div class="col-md-6">
-                                    <div class="card border-0 shadow-sm rounded-4 h-100 opacity-75">
-                                        <div class="card-body p-4 d-flex flex-column">
-                                            <div class="d-flex align-items-center mb-3">
-                                                <div class="bg-warning bg-opacity-10 text-warning rounded-3 d-flex align-items-center justify-content-center me-3" style="width: 50px; height: 50px;">
-                                                    <i class="bi bi-bag-heart fs-4"></i>
-                                                </div>
-                                                <div>
-                                                    <h6 class="fw-bold mb-1">Kaos Exclusive Maro</h6>
-                                                    <div class="fw-bold text-muted mb-1">3.000 pts</div>
-                                                </div>
-                                            </div>
-                                            <p class="text-muted small mb-4 flex-grow-1">Merchandise eksklusif edisi terbatas untuk pendaki sejati.</p>
-                                            <button class="btn btn-outline-secondary rounded-1 w-100 py-2 fw-medium" disabled>Poin Tidak Cukup</button>
-                                        </div>
-                                    </div>
-                                </div>
+                                @endforelse
                             </div>
                         </div>
 
-                        <!-- TAB 2: VOUCHER SAYA (ACTIVE REWARDS) -->
+                        <!-- ══════════════════════════════════════════════════════ -->
+                        <!-- TAB 2: VOUCHER SAYA (ACTIVE REWARDS)                   -->
+                        <!-- ══════════════════════════════════════════════════════ -->
                         <div class="tab-pane fade" id="vouchers" role="tabpanel" tabindex="0">
-                            <h5 class="fw-bold mb-3 mt-2">Voucher Aktif Anda</h5>
+                            <h5 class="fw-bold mb-3 text-dark">Voucher Aktif Anda</h5>
+
                             <div class="row g-4">
-                                <!-- Voucher Item 1 -->
-                                <div class="col-12">
-                                    <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
-                                        <div class="card-body p-0 d-flex flex-column flex-md-row">
-                                            <div class="bg-primary bg-opacity-10 text-primary d-flex flex-column align-items-center justify-content-center p-4 text-center" style="min-width: 140px; border-right: 2px dashed #cfe2ff;">
-                                                <i class="bi bi-ticket-perforated fs-1 mb-2"></i>
-                                                <span class="small fw-bold text-uppercase">VOUCHER</span>
-                                            </div>
-                                            <div class="p-4 flex-grow-1 d-flex flex-column justify-content-center">
-                                                <h5 class="fw-bold mb-1">Diskon Trip Rp 50.000</h5>
-                                                <p class="text-muted small mb-3">Kode: <span class="fw-bold text-dark user-select-all">MARO-50K-XYZ</span></p>
-                                                
-                                                <div class="d-flex justify-content-between align-items-center mt-auto">
-                                                    <div class="small">
-                                                        <span class="d-block text-muted" style="font-size: 0.75rem;">Berlaku hingga</span>
-                                                        <span class="fw-semibold">31 Des 2026</span>
+                                @forelse($myVouchers as $voucher)
+                                    <div class="col-12">
+                                        <div class="card border-0 shadow-sm rounded-4 overflow-hidden border">
+                                            <div class="card-body p-0 d-flex flex-column flex-md-row">
+                                                <div class="bg-primary bg-opacity-10 text-primary d-flex flex-column align-items-center justify-content-center p-4 text-center" style="min-width: 150px; border-right: 2px dashed #BAE6FD;">
+                                                    <i class="bi bi-ticket-perforated fs-1 mb-2"></i>
+                                                    <span class="small fw-bold text-uppercase" style="letter-spacing: 1px;">VOUCHER</span>
+                                                </div>
+                                                <div class="p-4 flex-grow-1 d-flex flex-column justify-content-center">
+                                                    <div class="d-flex justify-content-between align-items-start flex-wrap gap-2 mb-2">
+                                                        <div>
+                                                            <h5 class="fw-bold mb-1 text-dark">{{ $voucher['title'] }}</h5>
+                                                            <p class="text-muted small mb-0">{{ $voucher['description'] ?? 'Voucher resmi penukaran poin Maro Adventure' }}</p>
+                                                        </div>
+                                                        <span class="badge bg-success-subtle text-success border border-success-subtle px-3 py-1 fw-semibold">
+                                                            Aktif &bull; Siap Pakai
+                                                        </span>
                                                     </div>
-                                                    <button type="button" class="btn btn-dark px-4 rounded-1 fw-medium" data-bs-toggle="modal" data-bs-target="#modalGunakanVoucher" data-code="MARO-50K-XYZ" data-title="Diskon Trip Rp 50.000">Gunakan</button>
+
+                                                    <div class="bg-light p-3 rounded-3 my-3 d-flex align-items-center justify-content-between flex-wrap gap-2 border">
+                                                        <div>
+                                                            <span class="small text-muted d-block" style="font-size: 0.75rem;">KODE VOUCHER / KLAIM:</span>
+                                                            <strong class="font-monospace fs-5 text-primary tracking-wide user-select-all">{{ $voucher['code'] }}</strong>
+                                                        </div>
+                                                        <button type="button" class="btn btn-outline-primary btn-sm px-3 rounded-pill btn-copy-code" data-code="{{ $voucher['code'] }}">
+                                                            <i class="bi bi-copy me-1"></i> Salin Kode
+                                                        </button>
+                                                    </div>
+                                                    
+                                                    <div class="d-flex justify-content-between align-items-center mt-2 flex-wrap gap-2">
+                                                        <div class="small text-muted">
+                                                            Ditukar: {{ $voucher['redeemed_at'] }} &bull; Berlaku s/d: <strong>{{ $voucher['valid_until'] }}</strong>
+                                                        </div>
+                                                        <a href="{{ route('checkout.index') }}" class="btn btn-primary btn-sm px-4 rounded-pill fw-semibold shadow-sm">
+                                                            Gunakan di Checkout &rarr;
+                                                        </a>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <!-- Voucher Item 2 -->
-                                <div class="col-12">
-                                    <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
-                                        <div class="card-body p-0 d-flex flex-column flex-md-row">
-                                            <div class="bg-success bg-opacity-10 text-success d-flex flex-column align-items-center justify-content-center p-4 text-center" style="min-width: 140px; border-right: 2px dashed #d1e7dd;">
-                                                <i class="bi bi-house-door fs-1 mb-2"></i>
-                                                <span class="small fw-bold text-uppercase">LAYANAN</span>
+                                @empty
+                                    <div class="col-12">
+                                        <div class="card border-0 shadow-sm rounded-4 p-5 text-center bg-white">
+                                            <div class="d-inline-flex align-items-center justify-content-center rounded-circle bg-light text-muted mx-auto mb-3" style="width: 70px; height: 70px;">
+                                                <i class="bi bi-ticket-perforated fs-2"></i>
                                             </div>
-                                            <div class="p-4 flex-grow-1 d-flex flex-column justify-content-center">
-                                                <h5 class="fw-bold mb-1">Gratis Sewa Tenda</h5>
-                                                <p class="text-muted small mb-3">Tunjukkan e-voucher ini ke petugas di Basecamp.</p>
-                                                
-                                                <div class="d-flex justify-content-between align-items-center mt-auto">
-                                                    <div class="small">
-                                                        <span class="d-block text-muted" style="font-size: 0.75rem;">Berlaku hingga</span>
-                                                        <span class="fw-semibold">15 Nov 2026</span>
-                                                    </div>
-                                                    <button type="button" class="btn btn-dark px-4 rounded-1 fw-medium" data-bs-toggle="modal" data-bs-target="#modalGunakanLayanan" data-title="Gratis Sewa Tenda">Lihat Barcode</button>
-                                                </div>
+                                            <h6 class="fw-bold mb-1">Belum Ada Voucher Aktif</h6>
+                                            <p class="text-muted small mb-3">Tukarkan poin yang Anda kumpulkan di tab <strong>Katalog Tukar Poin</strong> untuk mendapatkan potongan harga atau layanan gratis.</p>
+                                            <div>
+                                                <button type="button" class="btn btn-outline-primary btn-sm rounded-pill px-4" onclick="document.getElementById('catalog-tab').click();">
+                                                    Lihat Katalog Hadiah
+                                                </button>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                @endforelse
                             </div>
                         </div>
 
-                        <!-- TAB 3: RIWAYAT (HISTORY) -->
+                        <!-- ══════════════════════════════════════════════════════ -->
+                        <!-- TAB 3: RIWAYAT (HISTORY)                               -->
+                        <!-- ══════════════════════════════════════════════════════ -->
                         <div class="tab-pane fade" id="history" role="tabpanel" tabindex="0">
-                            <h5 class="fw-bold mb-3 mt-2">Riwayat Aktivitas</h5>
-                            <div class="card border-0 shadow-sm rounded-4">
-                                <div class="list-group list-group-flush border-0 rounded-4">
-                                    <!-- History Items -->
-                                    <div class="list-group-item d-flex justify-content-between align-items-center px-4 py-3 border-0 border-bottom">
-                                        <div class="d-flex align-items-center">
-                                            <div class="bg-danger bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
-                                                <i class="bi bi-arrow-down-right text-danger"></i>
-                                            </div>
-                                            <div>
-                                                <span class="fw-bold text-dark d-block">Tukar Poin: Diskon Trip 50K</span>
-                                                <span class="text-muted small">5 Okt 2026</span>
-                                            </div>
-                                        </div>
-                                        <span class="fw-bold text-danger">-1.200 pts</span>
-                                    </div>
+                            <h5 class="fw-bold mb-3 text-dark">Riwayat Perolehan &amp; Pemakaian Poin</h5>
+                            <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+                                <div class="list-group list-group-flush border-0">
                                     
+                                    @foreach($myVouchers as $v)
+                                        <div class="list-group-item d-flex justify-content-between align-items-center px-4 py-3 border-0 border-bottom">
+                                            <div class="d-flex align-items-center">
+                                                <div class="bg-danger bg-opacity-10 text-danger rounded-circle d-flex align-items-center justify-content-center me-3 flex-shrink-0" style="width: 42px; height: 42px;">
+                                                    <i class="bi bi-arrow-down-right fs-5"></i>
+                                                </div>
+                                                <div>
+                                                    <span class="fw-bold text-dark d-block">Penukaran: {{ $v['title'] }}</span>
+                                                    <span class="text-muted small">Kode: {{ $v['code'] }} &bull; {{ $v['redeemed_at'] }}</span>
+                                                </div>
+                                            </div>
+                                            <span class="fw-bold text-danger fs-6">-{{ number_format($v['points_spent'], 0, ',', '.') }} pts</span>
+                                        </div>
+                                    @endforeach
+
+                                    <!-- Riwayat Pendaftaran / Poin Awal -->
                                     <div class="list-group-item d-flex justify-content-between align-items-center px-4 py-3 border-0 border-bottom">
                                         <div class="d-flex align-items-center">
-                                            <div class="bg-success bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
-                                                <i class="bi bi-arrow-up-right text-success"></i>
+                                            <div class="bg-success bg-opacity-10 text-success rounded-circle d-flex align-items-center justify-content-center me-3 flex-shrink-0" style="width: 42px; height: 42px;">
+                                                <i class="bi bi-arrow-up-right fs-5"></i>
                                             </div>
                                             <div>
-                                                <span class="fw-bold text-dark d-block">Selesai Open Trip G. Prau</span>
-                                                <span class="text-muted small">4 Okt 2026</span>
+                                                <span class="fw-bold text-dark d-block">Poin Registrasi Akun Pendaki</span>
+                                                <span class="text-muted small">Selamat bergabung di Maro Adventure Indonesia</span>
                                             </div>
                                         </div>
-                                        <span class="fw-bold text-success">+500 pts</span>
-                                    </div>
-                                    
-                                    <div class="list-group-item d-flex justify-content-between align-items-center px-4 py-3 border-0 border-bottom">
-                                        <div class="d-flex align-items-center">
-                                            <div class="bg-success bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
-                                                <i class="bi bi-arrow-up-right text-success"></i>
-                                            </div>
-                                            <div>
-                                                <span class="fw-bold text-dark d-block">Memberikan Ulasan</span>
-                                                <span class="text-muted small">2 Okt 2026</span>
-                                            </div>
-                                        </div>
-                                        <span class="fw-bold text-success">+100 pts</span>
+                                        <span class="fw-bold text-success fs-6">+100 pts</span>
                                     </div>
 
-                                    <div class="list-group-item d-flex justify-content-between align-items-center px-4 py-3 border-0 bg-light opacity-75">
+                                    <div class="list-group-item d-flex justify-content-between align-items-center px-4 py-3 border-0 bg-light">
                                         <div class="d-flex align-items-center">
-                                            <div class="bg-secondary bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
-                                                <i class="bi bi-cup-hot text-secondary"></i>
+                                            <div class="bg-primary bg-opacity-10 text-primary rounded-circle d-flex align-items-center justify-content-center me-3 flex-shrink-0" style="width: 42px; height: 42px;">
+                                                <i class="bi bi-info-circle fs-5"></i>
                                             </div>
                                             <div>
-                                                <span class="fw-bold text-dark d-block text-decoration-line-through">Voucher Dipakai: Gratis Kopi</span>
-                                                <span class="text-muted small">15 Sep 2026</span>
+                                                <span class="fw-bold text-dark d-block">Dapatkan Lebih Banyak Poin</span>
+                                                <span class="text-muted small">Ikuti Open Trip atau bagikan cerita petualanganmu di menu Community.</span>
                                             </div>
                                         </div>
-                                        <span class="badge bg-secondary">Selesai</span>
+                                        <a href="{{ route('checkout.index') }}" class="btn btn-outline-primary btn-sm rounded-pill px-3">
+                                            Ikuti Trip
+                                        </a>
                                     </div>
+
                                 </div>
                             </div>
                         </div>
@@ -237,158 +322,102 @@
     </div>
 </div>
 
+<!-- ══════════════════════════════════════════════════ -->
+<!-- MODAL: KONFIRMASI TUKAR POIN                     -->
+<!-- ══════════════════════════════════════════════════ -->
+<div class="modal fade" id="modalTukarPoin" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg rounded-4 overflow-hidden">
+            <div class="modal-header bg-primary text-white border-0 py-3">
+                <h5 class="modal-title fw-bold">
+                    <i class="bi bi-gift-fill me-1"></i> Konfirmasi Penukaran Poin
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="{{ route('dashboard.points.redeem') }}" method="POST">
+                @csrf
+                <input type="hidden" name="reward_id" id="modalRewardId">
+                <div class="modal-body text-center p-4">
+                    <div class="bg-primary bg-opacity-10 text-primary rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 76px; height: 76px;">
+                        <i class="bi bi-ticket-detailed fs-1"></i>
+                    </div>
+                    <p class="text-muted mb-1">Anda akan menukarkan <strong id="modalPointsValue" class="text-primary"></strong> poin untuk:</p>
+                    <h4 class="fw-bold mb-3 text-dark" id="modalRewardTitle">Nama Hadiah</h4>
+                    
+                    <div class="alert alert-info border-0 small text-start mb-0 rounded-3">
+                        <i class="bi bi-info-circle-fill me-1"></i> Poin Anda akan dipotong otomatis. Kode voucher dapat langsung dilihat di tab <strong>Voucher Saya</strong> dan digunakan saat checkout trip.
+                    </div>
+                </div>
+                <div class="modal-footer bg-light border-0 d-flex justify-content-end gap-2">
+                    <button type="button" class="btn btn-outline-secondary btn-sm px-4 rounded-pill" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-primary btn-sm px-4 rounded-pill fw-bold shadow-sm">
+                        <i class="bi bi-check2-circle me-1"></i> Tukar Sekarang
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 <style>
-    /* Styling for Pills */
     .nav-pills .nav-link {
         transition: all 0.2s ease;
     }
-    .nav-pills .nav-link:hover:not(.active) {
-        background-color: #f8f9fa !important;
-    }
     .nav-pills .nav-link.active {
         background-color: var(--color-primary, #0EA5E9) !important;
-        color: white !important;
-        border-color: var(--color-primary, #0EA5E9) !important;
+        color: #ffffff !important;
+        box-shadow: 0 4px 12px rgba(14, 165, 233, 0.25);
     }
-    
-    @media (max-width: 768px) {
-        .nav-pills {
-            flex-wrap: nowrap;
-            overflow-x: auto;
-            padding-bottom: 10px;
-        }
-        .nav-pills::-webkit-scrollbar {
-            display: none;
-        }
+    .transition-hover {
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .transition-hover:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 24px rgba(12, 74, 110, 0.08) !important;
     }
 </style>
 
+@push('scripts')
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Simple logic to switch between tabs
-        const tabBtns = document.querySelectorAll('[data-bs-toggle="pill"]');
-        
-        tabBtns.forEach(btn => {
-            btn.addEventListener('shown.bs.tab', function (event) {
-                // Set the active styling appropriately
-                tabBtns.forEach(b => {
-                    b.classList.remove('active', 'bg-primary', 'text-white');
-                    b.classList.add('text-dark', 'bg-white');
+document.addEventListener('DOMContentLoaded', function() {
+    // Modal Tukar Poin Data Binding
+    const modalTukar = document.getElementById('modalTukarPoin');
+    if (modalTukar) {
+        modalTukar.addEventListener('show.bs.modal', function (event) {
+            const button = event.relatedTarget;
+            if (!button) return;
+
+            const id = button.getAttribute('data-id');
+            const title = button.getAttribute('data-title');
+            const points = button.getAttribute('data-points');
+
+            document.getElementById('modalRewardId').value = id;
+            document.getElementById('modalRewardTitle').textContent = title;
+            document.getElementById('modalPointsValue').textContent = points;
+        });
+    }
+
+    // Copy Voucher Code Button
+    document.querySelectorAll('.btn-copy-code').forEach(btn => {
+        btn.addEventListener('click', function () {
+            const code = this.getAttribute('data-code');
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(code).then(() => {
+                    const originalHtml = this.innerHTML;
+                    this.innerHTML = '<i class="bi bi-check2"></i> Tersalin!';
+                    this.classList.remove('btn-outline-primary');
+                    this.classList.add('btn-success');
+                    setTimeout(() => {
+                        this.innerHTML = originalHtml;
+                        this.classList.remove('btn-success');
+                        this.classList.add('btn-outline-primary');
+                    }, 2000);
                 });
-                
-                event.target.classList.add('active');
-                event.target.classList.remove('text-dark', 'bg-white');
-            });
+            }
         });
     });
+});
 </script>
-
-<!-- Modal Tukar Poin -->
-<div class="modal fade" id="modalTukarPoin" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content border-0 shadow-lg rounded-4">
-            <div class="modal-header border-0 pb-0">
-                <h5 class="modal-title fw-bold">Konfirmasi Penukaran</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body text-center py-4">
-                <div class="bg-primary bg-opacity-10 text-primary rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 70px; height: 70px;">
-                    <i class="bi bi-gift fs-1"></i>
-                </div>
-                <p class="mb-1">Anda akan menukarkan <strong id="modal-poin" class="text-primary"></strong> pts untuk hadiah:</p>
-                <h4 class="fw-bold mb-4" id="modal-hadiah-title">Nama Hadiah</h4>
-                <div class="alert alert-secondary border-0 small text-start mb-0">
-                    <i class="bi bi-info-circle me-1"></i> Poin akan langsung dipotong dari saldo Anda. Hadiah dapat dilihat di tab <strong>Voucher Saya</strong> setelah ditukarkan.
-                </div>
-            </div>
-            <div class="modal-footer border-0 pt-0 d-flex gap-2 justify-content-center">
-                <button type="button" class="btn btn-outline-dark rounded-1 px-4" data-bs-dismiss="modal">Batal</button>
-                <button type="button" class="btn btn-dark rounded-1 px-4" data-bs-dismiss="modal" onclick="alert('Berhasil ditukarkan! (Hanya simulasi)')">Tukar Sekarang</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Modal Gunakan Voucher -->
-<div class="modal fade" id="modalGunakanVoucher" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content border-0 shadow-lg rounded-4">
-            <div class="modal-header border-0 pb-0">
-                <h5 class="modal-title fw-bold" id="modal-voucher-title">Diskon Trip Rp 50.000</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body text-center py-4">
-                <p class="text-muted small mb-2">Gunakan kode ini saat melakukan checkout</p>
-                <div class="d-flex justify-content-center align-items-center gap-2 mb-4">
-                    <div class="bg-light border border-2 border-dark rounded-3 px-4 py-3">
-                        <h3 class="fw-bold tracking-wide mb-0" style="letter-spacing: 2px;" id="modal-voucher-code">MARO-50K-XYZ</h3>
-                    </div>
-                </div>
-                <button type="button" class="btn btn-dark rounded-1 px-4 py-2" onclick="navigator.clipboard.writeText(document.getElementById('modal-voucher-code').innerText); alert('Kode berhasil disalin!');">
-                    <i class="bi bi-copy me-2"></i>Salin Kode
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Modal Gunakan Layanan (Barcode) -->
-<div class="modal fade" id="modalGunakanLayanan" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content border-0 shadow-lg rounded-4">
-            <div class="modal-header border-0 pb-0">
-                <h5 class="modal-title fw-bold" id="modal-layanan-title">Gratis Sewa Tenda</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body text-center py-4">
-                <p class="text-muted small mb-3">Tunjukkan QR Code ini kepada admin/petugas kami di basecamp untuk divalidasi.</p>
-                <div class="bg-light rounded-3 d-inline-block p-3 mb-3 border">
-                    <i class="bi bi-qr-code text-dark" style="font-size: 8rem; line-height: 1;"></i>
-                </div>
-                <p class="fw-bold mb-0">ID: SRV-789-QWERT</p>
-            </div>
-        </div>
-    </div>
-</div>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Modal Tukar Poin Data Binding
-        const modalTukar = document.getElementById('modalTukarPoin');
-        if(modalTukar) {
-            modalTukar.addEventListener('show.bs.modal', function (event) {
-                const button = event.relatedTarget;
-                const title = button.getAttribute('data-title');
-                const points = button.getAttribute('data-points');
-                
-                document.getElementById('modal-hadiah-title').textContent = title;
-                document.getElementById('modal-poin').textContent = points;
-            });
-        }
-
-        // Modal Gunakan Voucher Data Binding
-        const modalVoucher = document.getElementById('modalGunakanVoucher');
-        if(modalVoucher) {
-            modalVoucher.addEventListener('show.bs.modal', function (event) {
-                const button = event.relatedTarget;
-                const title = button.getAttribute('data-title');
-                const code = button.getAttribute('data-code');
-                
-                document.getElementById('modal-voucher-title').textContent = title;
-                document.getElementById('modal-voucher-code').textContent = code;
-            });
-        }
-        
-        // Modal Layanan Data Binding
-        const modalLayanan = document.getElementById('modalGunakanLayanan');
-        if(modalLayanan) {
-            modalLayanan.addEventListener('show.bs.modal', function (event) {
-                const button = event.relatedTarget;
-                const title = button.getAttribute('data-title');
-                document.getElementById('modal-layanan-title').textContent = title;
-            });
-        }
-    });
-</script>
+@endpush
 
 @endsection

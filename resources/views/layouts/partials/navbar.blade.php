@@ -37,8 +37,8 @@
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ url('/#paket') }}">
-                        <i class="bi bi-compass me-1 opacity-75 d-lg-none"></i> Perjalanan & Jasa
+                    <a class="nav-link {{ request()->routeIs('trips.*') ? 'active' : '' }}" href="{{ route('trips.index') }}">
+                        <i class="bi bi-compass me-1 opacity-75 d-lg-none"></i> Perjalanan &amp; Jasa
                     </a>
                 </li>
 
@@ -96,9 +96,13 @@
                     <!-- User Profile Dropdown -->
                     <div class="dropdown">
                         <button class="btn btn-outline-primary btn-sm rounded-pill px-3 py-2 dropdown-toggle d-flex align-items-center gap-2 w-100" type="button" id="userMenuDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                            <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 24px; height: 24px; font-size: 0.75rem;">
-                                {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
-                            </div>
+                            @if(Auth::user()->avatar)
+                                <img src="{{ asset('storage/' . Auth::user()->avatar) }}" class="rounded-circle object-fit-cover" style="width: 24px; height: 24px;" alt="Avatar">
+                            @else
+                                <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 24px; height: 24px; font-size: 0.75rem;">
+                                    {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
+                                </div>
+                            @endif
                             <span class="fw-semibold text-truncate" style="max-width: 130px;">{{ Auth::user()->name }}</span>
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end border-0 shadow-lg" aria-labelledby="userMenuDropdown">
