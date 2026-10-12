@@ -8,7 +8,7 @@
         <h6 class="mb-0 fw-bold">Edit Poin: {{ $user->name }}</h6>
     </div>
     <div class="card-body">
-        <form action="{{ route(request()->routeIs('superadmin.*') ? 'superadmin.points.update' : 'admin.points.update', $user->id) }}" method="POST">
+        <form action="{{ route(request()->routeIs('superadmin.*') ? 'superadmin.points.update' : 'admin.points.update', ['point' => $user->id]) }}" method="POST">
             @csrf
             @method('PUT')
             

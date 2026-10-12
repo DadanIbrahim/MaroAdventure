@@ -23,16 +23,28 @@ class Trip extends Model
     {
         return $this->belongsTo(Mountain::class);
     }
-    
+
     // Helper function for formatted price
     public function getFormattedPriceAttribute()
     {
-        return 'Rp ' . number_format($this->price, 0, ',', '.');
+        return 'Rp '.number_format($this->price, 0, ',', '.');
     }
 
     public function bookings()
     {
         return $this->hasMany(Booking::class);
     }
-}
 
+    public function getImageUrlAttribute()
+    {
+        if ($this->image) {
+            if (str_starts_with($this->image, 'http')) {
+                return $this->image;
+            }
+
+            return asset('storage/'.$this->image);
+        }
+
+        return asset('assets/images/hero_mountain.jpg');
+    }
+}

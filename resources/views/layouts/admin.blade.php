@@ -207,6 +207,11 @@
                         <i class="bi bi-ticket-detailed"></i> Booking
                     </a>
                 </li>
+                <li class="{{ request()->routeIs('admin.participants*') ? 'active' : '' }}">
+                    <a href="{{ route('admin.participants') }}">
+                        <i class="bi bi-people-fill"></i> Participants
+                    </a>
+                </li>
                 <li class="{{ request()->routeIs('admin.payments.*') || request()->routeIs('admin.payments') ? 'active' : '' }}">
                     <a href="{{ route('admin.payments.index') }}">
                         <i class="bi bi-credit-card"></i> Payment

@@ -95,6 +95,7 @@ Route::get('/setup-admin', function () {
 // Admin Dashboard Routes
 Route::middleware(['auth', CheckAdmin::class])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
+    Route::get('/participants', [AdminController::class, 'participants'])->name('participants');
     Route::get('/content', [AdminController::class, 'content'])->name('content');
     Route::resource('articles', BackendArticleController::class);
     Route::resource('mountains', MountainController::class);
@@ -110,6 +111,7 @@ Route::middleware(['auth', CheckAdmin::class])->prefix('admin')->name('admin.')-
 // Superadmin Dashboard Routes
 Route::middleware(['auth', CheckSuperadmin::class])->prefix('superadmin')->name('superadmin.')->group(function () {
     Route::get('/dashboard', [SuperadminController::class, 'dashboard'])->name('dashboard');
+    Route::get('/participants', [AdminController::class, 'participants'])->name('participants');
     Route::get('/users', [SuperadminController::class, 'users'])->name('users'); // User Management
     Route::post('/users', [SuperadminController::class, 'storeUser'])->name('users.store');
     Route::put('/users/{user}', [SuperadminController::class, 'updateUser'])->name('users.update');

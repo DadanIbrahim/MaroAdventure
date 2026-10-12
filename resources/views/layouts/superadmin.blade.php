@@ -189,6 +189,11 @@
                         <i class="bi bi-people-fill"></i> User Management
                     </a>
                 </li>
+                <li class="{{ request()->routeIs('superadmin.participants') ? 'active' : '' }}">
+                    <a href="{{ route('superadmin.participants') }}">
+                        <i class="bi bi-person-badge"></i> Participants
+                    </a>
+                </li>
                 <li class="{{ request()->routeIs('superadmin.content') ? 'active' : '' }}">
                     <a href="{{ route('superadmin.content') }}">
                         <i class="bi bi-file-earmark-richtext"></i> Content
