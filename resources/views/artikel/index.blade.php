@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Artikel & Berita — Maro Adventure Indonesia')
+@section('title', 'Artikel & Panduan Petualangan — Maro Adventure Indonesia')
 
 @push('styles')
 <style>
@@ -387,11 +387,11 @@
 <section class="page-hero">
     <div class="container">
         <div class="page-hero-badge">
-            <i class="bi bi-newspaper"></i>
-            Artikel & Berita
+            <i class="bi bi-journal-text"></i>
+            Artikel & Panduan
         </div>
-        <h1>Cerita dari Alam &amp; Perjalanan</h1>
-        <p>Tips mendaki, info destinasi, berita terbaru, dan kisah-kisah inspiratif dari perjalanan bersama Maro Adventure.</p>
+        <h1>Cerita dari Alam &amp; Edukasi Pendakian</h1>
+        <p>Tips mendaki, panduan rute gunung, kearifan budaya, dan kisah-kisah inspiratif perjalanan bersama Maro Adventure.</p>
     </div>
 </section>
 

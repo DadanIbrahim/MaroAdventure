@@ -54,7 +54,7 @@
                             <div class="article-prev-body">
 
                                 <a
-                                    href="{{ route('artikel.show', $artikel->slug) }}"
+                                    href="{{ $artikel->url }}"
                                     class="article-prev-title"
                                 >
                                     {{ $artikel->title }}
@@ -78,7 +78,7 @@
                                 </div>
 
                                 <a
-                                    href="{{ route('artikel.show', $artikel->slug) }}"
+                                    href="{{ $artikel->url }}"
                                     class="article-prev-link"
                                 >
                                     Baca Selengkapnya
@@ -95,10 +95,14 @@
 
             </div>
 
-            <div class="text-center mt-5 fade-up">
+            <div class="text-center mt-5 fade-up d-flex justify-content-center align-items-center gap-3 flex-wrap">
                 <a href="{{ route('artikel.index') }}" class="btn-primary-custom">
-                    <i class="bi bi-newspaper"></i>
+                    <i class="bi bi-journal-text me-1"></i>
                     Lihat Semua Artikel
+                </a>
+                <a href="{{ route('berita.index') }}" class="btn-outline-custom" style="color: var(--color-primary) !important; border-color: var(--color-primary);">
+                    <i class="bi bi-newspaper me-1"></i>
+                    Lihat Kabar Berita
                 </a>
             </div>
 

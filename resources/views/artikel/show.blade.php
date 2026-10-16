@@ -487,9 +487,13 @@
             <div class="article-breadcrumb" style="text-shadow: 0 1px 8px rgba(0,0,0,0.9);">
                 <a href="{{ url('/') }}"><i class="bi bi-house-fill"></i> Home</a>
                 <i class="bi bi-chevron-right"></i>
-                <a href="{{ route('artikel.index') }}">Artikel</a>
-                <i class="bi bi-chevron-right"></i>
-                <a href="{{ route('artikel.index', ['kategori' => $article->category]) }}">{{ $article->category }}</a>
+                @if($article->category === 'Berita')
+                    <a href="{{ route('berita.index') }}">Berita</a>
+                @else
+                    <a href="{{ route('artikel.index') }}">Artikel</a>
+                    <i class="bi bi-chevron-right"></i>
+                    <a href="{{ route('artikel.index', ['kategori' => $article->category]) }}">{{ $article->category }}</a>
+                @endif
                 <i class="bi bi-chevron-right"></i>
                 <span style="color: rgba(255,255,255,0.95); font-weight: 500;">{{ Str::limit($article->title, 50) }}</span>
             </div>
@@ -604,16 +608,16 @@
 
                 </div>
 
-                {{-- Related Articles --}}
+                {{-- Related Articles / News --}}
                 @if($related->count() > 0)
                     <div class="related-section">
                         <h5>
                             <i class="bi bi-journals"></i>
-                            Artikel Terkait — {{ $article->category }}
+                            {{ $article->category === 'Berita' ? 'Berita Terkait' : 'Artikel Terkait — ' . $article->category }}
                         </h5>
 
                         @foreach($related as $rel)
-                            <a href="{{ route('artikel.show', $rel->slug) }}" class="related-article-card">
+                            <a href="{{ $rel->url }}" class="related-article-card">
                                 <div class="related-article-img">
                                     <img src="{{ $rel->thumbnail_url }}" alt="{{ $rel->title }}">
                                 </div>
@@ -631,25 +635,32 @@
                     </div>
                 @endif
 
-                {{-- Back to Articles --}}
-                <a href="{{ route('artikel.index') }}" class="btn-outline-custom" style="color: var(--color-primary) !important; border-color: var(--color-primary);">
-                    <i class="bi bi-arrow-left"></i>
-                    Kembali ke Semua Artikel
-                </a>
+                {{-- Back to Index --}}
+                @if($article->category === 'Berita')
+                    <a href="{{ route('berita.index') }}" class="btn-outline-custom" style="color: var(--color-primary) !important; border-color: var(--color-primary);">
+                        <i class="bi bi-arrow-left"></i>
+                        Kembali ke Semua Berita
+                    </a>
+                @else
+                    <a href="{{ route('artikel.index') }}" class="btn-outline-custom" style="color: var(--color-primary) !important; border-color: var(--color-primary);">
+                        <i class="bi bi-arrow-left"></i>
+                        Kembali ke Semua Artikel
+                    </a>
+                @endif
 
             </div>
 
             {{-- Sidebar --}}
             <div class="col-lg-4">
 
-                {{-- Artikel Terbaru --}}
+                {{-- Artikel / Berita Terbaru --}}
                 <div class="sidebar-card">
                     <div class="sidebar-card-header">
                         <i class="bi bi-clock-history"></i>
-                        Artikel Terbaru
+                        {{ $article->category === 'Berita' ? 'Berita Terbaru' : 'Artikel Terbaru' }}
                     </div>
                     @foreach($latestArticles as $latest)
-                        <a href="{{ route('artikel.show', $latest->slug) }}" class="sidebar-article-item">
+                        <a href="{{ $latest->url }}" class="sidebar-article-item">
                             <div class="sidebar-article-img">
                                 <img src="{{ $latest->thumbnail_url }}" alt="{{ $latest->title }}">
                             </div>
@@ -657,7 +668,7 @@
                                 <div class="sidebar-article-title">{{ Str::limit($latest->title, 60) }}</div>
                                 <div class="sidebar-article-date">
                                     <i class="bi bi-calendar3 me-1"></i>
-                                    {{ $latest->published_at->locale('id')->diffForHumans() }}
+                                    {{ $latest->published_at ? $latest->published_at->locale('id')->diffForHumans() : 'Terbaru' }}
                                 </div>
                             </div>
                         </a>

@@ -39,9 +39,13 @@ Route::get('/storage/{path}', function ($path) {
 Route::get('/trips', [PublicTripController::class, 'index'])->name('trips.index');
 Route::get('/trips/{trip}', [PublicTripController::class, 'show'])->name('trips.show');
 
-// Artikel & Berita
+// Artikel & Panduan Petualangan
 Route::get('/artikel', [ArticleController::class, 'index'])->name('artikel.index');
 Route::get('/artikel/{slug}', [ArticleController::class, 'show'])->name('artikel.show');
+
+// Berita & Kabar Terkini
+Route::get('/berita', [ArticleController::class, 'berita'])->name('berita.index');
+Route::get('/berita/{slug}', [ArticleController::class, 'showBerita'])->name('berita.show');
 
 // Autentikasi (Guest Only)
 Route::middleware('guest')->group(function () {
@@ -86,6 +90,7 @@ Route::get('/setup-admin', function () {
         [
             'name' => 'Administrator',
             'password' => bcrypt('12345678'),
+            'role' => 'admin',
         ]
     );
 

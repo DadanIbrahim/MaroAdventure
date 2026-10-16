@@ -44,7 +44,13 @@
 
                 <li class="nav-item">
                     <a class="nav-link {{ request()->routeIs('artikel.*') ? 'active' : '' }}" href="{{ route('artikel.index') }}">
-                        <i class="bi bi-newspaper me-1 opacity-75 d-lg-none"></i> Artikel & Berita
+                        <i class="bi bi-journal-text me-1 opacity-75 d-lg-none"></i> Artikel
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->routeIs('berita.*') ? 'active' : '' }}" href="{{ route('berita.index') }}">
+                        <i class="bi bi-newspaper me-1 opacity-75 d-lg-none"></i> Berita
                     </a>
                 </li>
 
@@ -63,11 +69,6 @@
                         <li>
                             <a class="dropdown-item py-2" href="{{ url('/#galeri') }}">
                                 <i class="bi bi-images text-primary me-2"></i> Galeri foto
-                            </a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item py-2" href="{{ url('/#testimoni') }}">
-                                <i class="bi bi-chat-heart text-primary me-2"></i> Cerita Pendaki
                             </a>
                         </li>
                         <li>
@@ -108,26 +109,68 @@
                         <ul class="dropdown-menu dropdown-menu-end border-0 shadow-lg" aria-labelledby="userMenuDropdown">
                             <li class="px-3 py-2 border-bottom">
                                 <span class="d-block small text-muted">Signed in as</span>
-                                <span class="fw-bold text-dark text-truncate d-block small">{{ Auth::user()->email }}</span>
+                                <span class="fw-bold text-dark text-truncate d-block small mb-1">{{ Auth::user()->email }}</span>
+                                <div>
+                                    @if(Auth::user()->isSuperadmin())
+                                        <span class="badge bg-danger bg-opacity-10 text-danger border border-danger-subtle font-monospace" style="font-size: 0.7rem;">
+                                            <i class="bi bi-shield-lock-fill me-1"></i>SUPERADMIN
+                                        </span>
+                                    @elseif(Auth::user()->role === 'admin')
+                                        <span class="badge bg-primary bg-opacity-10 text-primary border border-primary-subtle font-monospace" style="font-size: 0.7rem;">
+                                            <i class="bi bi-shield-check me-1"></i>ADMIN
+                                        </span>
+                                    @else
+                                        <span class="badge bg-success bg-opacity-10 text-success border border-success-subtle font-monospace" style="font-size: 0.7rem;">
+                                            <i class="bi bi-person-check me-1"></i>MEMBER
+                                        </span>
+                                    @endif
+                                </div>
                             </li>
-                            @if(request()->routeIs('dashboard.*') || request()->routeIs('checkout.*'))
-                                <!-- Menu jika user sedang berada di dalam Dashboard / Checkout -->
+
+                            @if(Auth::user()->isSuperadmin())
+                                <!-- Menu khusus Superadmin -->
                                 <li>
-                                    <a class="dropdown-item py-2 mt-1" href="{{ url('/') }}">
-                                        <i class="bi bi-house-door me-2"></i> Kembali ke Beranda
+                                    <a class="dropdown-item py-2 mt-1 fw-semibold text-danger" href="{{ route('superadmin.dashboard') }}">
+                                        <i class="bi bi-speedometer2 me-2"></i> Superadmin Panel
                                     </a>
                                 </li>
-
                                 <li>
-                                    <a class="dropdown-item py-2" href="#">
-                                        <i class="bi bi-question-circle me-2"></i> Pusat Bantuan
+                                    <a class="dropdown-item py-2" href="{{ route('superadmin.users') }}">
+                                        <i class="bi bi-people-fill me-2"></i> User Management
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item py-2" href="{{ route('admin.dashboard') }}">
+                                        <i class="bi bi-grid me-2"></i> Admin Workspace
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item py-2" href="{{ url('/') }}">
+                                        <i class="bi bi-house-door me-2"></i> Beranda Website
+                                    </a>
+                                </li>
+                            @elseif(Auth::user()->role === 'admin')
+                                <!-- Menu khusus Admin -->
+                                <li>
+                                    <a class="dropdown-item py-2 mt-1 fw-semibold text-primary" href="{{ route('admin.dashboard') }}">
+                                        <i class="bi bi-speedometer2 me-2"></i> Admin Panel
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item py-2" href="{{ route('admin.bookings.index') }}">
+                                        <i class="bi bi-ticket-detailed me-2"></i> Kelola Booking
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item py-2" href="{{ url('/') }}">
+                                        <i class="bi bi-house-door me-2"></i> Beranda Website
                                     </a>
                                 </li>
                             @else
-                                <!-- Menu jika user berada di luar Dashboard (Beranda, Artikel, dll) -->
+                                <!-- Menu khusus Member / User Biasa -->
                                 <li>
                                     <a class="dropdown-item py-2 mt-1" href="{{ route('dashboard.index') }}">
-                                        <i class="bi bi-grid me-2"></i> Dashboard
+                                        <i class="bi bi-grid me-2"></i> Dashboard Saya
                                     </a>
                                 </li>
                                 <li>

@@ -176,6 +176,32 @@ class Article extends Model
         return ['Gunung', 'Tips', 'Berita', 'Budaya', 'Destinasi'];
     }
 
+    /** Kategori khusus artikel (tanpa Berita) */
+    public static function articleCategories(): array
+    {
+        return ['Gunung', 'Tips', 'Budaya', 'Destinasi'];
+    }
+
+    /** Scope khusus artikel umum (non-berita) */
+    public function scopeOnlyArticles(Builder $query): Builder
+    {
+        return $query->where('category', '!=', 'Berita');
+    }
+
+    /** Scope khusus berita */
+    public function scopeOnlyBerita(Builder $query): Builder
+    {
+        return $query->where('category', 'Berita');
+    }
+
+    /** URL detail dinamis sesuai kategori (artikel atau berita) */
+    public function getUrlAttribute(): string
+    {
+        return $this->category === 'Berita'
+            ? route('berita.show', $this->slug)
+            : route('artikel.show', $this->slug);
+    }
+
     /** Warna badge per kategori */
     public static function categoryColor(string $category): string
     {

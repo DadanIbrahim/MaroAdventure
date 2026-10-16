@@ -15,6 +15,15 @@ class DashboardController extends Controller
     {
         $user = auth()->user();
 
+        // Arahkan otomatis ke dashboard yang sesuai dengan peran pengguna
+        if ($user->isSuperadmin()) {
+            return redirect()->route('superadmin.dashboard');
+        }
+
+        if ($user->role === 'admin') {
+            return redirect()->route('admin.dashboard');
+        }
+
         // Query bookings user
         $userBookingsQuery = Booking::with(['trip.mountain'])
             ->where(function ($q) use ($user) {

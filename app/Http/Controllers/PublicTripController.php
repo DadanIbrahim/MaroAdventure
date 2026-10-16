@@ -16,11 +16,17 @@ class PublicTripController extends Controller
     {
         // Pastikan ada sampel paket trip jika database kosong
         if (Trip::count() === 0) {
-            $mountain = Mountain::first();
-            $mountainId = $mountain ? $mountain->id : null;
+            $mountain = Mountain::first() ?? Mountain::create([
+                'name' => 'Gunung Burangrang',
+                'location' => 'Bandung Barat, Jawa Barat',
+                'elevation' => 2050,
+                'description' => 'Gunung dengan ketinggian 2.050 MDPL di kawasan Bandung Barat yang menyajikan panorama alam dan Danau Situ Lembang.',
+                'image' => null,
+                'status' => true,
+            ]);
 
             Trip::create([
-                'mountain_id' => $mountainId,
+                'mountain_id' => $mountain->id,
                 'name' => 'Burangrang Weekend Camp & Trekking',
                 'duration' => '2 Hari 1 Malam',
                 'price' => 350000,
@@ -30,7 +36,7 @@ class PublicTripController extends Controller
             ]);
 
             Trip::create([
-                'mountain_id' => $mountainId,
+                'mountain_id' => $mountain->id,
                 'name' => 'Burangrang One Day Sunrise Expedition',
                 'duration' => '1 Hari (Sunrise)',
                 'price' => 220000,

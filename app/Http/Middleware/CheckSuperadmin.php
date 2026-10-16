@@ -10,8 +10,14 @@ class CheckSuperadmin
 {
     public function handle(Request $request, Closure $next)
     {
-        if (Auth::check() && Auth::user()->email !== 'superadmin123@maroadventure.com' && Auth::user()->role !== 'superadmin') {
-            return redirect('/dashboard')->with('error', 'Unauthorized access.');
+        if (! Auth::check()) {
+            return redirect()->route('login');
+        }
+
+        if (! Auth::user()->isSuperadmin()) {
+            $target = Auth::user()->role === 'admin' ? 'admin.dashboard' : 'dashboard.index';
+
+            return redirect()->route($target)->with('error', 'Akses ditolak. Halaman ini hanya untuk Superadmin.');
         }
 
         return $next($request);

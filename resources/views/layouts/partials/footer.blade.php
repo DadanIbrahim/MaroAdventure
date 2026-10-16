@@ -131,7 +131,13 @@
 
                     <li>
                         <a href="{{ route('artikel.index') }}">
-                            Artikel & Berita
+                            Artikel Petualangan
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="{{ route('berita.index') }}">
+                            Berita &amp; Kabar
                         </a>
                     </li>
 

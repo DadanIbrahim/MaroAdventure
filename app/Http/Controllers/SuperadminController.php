@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Booking;
+use App\Models\Trip;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -17,7 +19,23 @@ class SuperadminController extends Controller
      */
     public function dashboard(): View
     {
-        return view('superadmin.dashboard');
+        $totalUsers = User::where('role', 'user')->count();
+        $totalAdmins = User::where('role', 'admin')->count();
+        $totalRevenue = Booking::where('payment_status', 'paid')->sum('total_price');
+        $totalBookings = Booking::count();
+        $pendingBookings = Booking::where('status', 'pending')->count();
+        $totalTrips = Trip::count();
+        $recentBookings = Booking::with(['user', 'trip'])->latest()->take(5)->get();
+
+        return view('superadmin.dashboard', compact(
+            'totalUsers',
+            'totalAdmins',
+            'totalRevenue',
+            'totalBookings',
+            'pendingBookings',
+            'totalTrips',
+            'recentBookings'
+        ));
     }
 
     /**
@@ -25,7 +43,9 @@ class SuperadminController extends Controller
      */
     public function users(Request $request): View
     {
-        $query = User::query();
+        // Akun superadmin tidak ditampilkan di user management karena tidak dapat diubah
+        $query = User::where('role', '!=', 'superadmin')
+            ->where('email', '!=', 'superadmin123@maroadventure.com');
 
         // Pencarian berdasarkan nama, email, atau no telepon
         if ($search = $request->input('search')) {
@@ -36,9 +56,11 @@ class SuperadminController extends Controller
             });
         }
 
-        // Filter berdasarkan role
+        // Filter berdasarkan role (hanya user dan admin)
         if ($role = $request->input('role')) {
-            $query->where('role', $role);
+            if (in_array($role, ['user', 'admin'])) {
+                $query->where('role', $role);
+            }
         }
 
         $users = $query->latest()->paginate(10)->withQueryString();
@@ -55,8 +77,10 @@ class SuperadminController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users,email',
             'phone' => 'nullable|string|max:30',
-            'role' => 'required|in:user,admin,superadmin',
+            'role' => 'required|in:user,admin',
             'password' => 'required|string|min:6|confirmed',
+        ], [
+            'role.in' => 'Role yang dapat ditambahkan hanya Admin atau User.',
         ]);
 
         User::create([
@@ -77,12 +101,20 @@ class SuperadminController extends Controller
      */
     public function updateUser(Request $request, User $user): RedirectResponse
     {
+        // Lindungi akun superadmin agar tidak dapat diubah
+        if ($user->role === 'superadmin' || $user->email === 'superadmin123@maroadventure.com') {
+            return redirect()->route('superadmin.users')
+                ->with('error', 'Akun Superadmin tidak dapat diubah.');
+        }
+
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
             'phone' => 'nullable|string|max:30',
-            'role' => 'required|in:user,admin,superadmin',
+            'role' => 'required|in:user,admin',
             'password' => 'nullable|string|min:6|confirmed',
+        ], [
+            'role.in' => 'Role hanya dapat diatur sebagai Admin atau User.',
         ]);
 
         $updateData = [
@@ -107,6 +139,11 @@ class SuperadminController extends Controller
      */
     public function destroyUser(User $user): RedirectResponse
     {
+        if ($user->role === 'superadmin' || $user->email === 'superadmin123@maroadventure.com') {
+            return redirect()->route('superadmin.users')
+                ->with('error', 'Akun Superadmin tidak dapat dihapus.');
+        }
+
         if (Auth::id() === $user->id) {
             return redirect()->route('superadmin.users')
                 ->with('error', 'Anda tidak dapat menghapus akun Anda sendiri yang sedang aktif.');

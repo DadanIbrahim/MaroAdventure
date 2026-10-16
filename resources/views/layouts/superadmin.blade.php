@@ -249,12 +249,12 @@
 
             <div class="sidebar-footer">
                 <div class="d-flex align-items-center mb-3 px-2">
-                    <div class="avatar bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-2" style="width: 40px; height: 40px;">
-                        SA
+                    <div class="avatar bg-danger text-white rounded-circle d-flex align-items-center justify-content-center me-2 fw-bold" style="width: 40px; height: 40px;">
+                        {{ strtoupper(substr(Auth::user()->name ?? 'S', 0, 1)) }}
                     </div>
-                    <div>
-                        <div class="fw-bold fs-6">SuperAdmin123</div>
-                        <div class="text-muted small">SuperAdmin</div>
+                    <div class="overflow-hidden">
+                        <div class="fw-bold fs-6 text-truncate" style="max-width: 140px;">{{ Auth::user()->name }}</div>
+                        <div class="text-muted small text-capitalize">{{ Auth::user()->role }}</div>
                     </div>
                 </div>
                 <form method="POST" action="{{ route('logout') }}">

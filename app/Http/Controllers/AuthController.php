@@ -83,17 +83,24 @@ class AuthController extends Controller
         $loginField = $request->email;
         if ($loginField === 'admin123') {
             $loginField = 'admin123@maroadventure.com'; // Map ID to email internally
-            // Auto-create admin if it doesn't exist
-            User::firstOrCreate(
+            // Pastikan akun admin memiliki role admin
+            $admin = User::firstOrCreate(
                 ['email' => $loginField],
-                ['name' => 'Administrator', 'password' => Hash::make('12345678')]
+                ['name' => 'Administrator', 'password' => Hash::make('12345678'), 'role' => 'admin']
             );
+            if ($admin->role !== 'admin') {
+                $admin->update(['role' => 'admin']);
+            }
         } elseif ($loginField === 'superadmin123') {
             $loginField = 'superadmin123@maroadventure.com';
-            User::firstOrCreate(
+            // Pastikan akun superadmin memiliki role superadmin
+            $super = User::firstOrCreate(
                 ['email' => $loginField],
-                ['name' => 'Super Administrator', 'password' => Hash::make('12345678')]
+                ['name' => 'Super Administrator', 'password' => Hash::make('12345678'), 'role' => 'superadmin']
             );
+            if ($super->role !== 'superadmin') {
+                $super->update(['role' => 'superadmin']);
+            }
         }
 
         $credentials = [
@@ -106,14 +113,16 @@ class AuthController extends Controller
         if (Auth::attempt($credentials, $remember)) {
             $request->session()->regenerate();
 
-            if (Auth::user()->email === 'admin123@maroadventure.com') {
-                return redirect()->route('admin.dashboard')->with('success', 'Selamat datang di Admin Panel!');
-            }
-            if (Auth::user()->email === 'superadmin123@maroadventure.com') {
+            // Redirect sesuai role masing-masing
+            if (Auth::user()->isSuperadmin()) {
                 return redirect()->route('superadmin.dashboard')->with('success', 'Selamat datang di Superadmin Panel!');
             }
 
-            return redirect()->intended(url('/'))->with('success', 'Selamat datang kembali, '.Auth::user()->name.'!');
+            if (Auth::user()->role === 'admin') {
+                return redirect()->route('admin.dashboard')->with('success', 'Selamat datang di Admin Panel!');
+            }
+
+            return redirect()->intended(route('dashboard.index'))->with('success', 'Selamat datang kembali, '.Auth::user()->name.'!');
         }
 
         return back()->withErrors([

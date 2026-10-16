@@ -40,7 +40,6 @@
                     <option value="">Semua Role</option>
                     <option value="user" {{ request('role') == 'user' ? 'selected' : '' }}>User</option>
                     <option value="admin" {{ request('role') == 'admin' ? 'selected' : '' }}>Admin</option>
-                    <option value="superadmin" {{ request('role') == 'superadmin' ? 'selected' : '' }}>Superadmin</option>
                 </select>
 
                 <div class="input-group input-group-sm" style="max-width: 250px;">
@@ -243,7 +242,6 @@
                         <select name="role" id="role" class="form-select" required>
                             <option value="user" {{ old('role') == 'user' ? 'selected' : '' }}>User (Anggota / Pendaki)</option>
                             <option value="admin" {{ old('role') == 'admin' ? 'selected' : '' }}>Admin (Pengelola Operasional)</option>
-                            <option value="superadmin" {{ old('role') == 'superadmin' ? 'selected' : '' }}>Superadmin (Hak Akses Penuh)</option>
                         </select>
                     </div>
 
@@ -336,7 +334,6 @@
                         <select name="role" id="edit_role" class="form-select" required>
                             <option value="user">User (Anggota / Pendaki)</option>
                             <option value="admin">Admin (Pengelola Operasional)</option>
-                            <option value="superadmin">Superadmin (Hak Akses Penuh)</option>
                         </select>
                     </div>
 

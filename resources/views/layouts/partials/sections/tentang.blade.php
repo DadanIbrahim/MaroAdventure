@@ -14,24 +14,6 @@
                         alt="Aktivitas Maro Adventure di alam"
                         class="about-img"
                     />
-
-                    <!-- Floating Badge -->
-                    <div class="about-image-badge">
-                        <span class="badge-number">5+</span>
-                        <span class="badge-text">Tahun Pengalaman</span>
-                    </div>
-
-                    <!-- Floating Card -->
-                    <div class="about-float-card">
-                        <div class="about-float-icon">
-                            <i class="bi bi-shield-check-fill"></i>
-                        </div>
-                        <div>
-                            <div class="about-float-title">Safety First</div>
-                            <div class="about-float-sub">Standar keamanan terjaga</div>
-                        </div>
-                    </div>
-
                 </div>
 
             </div>

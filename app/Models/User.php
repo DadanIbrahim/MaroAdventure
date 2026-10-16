@@ -58,4 +58,29 @@ class User extends Authenticatable
 
         return 'https://ui-avatars.com/api/?name='.urlencode($this->name).'&background=0EA5E9&color=fff&size=200&bold=true';
     }
+
+    /**
+     * Cek apakah user adalah Superadmin.
+     */
+    public function isSuperadmin(): bool
+    {
+        return $this->role === 'superadmin' || $this->email === 'superadmin123@maroadventure.com';
+    }
+
+    /**
+     * Cek apakah user adalah Admin atau Superadmin.
+     */
+    public function isAdmin(): bool
+    {
+        return in_array($this->role, ['admin', 'superadmin'])
+            || in_array($this->email, ['admin123@maroadventure.com', 'superadmin123@maroadventure.com']);
+    }
+
+    /**
+     * Cek apakah user adalah pelanggan biasa (Member).
+     */
+    public function isRegularUser(): bool
+    {
+        return $this->role === 'user' && ! $this->isAdmin();
+    }
 }
