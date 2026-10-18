@@ -72,9 +72,11 @@
                                             </p>
                                         @endif
 
+                                        @if($booking->trip && $booking->trip->duration)
                                         <p class="text-muted small mb-2">
-                                            <i class="bi bi-clock me-1"></i> Durasi: {{ $booking->trip->duration ?? '2 Hari 1 Malam' }}
+                                            <i class="bi bi-clock me-1"></i> Durasi: {{ $booking->trip->duration }}
                                         </p>
+                                        @endif
                                         <p class="text-muted small mb-2">
                                             <i class="bi bi-calendar-event me-1"></i> Tanggal: {{ date('d M Y', strtotime($booking->booking_date)) }}
                                         </p>

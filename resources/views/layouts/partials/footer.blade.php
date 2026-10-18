@@ -130,14 +130,14 @@
                     </li>
 
                     <li>
-                        <a href="{{ route('artikel.index') }}">
-                            Artikel Petualangan
+                        <a href="{{ route('berita.index') }}">
+                            Berita &amp; Kabar
                         </a>
                     </li>
 
                     <li>
-                        <a href="{{ route('berita.index') }}">
-                            Berita &amp; Kabar
+                        <a href="{{ route('artikel.index') }}">
+                            Artikel Petualangan
                         </a>
                     </li>
 

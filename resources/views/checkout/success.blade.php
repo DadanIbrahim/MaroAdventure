@@ -185,9 +185,15 @@
 
                 <!-- Actions -->
                 <div class="d-flex flex-column flex-sm-row justify-content-center gap-3">
-                    <a href="{{ route('dashboard.bookings') }}" class="btn btn-primary px-4 py-2 fw-bold rounded-2">
-                        <i class="bi bi-journal-text me-1"></i> Riwayat Booking
-                    </a>
+                    @auth
+                        <a href="{{ route('dashboard.bookings') }}" class="btn btn-primary px-4 py-2 fw-bold rounded-2">
+                            <i class="bi bi-journal-text me-1"></i> Riwayat Booking
+                        </a>
+                    @else
+                        <a href="{{ route('login') }}" class="btn btn-primary px-4 py-2 fw-bold rounded-2">
+                            <i class="bi bi-box-arrow-in-right me-1"></i> Masuk Akun Anda
+                        </a>
+                    @endauth
                     <a href="{{ url('/') }}" class="btn btn-outline-secondary px-4 py-2 fw-semibold rounded-2">
                         <i class="bi bi-house me-1"></i> Kembali ke Beranda
                     </a>

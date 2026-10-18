@@ -1,13 +1,13 @@
 @extends(request()->routeIs('superadmin.*') ? 'layouts.superadmin' : 'layouts.admin')
-@section('title', 'Artikel & Berita - ' . (request()->routeIs('superadmin.*') ? 'Superadmin' : 'Admin'))
-@section('page_title', 'Manajemen Artikel & Berita')
+@section('title', 'Artikel - ' . (request()->routeIs('superadmin.*') ? 'Superadmin' : 'Admin'))
+@section('page_title', 'Manajemen Artikel')
 
 @section('content')
 <div class="card border-0 shadow-sm">
     <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
-        <h6 class="mb-0 fw-bold">Daftar Konten</h6>
+        <h6 class="mb-0 fw-bold">Daftar Artikel</h6>
         <a href="{{ route(request()->routeIs('superadmin.*') ? 'superadmin.articles.create' : 'admin.articles.create') }}" class="btn btn-sm btn-primary">
-            <i class="bi bi-pencil-square me-1"></i> Tulis Konten Baru
+            <i class="bi bi-pencil-square me-1"></i> Tulis Artikel Baru
         </a>
     </div>
     <div class="card-body">
@@ -63,7 +63,7 @@
                     <tr>
                         <td colspan="6" class="text-center py-4 text-muted">
                             <i class="bi bi-inbox fs-2 d-block mb-2"></i>
-                            Belum ada artikel atau berita.
+                            Belum ada data artikel.
                         </td>
                     </tr>
                     @endforelse

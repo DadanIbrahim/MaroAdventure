@@ -81,6 +81,6 @@ class User extends Authenticatable
      */
     public function isRegularUser(): bool
     {
-        return $this->role === 'user' && ! $this->isAdmin();
+        return in_array($this->role, ['user', 'customer']) && ! $this->isAdmin();
     }
 }

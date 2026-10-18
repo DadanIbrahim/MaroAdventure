@@ -1,11 +1,11 @@
 @extends(request()->routeIs('superadmin.*') ? 'layouts.superadmin' : 'layouts.admin')
-@section('title', 'Tambah Gunung - ' . (request()->routeIs('superadmin.*') ? 'Superadmin' : 'Admin'))
-@section('page_title', 'Tambah Gunung')
+@section('title', 'Tambah Destinasi - ' . (request()->routeIs('superadmin.*') ? 'Superadmin' : 'Admin'))
+@section('page_title', 'Tambah Destinasi')
 
 @section('content')
 <div class="card border-0 shadow-sm">
     <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
-        <h6 class="mb-0 fw-bold">Form Tambah Gunung</h6>
+        <h6 class="mb-0 fw-bold">Form Tambah Destinasi</h6>
         <a href="{{ route(request()->routeIs('superadmin.*') ? 'superadmin.mountains.index' : 'admin.mountains.index') }}" class="btn btn-sm btn-outline-secondary">
             <i class="bi bi-arrow-left me-1"></i> Kembali
         </a>
@@ -25,16 +25,13 @@
             @csrf
             <div class="row g-3">
                 <div class="col-md-6">
-                    <label class="form-label">Nama Gunung <span class="text-danger">*</span></label>
-                    <input type="text" name="name" class="form-control" value="{{ old('name') }}" required>
+                    <label class="form-label">Nama Destinasi <span class="text-danger">*</span></label>
+                    <input type="text" name="name" class="form-control" value="{{ old('name') }}" placeholder="Contoh: Gunung Prau 2565 MDPL / Pantai Pangandaran" required>
+                    <div class="form-text">Dapat menyertakan ketinggian MDPL secara manual di nama destinasi (misal: Gunung Prau 2565 MDPL).</div>
                 </div>
                 <div class="col-md-6">
                     <label class="form-label">Lokasi <span class="text-danger">*</span></label>
-                    <input type="text" name="location" class="form-control" value="{{ old('location') }}" required>
-                </div>
-                <div class="col-md-6">
-                    <label class="form-label">Ketinggian (mdpl) <span class="text-danger">*</span></label>
-                    <input type="number" name="elevation" class="form-control" value="{{ old('elevation') }}" placeholder="Contoh: 2050" required min="0">
+                    <input type="text" name="location" class="form-control" value="{{ old('location') }}" placeholder="Contoh: Jawa Barat" required>
                 </div>
                 <div class="col-md-6">
                     <label class="form-label">Status <span class="text-danger">*</span></label>
@@ -45,10 +42,10 @@
                 </div>
                 <div class="col-12">
                     <label class="form-label">Deskripsi</label>
-                    <textarea name="description" class="form-control" rows="4" placeholder="Deskripsikan tentang gunung ini...">{{ old('description') }}</textarea>
+                    <textarea name="description" class="form-control" rows="4" placeholder="Deskripsikan keindahan dan daya tarik destinasi ini...">{{ old('description') }}</textarea>
                 </div>
                 <div class="col-12">
-                    <label class="form-label">Foto Gunung</label>
+                    <label class="form-label">Foto Destinasi</label>
                     <input type="file" name="image" class="form-control" accept="image/*">
                     <div class="form-text">Format didukung: JPG, PNG, JPEG. Ukuran maksimal 2MB.</div>
                 </div>

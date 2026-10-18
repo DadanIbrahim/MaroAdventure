@@ -40,6 +40,8 @@
         .admin-wrapper {
             display: flex;
             min-height: 100vh;
+            width: 100%;
+            overflow-x: hidden;
         }
 
         /* Sidebar Styles */
@@ -109,6 +111,9 @@
         .admin-main {
             flex-grow: 1;
             margin-left: var(--sidebar-width);
+            width: calc(100% - var(--sidebar-width));
+            max-width: calc(100% - var(--sidebar-width));
+            min-width: 0;
             display: flex;
             flex-direction: column;
             min-height: 100vh;
@@ -161,6 +166,8 @@
             }
             .admin-main {
                 margin-left: 0;
+                width: 100%;
+                max-width: 100%;
             }
         }
     </style>
@@ -187,14 +194,19 @@
                     </a>
                 </li>
 
-                <li class="{{ request()->routeIs('admin.articles.*') || request()->routeIs('admin.articles') ? 'active' : '' }}">
-                    <a href="{{ route('admin.articles.index') }}">
-                        <i class="bi bi-journal-text"></i> Articles & News
+                <li class="{{ request()->routeIs('admin.berita.*') || request()->routeIs('admin.berita') || request()->routeIs('admin.news.*') ? 'active' : '' }}">
+                    <a href="{{ route('admin.berita.index') }}">
+                        <i class="bi bi-newspaper"></i> Berita
                     </a>
                 </li>
-                <li class="{{ request()->routeIs('admin.mountains.*') || request()->routeIs('admin.mountains') ? 'active' : '' }}">
+                <li class="{{ request()->routeIs('admin.articles.*') || request()->routeIs('admin.articles') ? 'active' : '' }}">
+                    <a href="{{ route('admin.articles.index') }}">
+                        <i class="bi bi-journal-text"></i> Artikel
+                    </a>
+                </li>
+                <li class="{{ request()->routeIs('admin.mountains.*') || request()->routeIs('admin.mountains') || request()->routeIs('admin.destinasi.*') ? 'active' : '' }}">
                     <a href="{{ route('admin.mountains.index') }}">
-                        <i class="bi bi-geo-alt"></i> Mountains
+                        <i class="bi bi-geo-alt"></i> Destinasi
                     </a>
                 </li>
                 <li class="{{ request()->routeIs('admin.trips.*') || request()->routeIs('admin.trips') ? 'active' : '' }}">
@@ -287,6 +299,18 @@
                 @if(session('success'))
                     <div class="alert alert-success alert-dismissible fade show border-0 shadow-sm" role="alert">
                         <i class="bi bi-check-circle me-2"></i>{{ session('success') }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                @endif
+                @if(session('warning'))
+                    <div class="alert alert-warning alert-dismissible fade show border-0 shadow-sm" role="alert">
+                        <i class="bi bi-exclamation-triangle me-2"></i>{{ session('warning') }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                @endif
+                @if(session('error'))
+                    <div class="alert alert-danger alert-dismissible fade show border-0 shadow-sm" role="alert">
+                        <i class="bi bi-x-circle me-2"></i>{{ session('error') }}
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
                 @endif

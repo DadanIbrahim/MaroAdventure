@@ -1,11 +1,11 @@
 @extends(request()->routeIs('superadmin.*') ? 'layouts.superadmin' : 'layouts.admin')
-@section('title', 'Edit Gunung - ' . (request()->routeIs('superadmin.*') ? 'Superadmin' : 'Admin'))
-@section('page_title', 'Edit Gunung: ' . $mountain->name)
+@section('title', 'Edit Destinasi - ' . (request()->routeIs('superadmin.*') ? 'Superadmin' : 'Admin'))
+@section('page_title', 'Edit Destinasi: ' . $mountain->name)
 
 @section('content')
 <div class="card border-0 shadow-sm">
     <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
-        <h6 class="mb-0 fw-bold">Form Edit Gunung</h6>
+        <h6 class="mb-0 fw-bold">Form Edit Destinasi</h6>
         <a href="{{ route(request()->routeIs('superadmin.*') ? 'superadmin.mountains.index' : 'admin.mountains.index') }}" class="btn btn-sm btn-outline-secondary">
             <i class="bi bi-arrow-left me-1"></i> Kembali
         </a>
@@ -26,16 +26,13 @@
             @method('PUT')
             <div class="row g-3">
                 <div class="col-md-6">
-                    <label class="form-label">Nama Gunung <span class="text-danger">*</span></label>
-                    <input type="text" name="name" class="form-control" value="{{ old('name', $mountain->name) }}" required>
+                    <label class="form-label">Nama Destinasi <span class="text-danger">*</span></label>
+                    <input type="text" name="name" class="form-control" value="{{ old('name', $mountain->name) }}" placeholder="Contoh: Gunung Prau 2565 MDPL / Pantai Pangandaran" required>
+                    <div class="form-text">Dapat menyertakan ketinggian MDPL secara manual di nama destinasi (misal: Gunung Prau 2565 MDPL).</div>
                 </div>
                 <div class="col-md-6">
                     <label class="form-label">Lokasi <span class="text-danger">*</span></label>
                     <input type="text" name="location" class="form-control" value="{{ old('location', $mountain->location) }}" required>
-                </div>
-                <div class="col-md-6">
-                    <label class="form-label">Ketinggian (mdpl) <span class="text-danger">*</span></label>
-                    <input type="number" name="elevation" class="form-control" value="{{ old('elevation', $mountain->elevation) }}" placeholder="Contoh: 2050" required min="0">
                 </div>
                 <div class="col-md-6">
                     <label class="form-label">Status <span class="text-danger">*</span></label>
@@ -49,7 +46,7 @@
                     <textarea name="description" class="form-control" rows="4">{{ old('description', $mountain->description) }}</textarea>
                 </div>
                 <div class="col-12">
-                    <label class="form-label">Foto Gunung (Biarkan kosong jika tidak ingin mengubah)</label>
+                    <label class="form-label">Foto Destinasi (Biarkan kosong jika tidak ingin mengubah)</label>
                     @if($mountain->image)
                         <div class="mb-2">
                             <img src="{{ asset('storage/' . $mountain->image) }}" alt="Preview" class="img-thumbnail" style="max-height: 150px;">

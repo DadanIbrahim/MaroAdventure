@@ -30,9 +30,9 @@
                     <input type="text" name="name" class="form-control" value="{{ old('name', $trip->name) }}" required>
                 </div>
                 <div class="col-md-6">
-                    <label class="form-label">Gunung Tujuan <span class="text-danger">*</span></label>
+                    <label class="form-label">Destinasi Tujuan <span class="text-danger">*</span></label>
                     <select name="mountain_id" class="form-select" required>
-                        <option value="">-- Pilih Gunung --</option>
+                        <option value="">-- Pilih Destinasi --</option>
                         @foreach($mountains as $mountain)
                             <option value="{{ $mountain->id }}" {{ old('mountain_id', $trip->mountain_id) == $mountain->id ? 'selected' : '' }}>
                                 {{ $mountain->name }}
@@ -40,15 +40,11 @@
                         @endforeach
                     </select>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <label class="form-label">Harga (Rp) <span class="text-danger">*</span></label>
                     <input type="text" name="price" id="price_input" class="form-control" value="{{ old('price', $trip->price) }}" required>
                 </div>
-                <div class="col-md-4">
-                    <label class="form-label">Durasi <span class="text-danger">*</span></label>
-                    <input type="text" name="duration" class="form-control" value="{{ old('duration', $trip->duration) }}" required>
-                </div>
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <label class="form-label">Status <span class="text-danger">*</span></label>
                     <select name="status" class="form-select" required>
                         <option value="1" {{ old('status', $trip->status) == '1' ? 'selected' : '' }}>Active (Buka)</option>
@@ -57,7 +53,7 @@
                 </div>
                 <div class="col-12">
                     <label class="form-label">Deskripsi Fasilitas & Trip</label>
-                    <textarea name="description" class="form-control" rows="4">{{ old('description', $trip->description) }}</textarea>
+                    <textarea name="description" class="form-control" rows="5" placeholder="Tuliskan durasi trip (misal: 3 Hari 2 Malam), fasilitas, perlengkapan, dan rincian trip di sini...">{{ old('description', $trip->description) }}</textarea>
                 </div>
                 <div class="col-12">
                     <label class="form-label">Foto Trip</label>

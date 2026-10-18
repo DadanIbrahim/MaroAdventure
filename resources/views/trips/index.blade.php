@@ -146,19 +146,19 @@
                             type="text" 
                             name="search" 
                             class="form-control border-start-0" 
-                            placeholder="Cari trip atau nama gunung..." 
+                            placeholder="Cari trip atau destinasi..." 
                             value="{{ request('search') }}"
                         >
                     </div>
                 </div>
 
-                <!-- Mountain Filter -->
+                <!-- Destination Filter -->
                 <div class="col-lg-3 col-md-6">
                     <select name="mountain_id" class="form-select" onchange="this.form.submit()">
-                        <option value="">Semua Destinasi Gunung</option>
+                        <option value="">Semua Destinasi</option>
                         @foreach($mountains as $mountain)
                             <option value="{{ $mountain->id }}" {{ request('mountain_id') == $mountain->id ? 'selected' : '' }}>
-                                {{ $mountain->name }} ({{ $mountain->elevation ?? '-' }} MDPL)
+                                {{ $mountain->name }}
                             </option>
                         @endforeach
                     </select>
@@ -209,20 +209,22 @@
                         >
                         
                         <!-- Top Elevation Badge -->
-                        @if($trip->mountain)
+                        @if($trip->mountain && $trip->mountain->elevation)
                             <div class="trip-card-badge-top">
                                 <span class="badge bg-dark bg-opacity-75 backdrop-blur text-white px-3 py-2 rounded-pill font-monospace" style="font-size: 0.78rem;">
-                                    <i class="bi bi-triangle-fill text-warning me-1"></i> {{ $trip->mountain->elevation ?? '2.050' }} MDPL
+                                    <i class="bi bi-triangle-fill text-warning me-1"></i> {{ $trip->mountain->elevation }} MDPL
                                 </span>
                             </div>
                         @endif
 
+                        @if($trip->duration)
                         <!-- Duration Badge -->
                         <div class="trip-card-duration-badge">
                             <span class="badge bg-primary text-white px-3 py-2 rounded-pill shadow-sm fw-bold" style="font-size: 0.78rem;">
-                                <i class="bi bi-clock me-1"></i> {{ $trip->duration ?? '2 Hari 1 Malam' }}
+                                <i class="bi bi-clock me-1"></i> {{ $trip->duration }}
                             </span>
                         </div>
+                        @endif
                     </div>
 
                     <!-- Card Body Content -->
@@ -278,12 +280,9 @@
                                 </div>
                             </div>
 
-                            <div class="d-flex gap-2">
-                                <a href="{{ route('trips.show', $trip->id) }}" class="btn btn-outline-secondary btn-sm flex-grow-1 fw-bold py-2 rounded-2">
-                                    Detail Trip
-                                </a>
-                                <a href="{{ route('checkout.index', ['trip_id' => $trip->id]) }}" class="btn btn-primary btn-sm flex-grow-1 fw-bold py-2 rounded-2 shadow-sm">
-                                    Pesan Sekarang &rarr;
+                            <div>
+                                <a href="{{ route('trips.show', $trip->id) }}" class="btn btn-primary w-100 fw-bold py-2 rounded-2 shadow-sm d-flex align-items-center justify-content-center gap-2">
+                                    <i class="bi bi-info-circle me-1"></i> Detail &amp; Pemesanan &rarr;
                                 </a>
                             </div>
                         </div>

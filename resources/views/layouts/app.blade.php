@@ -31,6 +31,39 @@
         @include('layouts.partials.navbar')
     @endunless
 
+    @if(session('warning') || session('error') || session('success') || session('info'))
+        <div class="container mt-4 pt-3 position-relative" style="z-index: 1050;">
+            @if(session('warning'))
+                <div class="alert alert-warning alert-dismissible fade show shadow-sm border-0 d-flex align-items-center gap-2 mb-3" role="alert">
+                    <i class="bi bi-exclamation-triangle-fill fs-5 text-warning flex-shrink-0"></i>
+                    <div class="fw-medium">{{ session('warning') }}</div>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
+            @if(session('error'))
+                <div class="alert alert-danger alert-dismissible fade show shadow-sm border-0 d-flex align-items-center gap-2 mb-3" role="alert">
+                    <i class="bi bi-x-circle-fill fs-5 text-danger flex-shrink-0"></i>
+                    <div class="fw-medium">{{ session('error') }}</div>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
+            @if(session('success'))
+                <div class="alert alert-success alert-dismissible fade show shadow-sm border-0 d-flex align-items-center gap-2 mb-3" role="alert">
+                    <i class="bi bi-check-circle-fill fs-5 text-success flex-shrink-0"></i>
+                    <div class="fw-medium">{{ session('success') }}</div>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
+            @if(session('info'))
+                <div class="alert alert-info alert-dismissible fade show shadow-sm border-0 d-flex align-items-center gap-2 mb-3" role="alert">
+                    <i class="bi bi-info-circle-fill fs-5 text-info flex-shrink-0"></i>
+                    <div class="fw-medium">{{ session('info') }}</div>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
+        </div>
+    @endif
+
     @yield('content')
 
     @unless(request()->routeIs('login') || request()->routeIs('register'))

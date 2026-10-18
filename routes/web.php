@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BackendArticleController;
+use App\Http\Controllers\BackendBeritaController;
 use App\Http\Controllers\BackendCommunityController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\CheckoutController;
@@ -18,6 +19,7 @@ use App\Http\Controllers\SuperadminController;
 use App\Http\Controllers\TripController;
 use App\Http\Middleware\CheckAdmin;
 use App\Http\Middleware\CheckSuperadmin;
+use App\Http\Middleware\EnsureCustomerOrGuest;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
@@ -76,7 +78,10 @@ Route::middleware('auth')->group(function () {
     Route::put('/dashboard/profile', [DashboardController::class, 'updateProfile'])->name('dashboard.profile.update');
     Route::put('/dashboard/profile/password', [DashboardController::class, 'updatePassword'])->name('dashboard.profile.password');
 
-    // Checkout Flow
+});
+
+// Checkout Flow (Dapat diakses oleh Guest & Customer, diblokir untuk Admin & Superadmin)
+Route::middleware(EnsureCustomerOrGuest::class)->group(function () {
     Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
     Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
     Route::get('/checkout/payment', [CheckoutController::class, 'payment'])->name('checkout.payment');
@@ -103,7 +108,10 @@ Route::middleware(['auth', CheckAdmin::class])->prefix('admin')->name('admin.')-
     Route::get('/participants', [AdminController::class, 'participants'])->name('participants');
     Route::get('/content', [AdminController::class, 'content'])->name('content');
     Route::resource('articles', BackendArticleController::class);
+    Route::resource('berita', BackendBeritaController::class)->parameters(['berita' => 'article']);
+    Route::resource('news', BackendBeritaController::class)->parameters(['news' => 'article']);
     Route::resource('mountains', MountainController::class);
+    Route::resource('destinasi', MountainController::class)->parameters(['destinasi' => 'mountain']);
     Route::resource('trips', TripController::class);
     Route::resource('booking', BookingController::class)->names('bookings');
     Route::resource('payment', PaymentController::class)->names('payments');
@@ -123,7 +131,10 @@ Route::middleware(['auth', CheckSuperadmin::class])->prefix('superadmin')->name(
     Route::delete('/users/{user}', [SuperadminController::class, 'destroyUser'])->name('users.destroy');
     Route::get('/content', [SuperadminController::class, 'content'])->name('content');
     Route::resource('articles', BackendArticleController::class);
+    Route::resource('berita', BackendBeritaController::class)->parameters(['berita' => 'article']);
+    Route::resource('news', BackendBeritaController::class)->parameters(['news' => 'article']);
     Route::resource('mountains', MountainController::class);
+    Route::resource('destinasi', MountainController::class)->parameters(['destinasi' => 'mountain']);
     Route::resource('trips', TripController::class);
     Route::resource('booking', BookingController::class)->names('bookings');
     Route::resource('payment', PaymentController::class)->names('payments');

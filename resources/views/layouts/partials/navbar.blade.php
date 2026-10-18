@@ -43,14 +43,14 @@
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link {{ request()->routeIs('artikel.*') ? 'active' : '' }}" href="{{ route('artikel.index') }}">
-                        <i class="bi bi-journal-text me-1 opacity-75 d-lg-none"></i> Artikel
+                    <a class="nav-link {{ request()->routeIs('berita.*') ? 'active' : '' }}" href="{{ route('berita.index') }}">
+                        <i class="bi bi-newspaper me-1 opacity-75 d-lg-none"></i> Berita
                     </a>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link {{ request()->routeIs('berita.*') ? 'active' : '' }}" href="{{ route('berita.index') }}">
-                        <i class="bi bi-newspaper me-1 opacity-75 d-lg-none"></i> Berita
+                    <a class="nav-link {{ request()->routeIs('artikel.*') ? 'active' : '' }}" href="{{ route('artikel.index') }}">
+                        <i class="bi bi-journal-text me-1 opacity-75 d-lg-none"></i> Artikel
                     </a>
                 </li>
 

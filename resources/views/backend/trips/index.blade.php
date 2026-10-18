@@ -18,7 +18,7 @@
                         <th width="5%">No</th>
                         <th width="10%">Foto</th>
                         <th width="20%">Nama Trip</th>
-                        <th width="15%">Gunung</th>
+                        <th width="15%">Destinasi</th>
                         <th width="15%">Harga</th>
                         <th width="15%">Durasi</th>
                         <th width="10%">Status</th>
@@ -41,7 +41,7 @@
                         <td class="fw-medium">{{ $trip->name }}</td>
                         <td>{{ $trip->mountain ? $trip->mountain->name : '-' }}</td>
                         <td class="fw-bold text-success">{{ $trip->formatted_price }}</td>
-                        <td>{{ $trip->duration }}</td>
+                        <td>{{ $trip->duration ?: '-' }}</td>
                         <td>
                             @if($trip->status)
                                 <span class="badge bg-success">Active</span>

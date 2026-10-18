@@ -25,14 +25,18 @@ class MountainController extends Controller
         if ($request->filled('elevation')) {
             $cleanedElevation = preg_replace('/[^0-9]/', '', (string) $request->elevation);
             $request->merge([
-                'elevation' => $cleanedElevation === '' ? null : (int) $cleanedElevation,
+                'elevation' => $cleanedElevation === '' ? 0 : (int) $cleanedElevation,
+            ]);
+        } else {
+            $request->merge([
+                'elevation' => 0,
             ]);
         }
 
         $request->validate([
             'name' => 'required|string|max:255',
             'location' => 'required|string|max:255',
-            'elevation' => 'required|integer|min:0',
+            'elevation' => 'nullable|integer|min:0',
             'description' => 'nullable|string',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'status' => 'required|boolean',
@@ -47,7 +51,7 @@ class MountainController extends Controller
         Mountain::create($data);
 
         return redirect()->route(request()->routeIs('superadmin.*') ? 'superadmin.mountains.index' : 'admin.mountains.index')
-            ->with('success', 'Gunung berhasil ditambahkan.');
+            ->with('success', 'Destinasi berhasil ditambahkan.');
     }
 
     public function edit(Mountain $mountain)
@@ -60,14 +64,18 @@ class MountainController extends Controller
         if ($request->filled('elevation')) {
             $cleanedElevation = preg_replace('/[^0-9]/', '', (string) $request->elevation);
             $request->merge([
-                'elevation' => $cleanedElevation === '' ? null : (int) $cleanedElevation,
+                'elevation' => $cleanedElevation === '' ? 0 : (int) $cleanedElevation,
+            ]);
+        } else {
+            $request->merge([
+                'elevation' => $mountain->elevation ?? 0,
             ]);
         }
 
         $request->validate([
             'name' => 'required|string|max:255',
             'location' => 'required|string|max:255',
-            'elevation' => 'required|integer|min:0',
+            'elevation' => 'nullable|integer|min:0',
             'description' => 'nullable|string',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'status' => 'required|boolean',
@@ -85,7 +93,7 @@ class MountainController extends Controller
         $mountain->update($data);
 
         return redirect()->route(request()->routeIs('superadmin.*') ? 'superadmin.mountains.index' : 'admin.mountains.index')
-            ->with('success', 'Data gunung berhasil diperbarui.');
+            ->with('success', 'Data destinasi berhasil diperbarui.');
     }
 
     public function destroy(Mountain $mountain)
@@ -96,6 +104,6 @@ class MountainController extends Controller
         $mountain->delete();
 
         return redirect()->route(request()->routeIs('superadmin.*') ? 'superadmin.mountains.index' : 'admin.mountains.index')
-            ->with('success', 'Data gunung berhasil dihapus.');
+            ->with('success', 'Data destinasi berhasil dihapus.');
     }
 }

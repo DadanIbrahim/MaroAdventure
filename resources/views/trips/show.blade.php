@@ -93,12 +93,14 @@
         <div class="d-flex flex-wrap align-items-center gap-2 mb-2">
             @if($trip->mountain)
                 <span class="badge bg-white bg-opacity-20 text-white rounded-pill px-3 py-1 font-monospace">
-                    <i class="bi bi-geo-alt-fill text-warning me-1"></i> {{ $trip->mountain->name }} ({{ $trip->mountain->elevation ?? '2.050' }} MDPL)
+                    <i class="bi bi-geo-alt-fill text-warning me-1"></i> {{ $trip->mountain->name }}
                 </span>
             @endif
+            @if($trip->duration)
             <span class="badge bg-primary text-white rounded-pill px-3 py-1">
-                <i class="bi bi-clock me-1"></i> {{ $trip->duration ?? '2 Hari 1 Malam' }}
+                <i class="bi bi-clock me-1"></i> {{ $trip->duration }}
             </span>
+            @endif
         </div>
 
         <h1 class="fw-bold mb-2 display-6">{{ $trip->name }}</h1>
@@ -128,40 +130,20 @@
 
             <!-- CARD 1: OVERVIEW & SPESIFIKASI JALUR -->
             <div class="detail-card">
-                <h4 class="fw-bold text-dark mb-3">Tentang Perjalanan Ini</h4>
-                <p class="text-secondary" style="line-height: 1.8;">
-                    {{ $trip->description ?? 'Paket petualangan mendaki gunung bersama Maro Adventure dirancang khusus untuk memberikan pengalaman outdoor terbaik dengan standar keselamatan ketat. Nikmati panorama alam memukau, kebersamaan di camp area, dan momen sunrise yang tak terlupakan.' }}
-                </p>
-
-                <!-- Grid Spesifikasi -->
-                <div class="row g-3 mt-2">
-                    <div class="col-sm-6 col-md-3">
-                        <div class="p-3 bg-light rounded-3 text-center border">
-                            <span class="text-muted small d-block">Tingkat Kesulitan</span>
-                            <strong class="text-dark">Ramah Pemula</strong>
-                        </div>
-                    </div>
-                    <div class="col-sm-6 col-md-3">
-                        <div class="p-3 bg-light rounded-3 text-center border">
-                            <span class="text-muted small d-block">Ketinggian Puncak</span>
-                            <strong class="text-dark">{{ $trip->mountain->elevation ?? '2.050' }} MDPL</strong>
-                        </div>
-                    </div>
-                    <div class="col-sm-6 col-md-3">
-                        <div class="p-3 bg-light rounded-3 text-center border">
-                            <span class="text-muted small d-block">Durasi Kegiatan</span>
-                            <strong class="text-dark">{{ $trip->duration ?? '2H 1M' }}</strong>
-                        </div>
-                    </div>
-                    <div class="col-sm-6 col-md-3">
-                        <div class="p-3 bg-light rounded-3 text-center border">
-                            <span class="text-muted small d-block">Lokasi Gunung</span>
-                            <strong class="text-dark">{{ $trip->mountain->location ?? 'Jawa Barat' }}</strong>
-                        </div>
-                    </div>
-                </div>
+                <h4 class="fw-bold text-dark mb-3">Tentang Perjalanan &amp; Rincian Lengkap</h4>
+                <div class="text-secondary mb-0" style="line-height: 1.8; font-size: 0.98rem; white-space: pre-line;">{{ $trip->description ?? 'Paket petualangan mendaki gunung bersama Maro Adventure dirancang khusus untuk memberikan pengalaman outdoor terbaik dengan standar keselamatan ketat. Nikmati panorama alam memukau, kebersamaan di camp area, dan momen sunrise yang tak terlupakan.' }}</div>
             </div>
 
+            @php
+                $hasCustomDetails = $trip->description && (
+                    str_contains($trip->description, 'Fasilitas Termasuk') || 
+                    str_contains($trip->description, 'Rincian & Aktivitas') || 
+                    str_contains($trip->description, 'Rundown') ||
+                    str_contains($trip->description, 'Include')
+                );
+            @endphp
+
+            @if(!$hasCustomDetails)
             <!-- CARD 2: ITINERARY / RUNDOWN KEGIATAN -->
             <div class="detail-card">
                 <h4 class="fw-bold text-dark mb-1">Rundown Perjalanan (Itinerary)</h4>
@@ -329,6 +311,7 @@
                     </div>
                 </div>
             </div>
+            @endif
 
         </div>
 
@@ -345,7 +328,7 @@
                 <div class="bg-light p-3 rounded-3 mb-4 border">
                     <div class="d-flex justify-content-between small text-muted mb-2">
                         <span>Durasi:</span>
-                        <strong class="text-dark">{{ $trip->duration ?? '2 Hari 1 Malam' }}</strong>
+                        <strong class="text-dark">{{ $trip->duration ?? 'Lihat Deskripsi' }}</strong>
                     </div>
                     <div class="d-flex justify-content-between small text-muted mb-2">
                         <span>Minimal Peserta:</span>
@@ -357,10 +340,60 @@
                     </div>
                 </div>
 
-                <!-- Tombol Booking Utama -->
-                <a href="{{ route('checkout.index', ['trip_id' => $trip->id]) }}" class="btn btn-primary btn-lg w-100 fw-bold py-3 shadow-sm d-flex align-items-center justify-content-center gap-2 mb-2">
-                    <i class="bi bi-calendar2-check-fill"></i> Pesan Tiket Sekarang &rarr;
-                </a>
+                <!-- Form Booking Terintegrasi Menuju Checkout -->
+                <form action="{{ route('checkout.index') }}" method="GET" class="mb-3">
+                    <input type="hidden" name="trip_id" value="{{ $trip->id }}">
+
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold text-secondary mb-1">
+                            <i class="bi bi-calendar3 me-1 text-primary"></i> Tanggal Berangkat:
+                        </label>
+                        <input 
+                            type="date" 
+                            name="booking_date" 
+                            class="form-control" 
+                            min="{{ date('Y-m-d') }}" 
+                            value="{{ date('Y-m-d', strtotime('+3 days')) }}"
+                            required
+                        >
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold text-secondary mb-1">
+                            <i class="bi bi-people-fill me-1 text-primary"></i> Jumlah Peserta:
+                        </label>
+                        <div class="input-group">
+                            <input 
+                                type="number" 
+                                name="participants" 
+                                class="form-control text-center fw-bold" 
+                                value="1" 
+                                min="1" 
+                                max="50"
+                                required
+                            >
+                            <span class="input-group-text bg-light text-muted">Orang (Pax)</span>
+                        </div>
+                    </div>
+
+                    <!-- Tombol Booking Utama -->
+                    @php
+                        $isAdminOrSuperadmin = auth()->check() && (auth()->user()->isAdmin() || auth()->user()->isSuperadmin() || in_array(auth()->user()->role, ['admin', 'superadmin']));
+                    @endphp
+
+                    @if($isAdminOrSuperadmin)
+                        <button type="button" onclick="alert('Akun Admin/Superadmin tidak dapat melakukan booking personal lewat halaman ini. Silakan gunakan menu \'Booking Manual\' di Admin Panel.');" class="btn btn-primary btn-lg w-100 fw-bold py-3 shadow-sm d-flex align-items-center justify-content-center gap-2 mb-2">
+                            <i class="bi bi-calendar2-check-fill"></i> Pesan Tiket Sekarang &rarr;
+                        </button>
+                        <div class="alert alert-warning py-2 px-3 small border-0 mb-2 rounded-2" style="font-size: 0.78rem;">
+                            <i class="bi bi-shield-exclamation me-1"></i> Anda login sebagai <strong>{{ ucfirst(auth()->user()->role) }}</strong>. Silakan gunakan menu <strong>Booking Manual</strong> di Admin Panel.
+                        </div>
+                    @else
+                        <button type="submit" class="btn btn-primary btn-lg w-100 fw-bold py-3 shadow-sm d-flex align-items-center justify-content-center gap-2 mb-2">
+                            <i class="bi bi-calendar2-check-fill"></i> Pesan Tiket Sekarang &rarr;
+                        </button>
+                    @endif
+                </form>
 
                 <!-- Tombol Konsultasi WA -->
                 <a href="https://wa.me/6285894535172?text=Halo%20Maro%20Adventure%2C%20saya%20tertarik%20dengan%20paket%20trip%20{{ urlencode($trip->name) }}." target="_blank" class="btn btn-outline-success w-100 fw-bold py-2 mb-4">
@@ -408,13 +441,16 @@
                                 <div>
                                     <h6 class="fw-bold mb-1 text-dark">{{ $rTrip->name }}</h6>
                                     <p class="text-muted small mb-3">
-                                        <i class="bi bi-clock me-1"></i> {{ $rTrip->duration ?? '2 Hari 1 Malam' }} &bull; {{ $rTrip->mountain->name ?? 'Gunung' }}
+                                        @if($rTrip->duration)
+                                            <i class="bi bi-clock me-1"></i> {{ $rTrip->duration }} &bull;
+                                        @endif
+                                        {{ $rTrip->mountain->name ?? 'Gunung' }}
                                     </p>
                                 </div>
                                 <div class="d-flex justify-content-between align-items-center pt-2 border-top">
                                     <strong class="text-primary fs-6">Rp {{ number_format($rTrip->price, 0, ',', '.') }}</strong>
-                                    <a href="{{ route('trips.show', $rTrip->id) }}" class="btn btn-sm btn-outline-primary rounded-pill px-3">
-                                        Lihat Trip
+                                    <a href="{{ route('trips.show', $rTrip->id) }}" class="btn btn-sm btn-primary rounded-pill px-3 fw-bold">
+                                        Detail &amp; Pemesanan
                                     </a>
                                 </div>
                             </div>

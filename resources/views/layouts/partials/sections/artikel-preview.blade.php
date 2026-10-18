@@ -6,18 +6,18 @@
 
             <div class="badge-tag">
                 <i class="bi bi-newspaper me-1"></i>
-                Artikel & Berita
+                Berita & Artikel
             </div>
 
             <h2 class="section-title">
-                Cerita & Inspirasi Perjalanan
+                Berita Terkini & Inspirasi Perjalanan
             </h2>
 
             <div class="divider-line mt-3 mb-3"></div>
 
             <p class="section-subtitle">
-                Tips mendaki, kisah perjalanan, info destinasi, dan berita terbaru
-                dari dunia petualangan alam Indonesia.
+                Berita terbaru, kisah petualangan, info destinasi, dan tips mendaki
+                dari Maro Adventure Indonesia.
             </p>
 
         </div>
@@ -25,6 +25,7 @@
 
         @php
             $previews = \App\Models\Article::published()
+                ->orderByRaw("CASE WHEN category = 'Berita' THEN 0 ELSE 1 END")
                 ->latest('published_at')
                 ->take(3)
                 ->get();
@@ -96,13 +97,13 @@
             </div>
 
             <div class="text-center mt-5 fade-up d-flex justify-content-center align-items-center gap-3 flex-wrap">
-                <a href="{{ route('artikel.index') }}" class="btn-primary-custom">
+                <a href="{{ route('berita.index') }}" class="btn-primary-custom">
+                    <i class="bi bi-newspaper me-1"></i>
+                    Lihat Semua Berita
+                </a>
+                <a href="{{ route('artikel.index') }}" class="btn-outline-custom" style="color: var(--color-primary) !important; border-color: var(--color-primary);">
                     <i class="bi bi-journal-text me-1"></i>
                     Lihat Semua Artikel
-                </a>
-                <a href="{{ route('berita.index') }}" class="btn-outline-custom" style="color: var(--color-primary) !important; border-color: var(--color-primary);">
-                    <i class="bi bi-newspaper me-1"></i>
-                    Lihat Kabar Berita
                 </a>
             </div>
 

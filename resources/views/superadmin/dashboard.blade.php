@@ -149,10 +149,13 @@
                     <i class="bi bi-plus-circle me-2"></i> Tambah Trip Baru
                 </a>
                 <a href="{{ route('superadmin.mountains.index') }}" class="btn btn-outline-secondary btn-sm text-start">
-                    <i class="bi bi-geo-alt me-2"></i> Kelola Gunung
+                    <i class="bi bi-geo-alt me-2"></i> Kelola Destinasi
+                </a>
+                <a href="{{ route('superadmin.berita.index') }}" class="btn btn-outline-primary btn-sm text-start">
+                    <i class="bi bi-newspaper me-2"></i> Kelola Berita
                 </a>
                 <a href="{{ route('superadmin.articles.index') }}" class="btn btn-outline-info btn-sm text-start">
-                    <i class="bi bi-journal-text me-2"></i> Kelola Artikel & Berita
+                    <i class="bi bi-journal-text me-2"></i> Kelola Artikel
                 </a>
                 <a href="{{ route('superadmin.reports') }}" class="btn btn-outline-warning btn-sm text-start">
                     <i class="bi bi-graph-up me-2"></i> Lihat Laporan

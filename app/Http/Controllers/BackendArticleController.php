@@ -11,7 +11,7 @@ class BackendArticleController extends Controller
 {
     public function index()
     {
-        $articles = Article::latest()->get();
+        $articles = Article::onlyArticles()->latest()->get();
 
         return view('backend.articles.index', compact('articles'));
     }
@@ -29,12 +29,17 @@ class BackendArticleController extends Controller
             'excerpt' => 'nullable|string',
             'content' => 'required|string',
             'is_published' => 'required|boolean',
+            'published_at' => 'nullable|date',
             'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
             'gallery.*' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
         ]);
 
         $data = $request->except(['thumbnail', 'gallery']);
         $data['slug'] = Str::slug($request->title).'-'.uniqid();
+
+        if (empty($data['excerpt'])) {
+            $data['excerpt'] = Str::limit(strip_tags($data['content']), 160);
+        }
 
         if ($request->hasFile('thumbnail')) {
             $data['thumbnail'] = $request->file('thumbnail')->store('articles', 'public');
@@ -72,11 +77,16 @@ class BackendArticleController extends Controller
             'excerpt' => 'nullable|string',
             'content' => 'required|string',
             'is_published' => 'required|boolean',
+            'published_at' => 'nullable|date',
             'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
             'gallery.*' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
         ]);
 
         $data = $request->except(['thumbnail', 'gallery']);
+
+        if (empty($data['excerpt'])) {
+            $data['excerpt'] = Str::limit(strip_tags($data['content']), 160);
+        }
 
         if ($article->title !== $request->title) {
             $data['slug'] = Str::slug($request->title).'-'.uniqid();
@@ -97,7 +107,9 @@ class BackendArticleController extends Controller
             $data['gallery'] = $existingGallery;
         }
 
-        if ($data['is_published'] && ! $article->is_published) {
+        if ($request->filled('published_at')) {
+            $data['published_at'] = $request->published_at;
+        } elseif ($data['is_published'] && ! $article->is_published) {
             $data['published_at'] = now();
         }
 

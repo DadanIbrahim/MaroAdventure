@@ -421,7 +421,7 @@
                                 <option 
                                     value="{{ $t->id }}"
                                     data-price="{{ $t->price }}"
-                                    data-duration="{{ $t->duration ?? '2 Hari 1 Malam' }}"
+                                    data-duration="{{ $t->duration ?? 'Lihat Deskripsi' }}"
                                     data-mountain="{{ $t->mountain->name ?? 'Gunung Indonesia' }}"
                                     data-elevation="{{ $t->mountain->elevation ?? '2000' }}"
                                     data-location="{{ $t->mountain->location ?? 'Indonesia' }}"
@@ -446,7 +446,7 @@
                         <div class="flex-grow-1">
                             <div class="d-flex flex-wrap align-items-center gap-2 mb-1">
                                 <span class="badge bg-primary-subtle text-primary fw-bold" id="tripBadgeDuration">
-                                    <i class="bi bi-clock me-1"></i> {{ $selectedTrip->duration ?? '2 Hari 1 Malam' }}
+                                    <i class="bi bi-clock me-1"></i> {{ $selectedTrip->duration ?? 'Lihat Deskripsi' }}
                                 </span>
                                 <span class="badge bg-secondary-subtle text-secondary fw-semibold" id="tripBadgeElevation">
                                     <i class="bi bi-triangle me-1"></i> {{ $selectedTrip->mountain->elevation ?? 2050 }} MDPL
@@ -484,7 +484,7 @@
                                 id="booking_date" 
                                 class="form-control form-control-lg"
                                 min="{{ date('Y-m-d') }}"
-                                value="{{ old('booking_date', date('Y-m-d', strtotime('+3 days'))) }}"
+                                value="{{ old('booking_date', request('booking_date', date('Y-m-d', strtotime('+3 days')))) }}"
                                 required
                             />
                             <div class="form-text small">Paling lambat reservasi H-2 sebelum keberangkatan.</div>
@@ -503,7 +503,7 @@
                                         name="participants" 
                                         id="participantsInput" 
                                         class="counter-input" 
-                                        value="{{ old('participants', 1) }}" 
+                                        value="{{ old('participants', request('participants', 1)) }}" 
                                         min="1" 
                                         max="50"
                                         required
@@ -827,7 +827,7 @@ document.addEventListener('DOMContentLoaded', function () {
         if (!selectedOption) return;
 
         const price = parseInt(selectedOption.getAttribute('data-price') || '0', 10);
-        const duration = selectedOption.getAttribute('data-duration') || '2 Hari 1 Malam';
+        const duration = selectedOption.getAttribute('data-duration') || 'Lihat Deskripsi';
         const mountain = selectedOption.getAttribute('data-mountain') || 'Gunung Indonesia';
         const elevation = selectedOption.getAttribute('data-elevation') || '2000';
         const location = selectedOption.getAttribute('data-location') || 'Indonesia';
