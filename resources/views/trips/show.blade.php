@@ -382,7 +382,7 @@
                     @endphp
 
                     @if($isAdminOrSuperadmin)
-                        <button type="button" onclick="alert('Akun Admin/Superadmin tidak dapat melakukan booking personal lewat halaman ini. Silakan gunakan menu \'Booking Manual\' di Admin Panel.');" class="btn btn-primary btn-lg w-100 fw-bold py-3 shadow-sm d-flex align-items-center justify-content-center gap-2 mb-2">
+                        <button type="button" onclick="showAdminBookingAlert()" class="btn btn-primary btn-lg w-100 fw-bold py-3 shadow-sm d-flex align-items-center justify-content-center gap-2 mb-2">
                             <i class="bi bi-calendar2-check-fill"></i> Pesan Tiket Sekarang &rarr;
                         </button>
                         <div class="alert alert-warning py-2 px-3 small border-0 mb-2 rounded-2" style="font-size: 0.78rem;">
@@ -464,4 +464,35 @@
 </div>
 
 @endsection
+
+@if($isAdminOrSuperadmin)
+@push('scripts')
+<script>
+function showAdminBookingAlert() {
+    Swal.fire({
+        icon: 'warning',
+        title: 'Akses Dibatasi',
+        html: `Akun <strong>Admin/Superadmin</strong> tidak dapat melakukan booking personal lewat halaman ini.<br><br>Silakan gunakan menu <strong>'Booking Manual'</strong> di Admin Panel.`,
+        showCancelButton: true,
+        confirmButtonText: '<i class="bi bi-calendar2-plus me-1"></i> Buka Booking Manual',
+        cancelButtonText: 'Tutup',
+        confirmButtonColor: '#0d6efd',
+        cancelButtonColor: '#6c757d',
+        buttonsStyling: false,
+        customClass: {
+            popup: 'rounded-4 shadow-lg p-3 text-start',
+            title: 'fs-5 fw-bold text-dark pt-2',
+            htmlContainer: 'text-secondary small mt-2',
+            confirmButton: 'btn btn-primary px-4 py-2 rounded-3 fw-semibold',
+            cancelButton: 'btn btn-outline-secondary px-4 py-2 rounded-3 fw-semibold ms-2'
+        }
+    }).then((result) => {
+        if (result.isConfirmed) {
+            window.location.href = "{{ auth()->user() && (auth()->user()->isSuperadmin() || auth()->user()->role === 'superadmin') ? route('superadmin.bookings.create') : route('admin.bookings.create') }}";
+        }
+    });
+}
+</script>
+@endpush
+@endif
 

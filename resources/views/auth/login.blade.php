@@ -105,7 +105,7 @@
                                             Remember me
                                         </label>
                                     </div>
-                                    <a href="#" class="small text-primary text-decoration-none fw-medium" onclick="alert('Fitur reset password via email akan hadir segera. Silakan hubungi admin Maro jika terkendala.'); return false;">
+                                    <a href="#" class="small text-primary text-decoration-none fw-medium" onclick="Swal.fire({ icon: 'info', title: 'Reset Password', text: 'Fitur reset password via email akan hadir segera. Silakan hubungi admin Maro jika terkendala.', confirmButtonColor: '#0d6efd' }); return false;">
                                         Forgot password?
                                     </a>
                                 </div>

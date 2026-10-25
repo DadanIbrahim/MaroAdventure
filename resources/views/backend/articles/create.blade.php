@@ -175,7 +175,7 @@
             const text = quill.getText().trim();
             if (text.length === 0 && !quill.root.querySelector('img')) {
                 e.preventDefault();
-                alert('Isi artikel tidak boleh kosong.');
+                Swal.fire({ icon: 'warning', title: 'Perhatian', text: 'Isi artikel tidak boleh kosong.', confirmButtonColor: '#0d6efd' });
                 quill.focus();
                 return false;
             }
