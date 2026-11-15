@@ -104,11 +104,10 @@
                         <div class="form-text">Format: JPG/PNG/WebP, Max 2MB. Disarankan orientasi landscape (16:9).</div>
                     </div>
 
-                    <div class="mb-3">
-                        <label class="form-label">Galeri / Foto Dokumentasi Pendukung</label>
-                        <input type="file" name="gallery[]" class="form-control" accept="image/*" multiple>
-                        <div class="form-text">Dapat memilih lebih dari 1 foto pendukung berita.</div>
-                    </div>
+                    @include('backend.partials.gallery-uploader', [
+                        'label' => 'Galeri / Foto Dokumentasi Pendukung',
+                        'hint' => 'Pilih foto satu per satu atau sekaligus untuk dokumentasi berita.'
+                    ])
                 </div>
 
                 <div class="col-12 mt-4 pt-3 border-top d-flex justify-content-between align-items-center flex-wrap gap-2">

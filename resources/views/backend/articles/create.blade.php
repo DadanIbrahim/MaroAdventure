@@ -93,11 +93,10 @@
                         <div class="form-text">Format: JPG/PNG, Max 2MB. Disarankan rasio landscape.</div>
                     </div>
 
-                    <div class="mb-3">
-                        <label class="form-label">Galeri Foto Tambahan (Slider)</label>
-                        <input type="file" name="gallery[]" class="form-control" accept="image/*" multiple>
-                        <div class="form-text">Bisa pilih beberapa foto sekaligus untuk slider berganti otomatis.</div>
-                    </div>
+                    @include('backend.partials.gallery-uploader', [
+                        'label' => 'Galeri Foto Tambahan (Slider)',
+                        'hint' => 'Pilih foto satu per satu atau sekaligus untuk slider berganti otomatis.'
+                    ])
 
                 </div>
 

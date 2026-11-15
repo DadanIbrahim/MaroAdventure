@@ -96,7 +96,7 @@ class BackendBeritaController extends Controller
             'type' => 'berita',
         ]);
 
-        $data = $request->except(['thumbnail', 'gallery']);
+        $data = $request->except(['thumbnail', 'gallery', 'deleted_gallery']);
         $data['category'] = 'Berita';
 
         if (empty($data['excerpt'])) {
@@ -114,11 +114,28 @@ class BackendBeritaController extends Controller
             $data['thumbnail'] = $request->file('thumbnail')->store('articles', 'public');
         }
 
+        $existingGallery = is_array($article->gallery) ? $article->gallery : (json_decode($article->gallery ?? '[]', true) ?: []);
+        $galleryChanged = false;
+
+        if ($request->filled('deleted_gallery')) {
+            $toDelete = (array) $request->input('deleted_gallery');
+            foreach ($toDelete as $delPath) {
+                if ($delPath && Storage::disk('public')->exists($delPath)) {
+                    Storage::disk('public')->delete($delPath);
+                }
+                $existingGallery = array_values(array_filter($existingGallery, fn ($p) => $p !== $delPath));
+            }
+            $galleryChanged = true;
+        }
+
         if ($request->hasFile('gallery')) {
-            $existingGallery = is_array($article->gallery) ? $article->gallery : (json_decode($article->gallery ?? '[]', true) ?: []);
             foreach ($request->file('gallery') as $file) {
                 $existingGallery[] = $file->store('articles/gallery', 'public');
             }
+            $galleryChanged = true;
+        }
+
+        if ($galleryChanged) {
             $data['gallery'] = $existingGallery;
         }
 

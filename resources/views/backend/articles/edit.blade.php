@@ -113,23 +113,11 @@
                             <div class="form-text">Kosongkan jika tidak ingin mengganti.</div>
                         </div>
 
-                        <div class="mb-3">
-                            <label class="form-label">Galeri Foto Tambahan Saat Ini</label>
-                            @if(!empty($article->gallery) && is_array($article->gallery) && count($article->gallery) > 0)
-                                <div class="d-flex flex-wrap gap-2 mb-2">
-                                    @foreach($article->gallery as $gImg)
-                                        <img src="{{ asset('storage/' . $gImg) }}" alt="Galeri" class="img-thumbnail"
-                                            style="width: 70px; height: 70px; object-fit: cover;">
-                                    @endforeach
-                                </div>
-                            @else
-                                <div class="text-muted small mb-2">Belum ada foto galeri tambahan</div>
-                            @endif
-
-                            <label class="form-label mt-2">Tambah Foto Galeri Baru (Slider)</label>
-                            <input type="file" name="gallery[]" class="form-control" accept="image/*" multiple>
-                            <div class="form-text">Bisa pilih beberapa foto sekaligus untuk slider bergeser.</div>
-                        </div>
+                        @include('backend.partials.gallery-uploader', [
+                            'label' => 'Galeri Foto Tambahan (Slider)',
+                            'hint' => 'Pilih foto satu per satu atau sekaligus untuk slider bergeser.',
+                            'existingGallery' => $article->gallery
+                        ])
                     </div>
 
                     <div

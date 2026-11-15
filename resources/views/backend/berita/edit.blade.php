@@ -112,18 +112,11 @@
                         <div class="form-text">Biarkan kosong jika tidak ingin mengganti thumbnail.</div>
                     </div>
 
-                    <div class="mb-3">
-                        <label class="form-label">Galeri / Foto Dokumentasi Pendukung</label>
-                        @if(!empty($article->gallery) && is_array($article->gallery))
-                            <div class="d-flex flex-wrap gap-2 mb-2">
-                                @foreach($article->gallery as $gImg)
-                                    <img src="{{ Str::startsWith($gImg, ['http://', 'https://']) ? $gImg : asset('storage/'.$gImg) }}" class="img-thumbnail" style="width: 50px; height: 50px; object-fit: cover;">
-                                @endforeach
-                            </div>
-                        @endif
-                        <input type="file" name="gallery[]" class="form-control" accept="image/*" multiple>
-                        <div class="form-text">Upload foto baru untuk menambahkan ke galeri.</div>
-                    </div>
+                    @include('backend.partials.gallery-uploader', [
+                        'label' => 'Galeri / Foto Dokumentasi Pendukung',
+                        'hint' => 'Pilih foto satu per satu atau sekaligus untuk dokumentasi berita.',
+                        'existingGallery' => $article->gallery
+                    ])
                 </div>
 
                 <div class="col-12 mt-4 pt-3 border-top d-flex justify-content-between align-items-center flex-wrap gap-2">
