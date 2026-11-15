@@ -33,6 +33,15 @@ class ArticleController extends Controller
         $articles = $query->paginate(9)->withQueryString();
         $categories = Article::articleCategories();
 
+        if ($request->ajax()) {
+            return view('artikel.partials.article-grid', compact(
+                'articles',
+                'categories',
+                'category',
+                'search'
+            ));
+        }
+
         // Artikel terbaru untuk sidebar
         $latestArticles = Article::published()
             ->onlyArticles()

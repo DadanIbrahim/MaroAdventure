@@ -35,7 +35,7 @@
                     <div class="service-card-img-wrapper">
 
                         <img
-                            src="{{ asset('assets/images/IMG_5168.PNG') }}"
+                            src="{{ asset('assets/images/IMG_5168.jpg') }}"
                             alt="Open Trip Maro Adventure"
                         />
 
@@ -97,7 +97,7 @@
                     <div class="service-card-img-wrapper">
 
                         <img
-                            src="{{ asset('assets/images/IMG_5169.PNG') }}"
+                            src="{{ asset('assets/images/IMG_5169.jpg') }}"
                             alt="Private dan Custom Trip Maro Adventure"
                         />
 

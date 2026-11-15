@@ -10,7 +10,7 @@
                 <div class="about-image-wrapper">
 
                     <img
-                        src="{{ asset('assets/images/IMG_5171.PNG') }}"
+                        src="{{ asset('assets/images/IMG_5171.jpg') }}"
                         alt="Aktivitas Maro Adventure di alam"
                         class="about-img"
                     />

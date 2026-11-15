@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class Article extends Model
@@ -49,38 +48,46 @@ class Article extends Model
 
     // ── Accessors ────────────────────────────────────────────────────
 
-    /** URL thumbnail dengan fallback ke placeholder */
+    /** URL thumbnail dengan fallback ke placeholder instan (lokal SVG) */
     public function getThumbnailUrlAttribute(): string
     {
         if ($this->thumbnail) {
-            if (Str::startsWith($this->thumbnail, ['http://', 'https://'])) {
+            if (Str::startsWith($this->thumbnail, ['http://', 'https://', 'data:'])) {
                 return $this->thumbnail;
             }
 
-            if (file_exists(public_path($this->thumbnail))) {
+            if (Str::startsWith($this->thumbnail, ['assets/', 'images/', 'css/'])) {
                 return asset($this->thumbnail);
-            }
-
-            if (file_exists(public_path('storage/'.$this->thumbnail)) || Storage::disk('public')->exists($this->thumbnail)) {
-                return asset('storage/'.$this->thumbnail);
             }
 
             return asset('storage/'.$this->thumbnail);
         }
 
-        // Warna berbeda per kategori sebagai placeholder jika tidak ada thumbnail
-        $colors = [
-            'Gunung' => '0369A1/E0F2FE',
-            'Tips' => '059669/D1FAE5',
-            'Berita' => '7C3AED/EDE9FE',
-            'Budaya' => 'B45309/FEF3C7',
-            'Destinasi' => '0EA5E9/E0F2FE',
+        // SVG Placeholder instan 0ms tanpa external network request
+        $palette = [
+            'Gunung' => ['bg' => '#E0F2FE', 'fg' => '#0369A1', 'text' => 'Gunung & Trekking'],
+            'Tips' => ['bg' => '#D1FAE5', 'fg' => '#059669', 'text' => 'Tips & Panduan'],
+            'Berita' => ['bg' => '#EDE9FE', 'fg' => '#7C3AED', 'text' => 'Kabar & Berita'],
+            'Budaya' => ['bg' => '#FEF3C7', 'fg' => '#B45309', 'text' => 'Budaya & Alam'],
+            'Destinasi' => ['bg' => '#E0F2FE', 'fg' => '#0EA5E9', 'text' => 'Destinasi Wisata'],
         ];
 
-        $color = $colors[$this->category] ?? '0369A1/E0F2FE';
-        $label = urlencode($this->category);
+        $theme = $palette[$this->category] ?? ['bg' => '#F0F9FF', 'fg' => '#0EA5E9', 'text' => $this->category ?: 'Maro Adventure'];
+        $cat = htmlspecialchars($theme['text'], ENT_QUOTES, 'UTF-8');
+        $bg = $theme['bg'];
+        $fg = $theme['fg'];
 
-        return "https://placehold.co/800x480/{$color}?text={$label}";
+        $svg = '<svg xmlns="http://www.w3.org/2000/svg" width="800" height="480" viewBox="0 0 800 480">'
+            .'<rect width="100%" height="100%" fill="'.$bg.'"/>'
+            .'<g fill="'.$fg.'" opacity="0.12">'
+            .'<circle cx="700" cy="90" r="150"/>'
+            .'<circle cx="100" cy="410" r="180"/>'
+            .'</g>'
+            .'<text x="50%" y="46%" dominant-baseline="middle" text-anchor="middle" fill="'.$fg.'" font-family="system-ui, -apple-system, sans-serif" font-weight="700" font-size="34">'.$cat.'</text>'
+            .'<text x="50%" y="58%" dominant-baseline="middle" text-anchor="middle" fill="'.$fg.'" opacity="0.65" font-family="system-ui, -apple-system, sans-serif" font-weight="600" font-size="16">Maro Adventure Indonesia</text>'
+            .'</svg>';
+
+        return 'data:image/svg+xml;utf8,'.rawurlencode($svg);
     }
 
     /** Format konten agar paragraf, judul, dan bullet points tersusun rapi */

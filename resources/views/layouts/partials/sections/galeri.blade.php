@@ -145,7 +145,7 @@
             <div class="gallery-item">
 
                 <img
-                    src="{{ asset('assets/images/IMG_5166.PNG') }}"
+                    src="{{ asset('assets/images/IMG_5166.jpg') }}"
                     alt="Menikmati sunrise bersama Maro Adventure"
                     loading="lazy"
                 />
