@@ -6,9 +6,14 @@
 <div class="card border-0 shadow-sm">
     <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
         <h6 class="mb-0 fw-bold">Daftar Artikel</h6>
-        <a href="{{ route(request()->routeIs('superadmin.*') ? 'superadmin.articles.create' : 'admin.articles.create') }}" class="btn btn-sm btn-primary">
-            <i class="bi bi-pencil-square me-1"></i> Tulis Artikel Baru
-        </a>
+        <div class="d-flex gap-2">
+            <a href="{{ route(request()->routeIs('superadmin.*') ? 'superadmin.categories.index' : 'admin.categories.index') }}" class="btn btn-sm btn-outline-primary">
+                <i class="bi bi-tags me-1"></i> Kelola Kategori
+            </a>
+            <a href="{{ route(request()->routeIs('superadmin.*') ? 'superadmin.articles.create' : 'admin.articles.create') }}" class="btn btn-sm btn-primary">
+                <i class="bi bi-pencil-square me-1"></i> Tulis Artikel Baru
+            </a>
+        </div>
     </div>
     <div class="card-body">
         <div class="table-responsive">

@@ -64,6 +64,7 @@ class ArticleController extends Controller
     public function berita(Request $request): View
     {
         $search = $request->get('cari');
+        $category = $request->get('kategori');
 
         $query = Article::published()->onlyBerita()->latest('published_at');
 
@@ -75,7 +76,12 @@ class ArticleController extends Controller
             });
         }
 
+        if ($category && in_array($category, Article::beritaCategories())) {
+            $query->where('sub_category', $category);
+        }
+
         $news = $query->paginate(9)->withQueryString();
+        $categories = Article::beritaCategories();
 
         // Berita terbaru untuk sidebar / highlight
         $latestNews = Article::published()
@@ -84,8 +90,19 @@ class ArticleController extends Controller
             ->take(4)
             ->get();
 
+        if ($request->ajax()) {
+            return view('berita.partials.news-grid', compact(
+                'news',
+                'categories',
+                'category',
+                'search'
+            ));
+        }
+
         return view('berita.index', compact(
             'news',
+            'categories',
+            'category',
             'search',
             'latestNews'
         ));

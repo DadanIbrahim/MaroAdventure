@@ -20,8 +20,19 @@ class Booking extends Model
         'total_price',
         'status',
         'payment_status',
-        'notes'
+        'notes',
+        'is_read',
     ];
+
+    protected $casts = [
+        'is_read' => 'boolean',
+        'booking_date' => 'date',
+    ];
+
+    public function scopeUnread($query)
+    {
+        return $query->where('is_read', false);
+    }
 
     public function user()
     {
@@ -36,13 +47,13 @@ class Booking extends Model
     // Helper untuk menampilkan harga berformat Rupiah
     public function getFormattedPriceAttribute()
     {
-        return 'Rp ' . number_format($this->total_price, 0, ',', '.');
+        return 'Rp '.number_format($this->total_price, 0, ',', '.');
     }
 
     // Helper untuk badge status booking
     public function getStatusBadgeAttribute()
     {
-        return match($this->status) {
+        return match ($this->status) {
             'pending' => '<span class="badge bg-warning text-dark">Pending</span>',
             'confirmed' => '<span class="badge bg-primary">Confirmed</span>',
             'completed' => '<span class="badge bg-success">Completed</span>',
@@ -54,8 +65,8 @@ class Booking extends Model
     // Helper untuk badge status pembayaran
     public function getPaymentBadgeAttribute()
     {
-        return $this->payment_status === 'paid' 
-            ? '<span class="badge bg-success">Paid</span>' 
+        return $this->payment_status === 'paid'
+            ? '<span class="badge bg-success">Paid</span>'
             : '<span class="badge bg-danger">Unpaid</span>';
     }
 
@@ -65,7 +76,7 @@ class Booking extends Model
         parent::boot();
         static::creating(function ($booking) {
             if (empty($booking->booking_code)) {
-                $booking->booking_code = 'BKG-' . strtoupper(uniqid());
+                $booking->booking_code = 'BKG-'.strtoupper(uniqid());
             }
         });
     }
@@ -75,4 +86,3 @@ class Booking extends Model
         return $this->hasMany(Payment::class);
     }
 }
-

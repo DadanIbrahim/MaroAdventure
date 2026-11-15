@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
 
 class Article extends Model
@@ -14,6 +15,7 @@ class Article extends Model
         'excerpt',
         'content',
         'category',
+        'sub_category',
         'thumbnail',
         'gallery',
         'author_name',
@@ -206,13 +208,43 @@ class Article extends Model
     /** Daftar semua kategori yang tersedia */
     public static function allCategories(): array
     {
-        return ['Gunung', 'Tips', 'Berita', 'Budaya', 'Destinasi'];
+        return array_values(array_unique(array_merge(self::articleCategories(), ['Berita'])));
     }
 
     /** Kategori khusus artikel (tanpa Berita) */
     public static function articleCategories(): array
     {
-        return ['Gunung', 'Tips', 'Budaya', 'Destinasi'];
+        $defaults = ['Gunung', 'Tips', 'Budaya', 'Destinasi'];
+
+        try {
+            if (Schema::hasTable('content_categories')) {
+                $cats = ContentCategory::artikel()->orderBy('name')->pluck('name')->all();
+                if (! empty($cats)) {
+                    return $cats;
+                }
+            }
+        } catch (\Throwable $e) {
+        }
+
+        return $defaults;
+    }
+
+    /** Sub-kategori khusus berita */
+    public static function beritaCategories(): array
+    {
+        $defaults = ['Pengumuman', 'Kegiatan', 'Jadwal Trip', 'Info Gunung', 'Lainnya'];
+
+        try {
+            if (Schema::hasTable('content_categories')) {
+                $cats = ContentCategory::berita()->orderBy('name')->pluck('name')->all();
+                if (! empty($cats)) {
+                    return $cats;
+                }
+            }
+        } catch (\Throwable $e) {
+        }
+
+        return $defaults;
     }
 
     /** Scope khusus artikel umum (non-berita) */
@@ -244,6 +276,10 @@ class Article extends Model
             'Berita' => 'cat-berita',
             'Budaya' => 'cat-budaya',
             'Destinasi' => 'cat-destinasi',
+            'Pengumuman' => 'cat-pengumuman',
+            'Kegiatan' => 'cat-kegiatan',
+            'Jadwal Trip' => 'cat-jadwal-trip',
+            'Info Gunung' => 'cat-info-gunung',
             default => 'cat-default',
         };
     }

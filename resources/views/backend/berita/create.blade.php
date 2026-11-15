@@ -60,6 +60,24 @@
                             </div>
 
                             <div class="mb-3">
+                                <div class="d-flex justify-content-between align-items-center mb-1">
+                                    <label class="form-label mb-0">Kategori Berita <span class="text-danger">*</span></label>
+                                    <a href="{{ route(request()->routeIs('superadmin.*') ? 'superadmin.categories.index' : 'admin.categories.index') }}" class="small text-decoration-none">
+                                        + Kelola Kategori
+                                    </a>
+                                </div>
+                                <select name="sub_category" class="form-select" required>
+                                    <option value="">— Pilih Kategori —</option>
+                                    @foreach(\App\Models\Article::beritaCategories() as $cat)
+                                        <option value="{{ $cat }}" {{ old('sub_category') === $cat ? 'selected' : '' }}>
+                                            {{ $cat }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                <div class="form-text">Kategori membantu pembaca menemukan berita yang relevan.</div>
+                            </div>
+
+                            <div class="mb-3">
                                 <label class="form-label">Tanggal &amp; Waktu Terbit</label>
                                 <input 
                                     type="datetime-local" 

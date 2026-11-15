@@ -6,9 +6,14 @@
 <div class="card border-0 shadow-sm">
     <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
         <h6 class="mb-0 fw-bold">Daftar Berita & Pengumuman</h6>
-        <a href="{{ route(request()->routeIs('superadmin.*') ? 'superadmin.berita.create' : 'admin.berita.create') }}" class="btn btn-sm btn-primary">
-            <i class="bi bi-plus-lg me-1"></i> Tulis Berita Baru
-        </a>
+        <div class="d-flex gap-2">
+            <a href="{{ route(request()->routeIs('superadmin.*') ? 'superadmin.categories.index' : 'admin.categories.index') }}" class="btn btn-sm btn-outline-primary">
+                <i class="bi bi-tags me-1"></i> Kelola Kategori
+            </a>
+            <a href="{{ route(request()->routeIs('superadmin.*') ? 'superadmin.berita.create' : 'admin.berita.create') }}" class="btn btn-sm btn-primary">
+                <i class="bi bi-plus-lg me-1"></i> Tulis Berita Baru
+            </a>
+        </div>
     </div>
     <div class="card-body">
         <div class="table-responsive">
@@ -16,11 +21,12 @@
                 <thead class="table-light">
                     <tr>
                         <th width="10%">Thumbnail</th>
-                        <th width="35%">Judul Berita</th>
+                        <th width="30%">Judul Berita</th>
+                        <th width="15%">Kategori</th>
                         <th width="15%">Tanggal Terbit</th>
-                        <th width="10%">Views</th>
-                        <th width="15%">Status</th>
-                        <th width="15%" class="text-center">Aksi</th>
+                        <th width="8%">Views</th>
+                        <th width="10%">Status</th>
+                        <th width="12%" class="text-center">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -32,6 +38,9 @@
                         <td>
                             <strong class="d-block mb-1">{{ $item->title }}</strong>
                             <small class="text-muted">{{ Str::limit($item->short_excerpt, 70) }}</small>
+                        </td>
+                        <td>
+                            <span class="badge bg-light text-dark border">{{ $item->sub_category ?: 'Berita' }}</span>
                         </td>
                         <td>
                             <small class="text-muted">
@@ -64,7 +73,7 @@
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="6" class="text-center py-4 text-muted">
+                        <td colspan="7" class="text-center py-4 text-muted">
                             <i class="bi bi-newspaper fs-2 d-block mb-2"></i>
                             Belum ada berita atau pengumuman yang diterbitkan.
                         </td>

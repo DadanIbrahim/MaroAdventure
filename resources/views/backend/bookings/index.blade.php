@@ -28,8 +28,13 @@
                 </thead>
                 <tbody>
                     @forelse($bookings as $booking)
-                    <tr>
-                        <td><strong>{{ $booking->booking_code }}</strong></td>
+                    <tr class="{{ ! $booking->is_read ? 'table-light' : '' }}">
+                        <td>
+                            <strong>{{ $booking->booking_code }}</strong>
+                            @if(! $booking->is_read)
+                                <span class="badge bg-danger ms-1" style="font-size: 0.65rem;">Baru</span>
+                            @endif
+                        </td>
                         <td>
                             {{ $booking->customer_name }}
                             @if($booking->customer_phone)

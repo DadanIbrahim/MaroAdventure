@@ -3,7 +3,7 @@
 @section('title', 'Dashboard - Maro Adventure')
 
 @section('content')
-<div class="bg-light pb-5" style="min-height: 100vh; padding-top: 100px;">
+<div class="bg-light pb-5" style="min-height: 100vh; padding-top: 24px;">
     <div class="container py-4">
         <div class="row">
             

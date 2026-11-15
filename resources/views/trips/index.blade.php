@@ -7,7 +7,7 @@
 /* ── Page Hero ── */
 .trips-hero {
     background: linear-gradient(135deg, var(--color-navy) 0%, var(--color-primary-dark) 100%);
-    padding: 120px 0 60px;
+    padding: 120px 0 70px;
     position: relative;
     overflow: hidden;
 }
@@ -15,25 +15,44 @@
 .trips-hero::before {
     content: '';
     position: absolute;
-    top: -40%;
+    top: -60%;
     right: -10%;
     width: 500px;
     height: 500px;
-    background: radial-gradient(circle, rgba(56,189,248,0.15) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(56,189,248,0.1) 0%, transparent 70%);
     border-radius: 50%;
 }
 
 .trips-badge {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
+    gap: 7px;
     background: rgba(255,255,255,0.12);
+    backdrop-filter: blur(8px);
     border: 1px solid rgba(255,255,255,0.2);
-    border-radius: 50px;
-    padding: 6px 16px;
-    color: #38BDF8;
-    font-size: 0.85rem;
+    color: white;
+    font-family: var(--font-body);
+    font-size: 0.78rem;
     font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 6px 16px;
+    border-radius: 50px;
+    margin-bottom: 1rem;
+}
+
+.trips-hero h1 {
+    font-family: var(--font-heading);
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 800;
+    color: white;
+    margin-bottom: 0.75rem;
+}
+
+.trips-hero p {
+    color: rgba(255,255,255,0.8);
+    font-size: 1.05rem;
+    max-width: 540px;
 }
 
 /* ── Trip Cards ── */
@@ -116,14 +135,14 @@
 @section('content')
 
 <!-- ── HERO BANNER ── -->
-<div class="trips-hero text-white text-center">
+<div class="trips-hero">
     <div class="container position-relative" style="z-index: 2;">
-        <div class="trips-badge mb-3">
+        <div class="trips-badge">
             <i class="bi bi-compass-fill"></i>
             Eksplorasi Puncak Petualangan Nusantara
         </div>
-        <h1 class="fw-bold mb-2 display-5">Paket Perjalanan &amp; Pendakian</h1>
-        <p class="text-white-50 mb-0" style="max-width: 650px; margin: 0 auto; font-size: 1rem;">
+        <h1>Paket Perjalanan &amp; Pendakian</h1>
+        <p class="mb-0">
             Temukan paket open trip terjadwal dan private trip dengan pendampingan Certified Mountain Guide berlisensi resmi, tenda berkualitas, dan asuransi penuh.
         </p>
     </div>

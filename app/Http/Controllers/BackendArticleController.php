@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Article;
+use App\Models\ContentCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -25,13 +26,18 @@ class BackendArticleController extends Controller
     {
         $request->validate([
             'title' => 'required|string|max:255',
-            'category' => 'required|string',
+            'category' => 'required|string|max:100',
             'excerpt' => 'nullable|string',
             'content' => 'required|string',
             'is_published' => 'required|boolean',
             'published_at' => 'nullable|date',
             'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
             'gallery.*' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+        ]);
+
+        ContentCategory::firstOrCreate([
+            'name' => trim($request->category),
+            'type' => 'artikel',
         ]);
 
         $data = $request->except(['thumbnail', 'gallery']);
@@ -73,13 +79,18 @@ class BackendArticleController extends Controller
     {
         $request->validate([
             'title' => 'required|string|max:255',
-            'category' => 'required|string',
+            'category' => 'required|string|max:100',
             'excerpt' => 'nullable|string',
             'content' => 'required|string',
             'is_published' => 'required|boolean',
             'published_at' => 'nullable|date',
             'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
             'gallery.*' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+        ]);
+
+        ContentCategory::firstOrCreate([
+            'name' => trim($request->category),
+            'type' => 'artikel',
         ]);
 
         $data = $request->except(['thumbnail', 'gallery']);

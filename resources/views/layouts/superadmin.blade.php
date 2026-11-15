@@ -13,6 +13,8 @@
     
     <!-- SweetAlert2 CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+
+    @include('layouts.partials.datetimepicker-styles')
     
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -220,6 +222,11 @@
                         <i class="bi bi-journal-text"></i> Artikel
                     </a>
                 </li>
+                <li class="{{ request()->routeIs('superadmin.categories.*') ? 'active' : '' }}">
+                    <a href="{{ route('superadmin.categories.index') }}">
+                        <i class="bi bi-tags"></i> Kategori
+                    </a>
+                </li>
                 <li class="{{ request()->routeIs('superadmin.mountains.*') || request()->routeIs('superadmin.mountains') || request()->routeIs('superadmin.destinasi.*') ? 'active' : '' }}">
                     <a href="{{ route('superadmin.mountains.index') }}">
                         <i class="bi bi-geo-alt"></i> Destinasi
@@ -293,39 +300,15 @@
                 </div>
                 
                 <div class="d-flex align-items-center gap-3">
-                    <div class="position-relative">
-                        <i class="bi bi-bell fs-5 text-secondary"></i>
-                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.6rem;">
-                            9+
-                        </span>
-                    </div>
-                    <a href="{{ url('/') }}" class="btn btn-sm btn-outline-primary" target="_blank">
-                        <i class="bi bi-box-arrow-up-right me-1"></i> View Site
+                    @include('layouts.partials.admin-notification-bell')
+                    <a href="{{ url('/') }}" class="btn btn-sm btn-outline-primary">
+                        <i class="bi bi-globe me-1"></i> View Site
                     </a>
                 </div>
             </header>
 
             <!-- Page Content -->
             <div class="admin-content">
-                @if(session('success'))
-                    <div class="alert alert-success alert-dismissible fade show border-0 shadow-sm" role="alert">
-                        <i class="bi bi-check-circle me-2"></i>{{ session('success') }}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                @endif
-                @if(session('warning'))
-                    <div class="alert alert-warning alert-dismissible fade show border-0 shadow-sm" role="alert">
-                        <i class="bi bi-exclamation-triangle me-2"></i>{{ session('warning') }}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                @endif
-                @if(session('error'))
-                    <div class="alert alert-danger alert-dismissible fade show border-0 shadow-sm" role="alert">
-                        <i class="bi bi-x-circle me-2"></i>{{ session('error') }}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                @endif
-                
                 @yield('content')
             </div>
         </main>
@@ -336,6 +319,8 @@
     
     <!-- SweetAlert2 JS -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    @include('layouts.partials.datetimepicker-scripts')
 
     <script>
         document.getElementById('sidebarToggle')?.addEventListener('click', function() {

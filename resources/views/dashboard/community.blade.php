@@ -3,7 +3,7 @@
 @section('title', 'Community - Maro Adventure')
 
 @section('content')
-<div class="bg-light pb-5" style="min-height: 100vh; padding-top: 100px;">
+<div class="bg-light pb-5" style="min-height: 100vh; padding-top: 24px;">
     <div class="container py-4">
         <div class="row">
             
@@ -25,12 +25,6 @@
                     <!-- Create Post -->
                     <div class="card border-0 shadow-sm rounded-4 mb-5">
                         <div class="card-body p-4">
-                            @if(session('success'))
-                                <div class="alert alert-success alert-dismissible fade show border-0 shadow-sm" role="alert">
-                                    {{ session('success') }}
-                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                                </div>
-                            @endif
                             @if($errors->any())
                                 <div class="alert alert-danger alert-dismissible fade show border-0 shadow-sm" role="alert">
                                     {{ $errors->first() }}

@@ -7,7 +7,7 @@
 /* ── Page Hero ── */
 .trip-detail-hero {
     background: linear-gradient(135deg, var(--color-navy) 0%, var(--color-primary-dark) 100%);
-    padding: 110px 0 50px;
+    padding: 120px 0 70px;
     position: relative;
     overflow: hidden;
 }
@@ -15,12 +15,43 @@
 .trip-detail-hero::before {
     content: '';
     position: absolute;
-    top: -50%;
+    top: -60%;
     right: -10%;
-    width: 450px;
-    height: 450px;
-    background: radial-gradient(circle, rgba(56,189,248,0.12) 0%, transparent 70%);
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(56,189,248,0.1) 0%, transparent 70%);
     border-radius: 50%;
+}
+
+.trip-detail-hero h1 {
+    font-family: var(--font-heading);
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 800;
+    color: white;
+    margin-bottom: 0.75rem;
+}
+
+.trip-detail-hero p {
+    color: rgba(255,255,255,0.8) !important;
+    font-size: 1.05rem;
+    max-width: 540px;
+}
+
+.trip-hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    background: rgba(255,255,255,0.12);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: white;
+    font-family: var(--font-body);
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 6px 16px;
+    border-radius: 50px;
 }
 
 .timeline-item {
@@ -90,21 +121,21 @@
             </ol>
         </nav>
 
-        <div class="d-flex flex-wrap align-items-center gap-2 mb-2">
+        <div class="d-flex flex-wrap align-items-center gap-2 mb-3">
             @if($trip->mountain)
-                <span class="badge bg-white bg-opacity-20 text-white rounded-pill px-3 py-1 font-monospace">
-                    <i class="bi bi-geo-alt-fill text-warning me-1"></i> {{ $trip->mountain->name }}
+                <span class="trip-hero-badge">
+                    <i class="bi bi-geo-alt-fill text-warning"></i> {{ $trip->mountain->name }}
                 </span>
             @endif
             @if($trip->duration)
-            <span class="badge bg-primary text-white rounded-pill px-3 py-1">
-                <i class="bi bi-clock me-1"></i> {{ $trip->duration }}
-            </span>
+                <span class="trip-hero-badge">
+                    <i class="bi bi-clock"></i> {{ $trip->duration }}
+                </span>
             @endif
         </div>
 
-        <h1 class="fw-bold mb-2 display-6">{{ $trip->name }}</h1>
-        <p class="text-white-50 mb-0" style="max-width: 700px;">
+        <h1>{{ $trip->name }}</h1>
+        <p class="mb-0">
             {{ $trip->description ? Str::limit($trip->description, 140) : 'Pendakian terorganisir bersama tim profesional Maro Adventure Indonesia.' }}
         </p>
 

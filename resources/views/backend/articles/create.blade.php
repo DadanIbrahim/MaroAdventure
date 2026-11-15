@@ -50,14 +50,20 @@
                             <h6 class="fw-bold mb-3 border-bottom pb-2">Pengaturan Publikasi</h6>
                             
                             <div class="mb-3">
-                                <label class="form-label">Kategori <span class="text-danger">*</span></label>
-                                <input 
-                                    type="text" 
-                                    name="category" 
-                                    class="form-control" 
-                                    value="{{ old('category') }}" 
-                                    required
-                                >
+                                <div class="d-flex justify-content-between align-items-center mb-1">
+                                    <label class="form-label mb-0">Kategori <span class="text-danger">*</span></label>
+                                    <a href="{{ route(request()->routeIs('superadmin.*') ? 'superadmin.categories.index' : 'admin.categories.index') }}" class="small text-decoration-none">
+                                        + Kelola Kategori
+                                    </a>
+                                </div>
+                                <select name="category" class="form-select" required>
+                                    <option value="">— Pilih Kategori —</option>
+                                    @foreach(\App\Models\Article::articleCategories() as $cat)
+                                        <option value="{{ $cat }}" {{ old('category') === $cat ? 'selected' : '' }}>
+                                            {{ $cat }}
+                                        </option>
+                                    @endforeach
+                                </select>
                             </div>
 
                             <div class="mb-3">

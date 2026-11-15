@@ -54,18 +54,17 @@
                     </a>
                 </li>
 
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ url('/#tentang') }}">
-                        <i class="bi bi-info-circle me-1 opacity-75 d-lg-none"></i> Tentang
-                    </a>
-                </li>
-
                 <!-- Dropdown for secondary items -->
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="bi bi-grid me-1 opacity-75 d-lg-none"></i> Lainnya
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end border-0 shadow-lg" aria-labelledby="navbarDropdown">
+                        <li>
+                            <a class="dropdown-item py-2" href="{{ url('/#tentang') }}">
+                                <i class="bi bi-info-circle text-primary me-2"></i> Tentang
+                            </a>
+                        </li>
                         <li>
                             <a class="dropdown-item py-2" href="{{ url('/#galeri') }}">
                                 <i class="bi bi-images text-primary me-2"></i> Galeri foto

@@ -6,9 +6,52 @@
 <style>
 .checkout-hero {
     background: linear-gradient(135deg, var(--color-navy) 0%, var(--color-primary-dark) 100%);
-    padding: 100px 0 50px;
+    padding: 120px 0 70px;
     position: relative;
     overflow: hidden;
+}
+
+.checkout-hero::before {
+    content: '';
+    position: absolute;
+    top: -60%;
+    right: -10%;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(56,189,248,0.1) 0%, transparent 70%);
+    border-radius: 50%;
+}
+
+.checkout-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    background: rgba(255,255,255,0.12);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: white;
+    font-family: var(--font-body);
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 6px 16px;
+    border-radius: 50px;
+    margin-bottom: 1rem;
+}
+
+.checkout-hero h1 {
+    font-family: var(--font-heading);
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 800;
+    color: white;
+    margin-bottom: 0.75rem;
+}
+
+.checkout-hero p {
+    color: rgba(255,255,255,0.8);
+    font-size: 1.05rem;
+    max-width: 540px;
 }
 
 .checkout-stepper {
@@ -82,10 +125,14 @@
 @section('content')
 
 <!-- ── HERO BANNER ── -->
-<div class="checkout-hero text-white text-center">
+<div class="checkout-hero">
     <div class="container">
-        <h1 class="fw-bold mb-2">Reservasi Berhasil Dikirim</h1>
-        <p class="text-white-50 mb-0" style="max-width: 550px; margin: 0 auto; font-size: 0.95rem;">
+        <div class="checkout-badge">
+            <i class="bi bi-check-circle-fill"></i>
+            Konfirmasi & E-Ticket
+        </div>
+        <h1>Reservasi Berhasil Dikirim</h1>
+        <p class="mb-0">
             Terima kasih! Permintaan pemesanan perjalanan outdoor Anda telah kami catat dalam sistem.
         </p>
     </div>
