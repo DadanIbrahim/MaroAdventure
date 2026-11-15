@@ -35,7 +35,7 @@ class BackendArticleController extends Controller
         ]);
 
         $data = $request->except(['thumbnail', 'gallery']);
-        $data['slug'] = Str::slug($request->title).'-'.uniqid();
+        $data['slug'] = Article::generateUniqueSlug($request->title);
 
         if (empty($data['excerpt'])) {
             $data['excerpt'] = Str::limit(strip_tags($data['content']), 160);
@@ -89,7 +89,7 @@ class BackendArticleController extends Controller
         }
 
         if ($article->title !== $request->title) {
-            $data['slug'] = Str::slug($request->title).'-'.uniqid();
+            $data['slug'] = Article::generateUniqueSlug($request->title, $article->id);
         }
 
         if ($request->hasFile('thumbnail')) {

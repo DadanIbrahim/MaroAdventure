@@ -177,6 +177,32 @@ class Article extends Model
         return Str::limit(strip_tags($this->content), 120);
     }
 
+    /**
+     * Generate slug unik dari judul. Jika slug sudah ada, tambahkan angka suffix.
+     *
+     * Contoh: "Mendaki Rinjani" → "mendaki-rinjani"
+     *         (jika sudah ada) → "mendaki-rinjani-2", "mendaki-rinjani-3", dst.
+     *
+     * @param  int|null  $excludeId  ID artikel yang sedang diedit (agar tidak bentrok dengan dirinya sendiri)
+     */
+    public static function generateUniqueSlug(string $title, ?int $excludeId = null): string
+    {
+        $base = Str::slug($title);
+        $slug = $base;
+        $counter = 2;
+
+        while (
+            static::where('slug', $slug)
+                ->when($excludeId, fn ($q) => $q->where('id', '!=', $excludeId))
+                ->exists()
+        ) {
+            $slug = $base.'-'.$counter;
+            $counter++;
+        }
+
+        return $slug;
+    }
+
     /** Daftar semua kategori yang tersedia */
     public static function allCategories(): array
     {
