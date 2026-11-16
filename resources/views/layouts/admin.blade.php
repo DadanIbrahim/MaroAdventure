@@ -193,11 +193,6 @@
                         <i class="bi bi-grid"></i> Dashboard
                     </a>
                 </li>
-                <li class="{{ request()->routeIs('admin.content') ? 'active' : '' }}">
-                    <a href="{{ route('admin.content') }}">
-                        <i class="bi bi-file-earmark-richtext"></i> Content
-                    </a>
-                </li>
 
                 <li class="{{ request()->routeIs('admin.berita.*') || request()->routeIs('admin.berita') || request()->routeIs('admin.news.*') ? 'active' : '' }}">
                     <a href="{{ route('admin.berita.index') }}">

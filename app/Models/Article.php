@@ -130,7 +130,13 @@ class Article extends Model
         if (! empty($gallery) && is_array($gallery)) {
             foreach ($gallery as $img) {
                 if ($img) {
-                    $images[] = Str::startsWith($img, ['http://', 'https://']) ? $img : asset('storage/'.$img);
+                    if (Str::startsWith($img, ['http://', 'https://', 'data:'])) {
+                        $images[] = $img;
+                    } elseif (Str::startsWith($img, ['assets/', 'images/', 'css/'])) {
+                        $images[] = asset($img);
+                    } else {
+                        $images[] = asset('storage/'.$img);
+                    }
                 }
             }
         }

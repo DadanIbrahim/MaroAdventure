@@ -206,11 +206,6 @@
                         <i class="bi bi-person-badge"></i> Participants
                     </a>
                 </li>
-                <li class="{{ request()->routeIs('superadmin.content') ? 'active' : '' }}">
-                    <a href="{{ route('superadmin.content') }}">
-                        <i class="bi bi-file-earmark-richtext"></i> Content
-                    </a>
-                </li>
 
                 <li class="{{ request()->routeIs('superadmin.berita.*') || request()->routeIs('superadmin.berita') || request()->routeIs('superadmin.news.*') ? 'active' : '' }}">
                     <a href="{{ route('superadmin.berita.index') }}">

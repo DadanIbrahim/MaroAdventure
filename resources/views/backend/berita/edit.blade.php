@@ -77,14 +77,22 @@
                             </div>
 
                             <div class="mb-3">
-                                <label class="form-label">Tanggal &amp; Waktu Terbit</label>
+                                <label class="form-label">Waktu Dibuat</label>
+                                <input type="text" class="form-control bg-light text-muted"
+                                    value="{{ $article->created_at ? $article->created_at->format('d M Y, H:i') : '-' }}" readonly disabled>
+                                <div class="form-text">Tercatat otomatis saat berita pertama kali dibuat.</div>
+                            </div>
+
+                            <div class="mb-3" id="published-at-group">
+                                <label class="form-label">Waktu Dipublish</label>
                                 <input 
                                     type="datetime-local" 
                                     name="published_at" 
+                                    id="published-at-input"
                                     class="form-control" 
                                     value="{{ old('published_at', $article->published_at ? $article->published_at->format('Y-m-d\TH:i') : '') }}"
                                 >
-                                <div class="form-text">Dapat diatur manual sesuai tanggal rilis berita.</div>
+                                <div class="form-text">Terpisah dari waktu dibuat. Hanya berlaku jika status Published.</div>
                             </div>
 
                             <div class="mb-3">
@@ -102,14 +110,20 @@
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label">Thumbnail Foto Berita</label>
+                        <label class="form-label fw-semibold">Thumbnail Foto Berita Saat Ini</label>
                         @if($article->thumbnail)
-                            <div class="mb-2">
-                                <img src="{{ $article->thumbnail_url }}" alt="Thumbnail" class="img-thumbnail" style="max-height: 120px;">
+                            <div class="mb-2 p-2 bg-light rounded border d-inline-block">
+                                <img src="{{ $article->thumbnail_url }}" alt="Thumbnail" class="img-thumbnail d-block" style="max-height: 140px; object-fit: cover;">
+                                <div class="text-muted small mt-1 font-monospace" style="font-size: 0.72rem;">
+                                    <i class="bi bi-link-45deg"></i> {{ $article->thumbnail }}
+                                </div>
                             </div>
+                        @else
+                            <div class="text-muted small mb-2">Belum ada thumbnail</div>
                         @endif
+                        <label class="form-label mt-2">Ganti Thumbnail Baru</label>
                         <input type="file" name="thumbnail" class="form-control" accept="image/*">
-                        <div class="form-text">Biarkan kosong jika tidak ingin mengganti thumbnail.</div>
+                        <div class="form-text">Maksimal 15MB (JPG, PNG, WebP). Kosongkan jika ingin tetap mempertahankan thumbnail yang sudah ada.</div>
                     </div>
 
                     @include('backend.partials.gallery-uploader', [
@@ -124,9 +138,6 @@
                         <i class="bi bi-trash3 me-1"></i> Kosongkan Form
                     </button>
                     <div class="d-flex align-items-center gap-2">
-                        <button type="button" id="btn-save-draft" class="btn btn-outline-primary px-3">
-                            <i class="bi bi-file-earmark me-1"></i> Simpan Draf
-                        </button>
                         <button type="submit" class="btn btn-primary px-4">
                             <i class="bi bi-save me-1"></i> Perbarui Berita
                         </button>
@@ -213,15 +224,6 @@
                 contentInput.value = quill.root.innerHTML;
             });
         });
-
-        const draftBtn = document.getElementById('btn-save-draft');
-        if (draftBtn && statusSelect) {
-            draftBtn.addEventListener('click', function () {
-                statusSelect.value = '0';
-                contentInput.value = quill.root.innerHTML;
-                form.requestSubmit();
-            });
-        }
 
         const resetBtn = document.getElementById('btn-reset-form');
         if (resetBtn) {

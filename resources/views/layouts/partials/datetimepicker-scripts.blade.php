@@ -69,7 +69,7 @@
             const method = (methodInput.value || '').toUpperCase();
             if (method !== 'PUT' && method !== 'PATCH') return;
 
-            const submitBtns = form.querySelectorAll('button[type="submit"], input[type="submit"], #btn-save-draft');
+            const submitBtns = form.querySelectorAll('button[type="submit"], input[type="submit"]');
             if (!submitBtns.length) return;
 
             let initialState = '';

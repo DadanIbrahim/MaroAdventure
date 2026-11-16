@@ -8,7 +8,7 @@
         </span>
     </label>
     <div class="form-text mb-2 text-muted" style="font-size: 0.8rem;">
-        {{ $hint ?? 'Pilih foto satu per satu atau sekaligus untuk melengkapi galeri slider (JPG, PNG, WebP. Maks 2MB/foto).' }}
+        {{ $hint ?? 'Pilih foto satu per satu atau sekaligus untuk melengkapi galeri slider (JPG, PNG, WebP. Maks 15MB/foto).' }}
     </div>
 
     @if(!empty($existingGallery) && is_array($existingGallery) && count($existingGallery) > 0)
@@ -18,14 +18,20 @@
                 <span class="small fw-semibold text-dark">
                     <i class="bi bi-collection-fill text-secondary me-1"></i> Foto Galeri Tersimpan ({{ count($existingGallery) }} foto)
                 </span>
-                <small class="text-muted" style="font-size: 0.72rem;">Klik tombol silang untuk menghapus</small>
+                <small class="text-muted" style="font-size: 0.72rem;">Foto lama tetap dipertahankan. Klik tombol silang jika ingin menghapus foto tertentu.</small>
             </div>
             <div class="d-flex flex-wrap gap-2" id="existing-gallery-container">
                 @foreach($existingGallery as $gImg)
                     @php
-                        $imgUrl = Str::startsWith($gImg, ['http://', 'https://']) ? $gImg : asset('storage/' . $gImg);
+                        if (\Illuminate\Support\Str::startsWith($gImg, ['http://', 'https://', 'data:'])) {
+                            $imgUrl = $gImg;
+                        } elseif (\Illuminate\Support\Str::startsWith($gImg, ['assets/', 'images/', 'css/'])) {
+                            $imgUrl = asset($gImg);
+                        } else {
+                            $imgUrl = asset('storage/' . $gImg);
+                        }
                     @endphp
-                    <div class="position-relative existing-gallery-item" data-path="{{ $gImg }}" style="width: 80px; height: 80px;">
+                    <div class="position-relative existing-gallery-item" data-path="{{ $gImg }}" style="width: 80px; height: 80px;" title="{{ $gImg }}">
                         <img src="{{ $imgUrl }}" alt="Galeri" class="w-100 h-100 rounded-2 border object-fit-cover shadow-sm">
                         <button type="button" 
                                 class="btn btn-danger btn-sm p-0 position-absolute top-0 end-0 rounded-circle btn-remove-existing-gallery shadow" 
@@ -43,8 +49,8 @@
 
     <!-- Area Trigger / Dropzone -->
     <div class="border border-2 border-dashed rounded-3 p-3 text-center bg-light bg-opacity-50 transition-all mb-2" id="gallery-dropzone">
-        <!-- Input Form Sebenarnya yang dikirim ke Controller -->
-        <input type="file" id="gallery-actual-input" name="gallery[]" accept="image/jpeg,image/png,image/webp,image/jpg" multiple class="d-none">
+        <!-- Input Form Sebenarnya yang dikirim ke Controller (hanya aktif jika ada file terpilih) -->
+        <input type="file" id="gallery-actual-input" name="gallery[]" accept="image/jpeg,image/png,image/webp,image/jpg" multiple class="d-none" disabled>
         
         <!-- Input Temporary untuk memilih foto satu-satu atau sekaligus berkali-kali -->
         <input type="file" id="gallery-temp-picker" accept="image/jpeg,image/png,image/webp,image/jpg" multiple class="d-none">
@@ -59,7 +65,7 @@
                 </button>
             </div>
             <div class="text-muted small" style="font-size: 0.8rem;">
-                Anda dapat memilih foto <strong>satu per satu</strong> atau <strong>sekaligus</strong>.
+                Anda dapat memilih foto <strong>satu per satu</strong> atau <strong>sekaligus</strong> (Maksimal 15MB/foto).
             </div>
         </div>
     </div>
@@ -103,16 +109,18 @@ document.addEventListener('DOMContentLoaded', function () {
         if (!tempPicker.files || tempPicker.files.length === 0) return;
 
         let addedCount = 0;
+        const maxBytes = 15 * 1024 * 1024; // 15MB
+
         Array.from(tempPicker.files).forEach(file => {
-            // Validasi ukuran maks 2MB
-            if (file.size > 2 * 1024 * 1024) {
+            // Validasi ukuran maks 15MB
+            if (file.size > maxBytes) {
                 if (window.Toast) {
                     Toast.fire({
                         icon: 'warning',
-                        title: `File "${file.name}" melebihi batas 2MB dan dilewati.`
+                        title: `File "${file.name}" melebihi batas 15MB dan dilewati.`
                     });
                 } else {
-                    alert(`File "${file.name}" melebihi batas 2MB.`);
+                    alert(`File "${file.name}" melebihi batas 15MB.`);
                 }
                 return;
             }
@@ -137,9 +145,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Sinkronkan stagedFiles ke input file form asli dan render ulang preview
     function syncInputAndRender() {
-        const dt = new DataTransfer();
-        stagedFiles.forEach(file => dt.items.add(file));
-        actualInput.files = dt.files;
+        if (stagedFiles.length > 0) {
+            const dt = new DataTransfer();
+            stagedFiles.forEach(file => dt.items.add(file));
+            actualInput.files = dt.files;
+            actualInput.disabled = false;
+        } else {
+            actualInput.value = '';
+            actualInput.disabled = true;
+        }
 
         // Panggil event input dan change agar dirty-form tracker mendeteksi perubahan
         actualInput.dispatchEvent(new Event('input', { bubbles: true }));

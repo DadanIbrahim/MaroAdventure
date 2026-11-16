@@ -67,14 +67,20 @@
                             </div>
 
                             <div class="mb-3">
-                                <label class="form-label">Tanggal &amp; Waktu Terbit</label>
+                                <label class="form-label">Waktu Dibuat</label>
+                                <input type="text" class="form-control bg-light text-muted" value="Otomatis tercatat saat disimpan ({{ now()->format('d M Y, H:i') }})" readonly disabled>
+                            </div>
+
+                            <div class="mb-3" id="published-at-group">
+                                <label class="form-label">Waktu Dipublish</label>
                                 <input 
                                     type="datetime-local" 
                                     name="published_at" 
+                                    id="published-at-input"
                                     class="form-control" 
                                     value="{{ old('published_at', now()->format('Y-m-d\TH:i')) }}"
                                 >
-                                <div class="form-text">Dapat diatur manual sesuai waktu rilis yang diinginkan.</div>
+                                <div class="form-text">Terpisah dari waktu dibuat. Hanya berlaku jika status Published.</div>
                             </div>
 
                             <div class="mb-3">
@@ -90,7 +96,7 @@
                     <div class="mb-3">
                         <label class="form-label">Thumbnail (Gambar Utama)</label>
                         <input type="file" name="thumbnail" class="form-control" accept="image/*">
-                        <div class="form-text">Format: JPG/PNG, Max 2MB. Disarankan rasio landscape.</div>
+                        <div class="form-text">Format: JPG/PNG/WebP, Maksimal 15MB. Disarankan rasio landscape.</div>
                     </div>
 
                     @include('backend.partials.gallery-uploader', [
@@ -105,9 +111,6 @@
                         <i class="bi bi-trash3 me-1"></i> Kosongkan Form
                     </button>
                     <div class="d-flex align-items-center gap-2">
-                        <button type="button" id="btn-save-draft" class="btn btn-outline-primary px-3">
-                            <i class="bi bi-file-earmark me-1"></i> Simpan Draf
-                        </button>
                         <button type="submit" class="btn btn-primary px-4">
                             <i class="bi bi-save me-1"></i> Simpan Konten
                         </button>
@@ -193,15 +196,6 @@
                 contentInput.value = quill.root.innerHTML;
             });
         });
-
-        const draftBtn = document.getElementById('btn-save-draft');
-        if (draftBtn && statusSelect) {
-            draftBtn.addEventListener('click', function () {
-                statusSelect.value = '0';
-                contentInput.value = quill.root.innerHTML;
-                form.requestSubmit();
-            });
-        }
 
         const resetBtn = document.getElementById('btn-reset-form');
         if (resetBtn) {

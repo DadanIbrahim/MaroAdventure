@@ -20,13 +20,14 @@
             <table class="table table-hover align-middle">
                 <thead class="table-light">
                     <tr>
-                        <th width="10%">Thumbnail</th>
-                        <th width="30%">Judul Berita</th>
-                        <th width="15%">Kategori</th>
-                        <th width="15%">Tanggal Terbit</th>
-                        <th width="8%">Views</th>
+                        <th width="8%">Thumbnail</th>
+                        <th width="25%">Judul Berita</th>
+                        <th width="12%">Kategori</th>
+                        <th width="14%">Waktu Dibuat</th>
+                        <th width="14%">Waktu Dipublish</th>
+                        <th width="7%">Views</th>
                         <th width="10%">Status</th>
-                        <th width="12%" class="text-center">Aksi</th>
+                        <th width="10%" class="text-center">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -37,16 +38,26 @@
                         </td>
                         <td>
                             <strong class="d-block mb-1">{{ $item->title }}</strong>
-                            <small class="text-muted">{{ Str::limit($item->short_excerpt, 70) }}</small>
+                            <small class="text-muted">{{ Str::limit($item->short_excerpt, 60) }}</small>
                         </td>
                         <td>
                             <span class="badge bg-light text-dark border">{{ $item->sub_category ?: 'Berita' }}</span>
                         </td>
                         <td>
                             <small class="text-muted">
-                                <i class="bi bi-calendar-event me-1"></i>
-                                {{ $item->published_at ? $item->published_at->format('d M Y, H:i') : 'Belum Terbit' }}
+                                <i class="bi bi-clock me-1"></i>
+                                {{ $item->created_at ? $item->created_at->format('d M Y, H:i') : '-' }}
                             </small>
+                        </td>
+                        <td>
+                            @if($item->is_published && $item->published_at)
+                                <small class="text-success fw-medium">
+                                    <i class="bi bi-calendar-check me-1"></i>
+                                    {{ $item->published_at->format('d M Y, H:i') }}
+                                </small>
+                            @else
+                                <small class="text-muted fst-italic">Belum Dipublish</small>
+                            @endif
                         </td>
                         <td><i class="bi bi-eye"></i> {{ $item->views ?? 0 }}</td>
                         <td>
@@ -73,7 +84,7 @@
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="7" class="text-center py-4 text-muted">
+                        <td colspan="8" class="text-center py-4 text-muted">
                             <i class="bi bi-newspaper fs-2 d-block mb-2"></i>
                             Belum ada berita atau pengumuman yang diterbitkan.
                         </td>

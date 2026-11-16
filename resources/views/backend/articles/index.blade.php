@@ -20,12 +20,14 @@
             <table class="table table-hover align-middle">
                 <thead class="table-light">
                     <tr>
-                        <th width="10%">Thumbnail</th>
-                        <th width="30%">Judul</th>
-                        <th width="15%">Kategori</th>
-                        <th width="15%">Views</th>
-                        <th width="15%">Status</th>
-                        <th width="15%" class="text-center">Aksi</th>
+                        <th width="8%">Thumbnail</th>
+                        <th width="26%">Judul</th>
+                        <th width="12%">Kategori</th>
+                        <th width="14%">Waktu Dibuat</th>
+                        <th width="14%">Waktu Dipublish</th>
+                        <th width="8%">Views</th>
+                        <th width="8%">Status</th>
+                        <th width="10%" class="text-center">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -36,10 +38,26 @@
                         </td>
                         <td>
                             <strong class="d-block mb-1">{{ $article->title }}</strong>
-                            <small class="text-muted">{{ $article->published_at ? $article->published_at->format('d M Y') : 'Belum Terbit' }}</small>
+                            <small class="text-muted">{{ Str::limit($article->short_excerpt, 60) }}</small>
                         </td>
                         <td>
                             <span class="badge bg-light text-dark border">{{ $article->category }}</span>
+                        </td>
+                        <td>
+                            <small class="text-muted">
+                                <i class="bi bi-clock me-1"></i>
+                                {{ $article->created_at ? $article->created_at->format('d M Y, H:i') : '-' }}
+                            </small>
+                        </td>
+                        <td>
+                            @if($article->is_published && $article->published_at)
+                                <small class="text-success fw-medium">
+                                    <i class="bi bi-calendar-check me-1"></i>
+                                    {{ $article->published_at->format('d M Y, H:i') }}
+                                </small>
+                            @else
+                                <small class="text-muted fst-italic">Belum Dipublish</small>
+                            @endif
                         </td>
                         <td><i class="bi bi-eye"></i> {{ $article->views ?? 0 }}</td>
                         <td>
@@ -66,7 +84,7 @@
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="6" class="text-center py-4 text-muted">
+                        <td colspan="8" class="text-center py-4 text-muted">
                             <i class="bi bi-inbox fs-2 d-block mb-2"></i>
                             Belum ada data artikel.
                         </td>
